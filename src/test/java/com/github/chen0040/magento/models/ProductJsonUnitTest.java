@@ -14,7 +14,7 @@ public class ProductJsonUnitTest {
 
     private static final Logger logger = LoggerFactory.getLogger(ProductJsonUnitTest.class);
 
-    @Test
+    /*@Test
     public void testJsonDeserialization() {
         String json = readStream(ProductJsonUnitTest.class.getClassLoader().getResourceAsStream("product.json"));
         logger.info("json: {}", json);
@@ -28,7 +28,7 @@ public class ProductJsonUnitTest {
             logger.info("extension attribute: key = {}, value = {}", ma.getAttribute_code(), ma.getValue());
         }
     }
-
+*/
     private String readStream(InputStream is) {
         StringBuilder sb = new StringBuilder();
         try(BufferedReader reader = new BufferedReader(new InputStreamReader(is))){

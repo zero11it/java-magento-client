@@ -7,9 +7,9 @@ Add the following dependency to your POM file:
 
 ```xml
 <dependency>
-    <groupId>com.github.chen0040</groupId>
+    <groupId>com.github.stasbranger</groupId>
     <artifactId>java-magento-client</artifactId>
-    <version>1.0.15</version>
+    <version>1.0.16</version>
 </dependency>
 ```
 

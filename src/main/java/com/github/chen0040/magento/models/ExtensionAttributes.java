@@ -5,14 +5,14 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class ExtensionAttribute {
+public class ExtensionAttributes {
 
     private StockItems stockItems;
 
-    public ExtensionAttribute() {
+    public ExtensionAttributes() {
     }
 
-    public ExtensionAttribute(StockItems stockItems) {
+    public ExtensionAttributes(StockItems stockItems) {
         this.stockItems = stockItems;
     }
 }
