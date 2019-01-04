@@ -7,12 +7,12 @@ import lombok.Setter;
 @Getter
 public class ExtensionAttributes {
 
-    private StockItems stockItems;
+    private StockItems stock_item;
 
     public ExtensionAttributes() {
     }
 
-    public ExtensionAttributes(StockItems stockItems) {
-        this.stockItems = stockItems;
+    public ExtensionAttributes(StockItems stock_item) {
+        this.stock_item = stock_item;
     }
 }

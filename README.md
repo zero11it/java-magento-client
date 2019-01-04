@@ -12,7 +12,17 @@ Add the following dependency to your POM file:
     <version>1.0.16</version>
 </dependency>
 ```
-
+and the following repository:
+```xml
+<repository>
+    <id>java-magento-client-mvn-repo</id>
+    <url>https://raw.github.com/stasbranger/java-magento-client/reposirory/</url>
+    <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+    </snapshots>
+</repository>
+```        
 # Features
 
 * Support for token based authentication (ideal for Android or Spring application)
