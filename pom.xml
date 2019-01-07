@@ -4,44 +4,44 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.chen0040</groupId>
+    <groupId>com.github.flaviotroia</groupId>
     <artifactId>java-magento-client</artifactId>
-    <version>1.0.17</version>
+    <version>1.0.18</version>
 
 
 
     <licenses>
         <license>
             <name>MIT</name>
-            <url>https://github.com/chen0040/java-magento-client/blob/master/LICENSE</url>
+            <url>https://github.com/flaviotroia/java-magento-client/blob/master/LICENSE</url>
             <comments>MIT License</comments>
         </license>
     </licenses>
 
     <developers>
         <developer>
-            <email>xs0040@gmail.com</email>
-            <id>chen0040</id>
-            <name>Xianshun Chen</name>
-            <url>https://github.com/chen0040</url>
+            <email>info@flaviotroia.com</email>
+            <id>flaviotroia</id>
+            <name>Flavio Troia</name>
+            <url>https://github.com/flaviotroia</url>
         </developer>
     </developers>
 
     <scm>
-        <url>https://github.com/chen0040/java-magento-client</url>
-        <connection>scm:git:git://github.com/chen0040/java-magento-client.git</connection>
-        <developerConnection>scm:git:git@github.com:chen0040/java-magento-client.git</developerConnection>
+        <url>https://github.com/flaviotroia/java-magento-client</url>
+        <connection>scm:git:git://github.com/flaviotroia/java-magento-client.git</connection>
+        <developerConnection>scm:git:git@github.com:flaviotroia/java-magento-client.git</developerConnection>
     </scm>
 
     <issueManagement>
-        <url>https://github.com/chen0040/java-magento-client/issues</url>
+        <url>https://github.com/flaviotroia/java-magento-client/issues</url>
         <system>GitHub Issues</system>
     </issueManagement>
 
 
     <name>Java Client to Magento Site</name>
     <description>Java client that communicate with magento site in Java</description>
-    <url>https://github.com/chen0040/java-magento-client</url>
+    <url>https://github.com/flaviotroia/java-magento-client</url>
 
     <distributionManagement>
         <snapshotRepository>
