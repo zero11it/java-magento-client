@@ -39,7 +39,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
       cat.put("id", category.getId());
       cat.put("parent_id", category.getParent_id());
      cat.put("name", category.getName());
-     cat.put("is_active", category.is_active());
+     cat.put("is_active", category.isIs_active());
      cat.put("position", category.getPosition());
      cat.put("level", category.getLevel());
      cat.put("children", "string");
@@ -65,7 +65,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
       cat.put("id", category.getId());
       cat.put("parent_id", category.getParent_id());
       cat.put("name", category.getName());
-      cat.put("is_active", category.is_active());
+      cat.put("is_active", category.isIs_active());
       cat.put("position", category.getPosition());
       cat.put("level", category.getLevel());
       cat.put("children", "string");

@@ -16,10 +16,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-
-/**
- * Created by xschen on 12/6/2017.
- */
 @Getter
 @Setter
 public class MagentoClient extends MagentoHttpComponent implements Serializable {

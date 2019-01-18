@@ -56,8 +56,8 @@ public class MagentoInventoryStockManager extends MagentoHttpComponent {
       obj.put("product_id", si.getProduct_id());
               obj.put("stock_id", si.getStock_id());
 
-      obj.put("is_in_stock", si.is_in_stock());
-      obj.put("is_qty_decimal", si.is_qty_decimal());
+      obj.put("is_in_stock", si.isIs_in_stock());
+      obj.put("is_qty_decimal", si.isIs_qty_decimal());
 
       obj.put("show_default_notification_message", si.isShow_default_notification_message());
               obj.put("use_config_min_qty", si.isUse_config_min_qty());
@@ -77,7 +77,7 @@ public class MagentoInventoryStockManager extends MagentoHttpComponent {
               obj.put("use_config_manage_stock", si.isUse_config_manage_stock());
               obj.put("manage_stock", si.isManage_stock());
               obj.put("low_stock_date", si.getLow_stock_date());
-              obj.put("is_decimal_divided", si.is_decimal_divided());
+              obj.put("is_decimal_divided", si.isIs_decimal_divided());
               obj.put("stock_status_changed_auto", si.getStock_status_changed_auto());
               obj.put("extension_attributes", new ArrayList<String>());
 

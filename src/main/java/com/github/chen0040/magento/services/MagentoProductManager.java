@@ -120,7 +120,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
       Map<String, Object> stockItem = new HashMap<>();
       if(product.getExtension_attributes()!= null && product.getExtension_attributes().getStock_item() != null){
          stockItem.put("qty", product.getExtension_attributes().getStock_item().getQty());
-         stockItem.put("is_in_stock", product.getExtension_attributes().getStock_item().is_in_stock());
+         stockItem.put("is_in_stock", product.getExtension_attributes().getStock_item().isIs_in_stock());
 
 
          Map<String, Object> extensionAttributes = new HashMap<>();
