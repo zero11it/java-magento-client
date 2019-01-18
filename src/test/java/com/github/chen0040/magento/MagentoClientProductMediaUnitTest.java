@@ -70,7 +70,7 @@ public class MagentoClientProductMediaUnitTest {
 
    @Test
    public void test_upload_image() throws IOException {
-      String productSku = "B202-SKU";
+      String productSku = "sku-402";
 
       MagentoClient client = new MagentoClient(Mediator.url);
       client.loginAsAdmin(Mediator.adminUsername, Mediator.adminPassword);
@@ -117,4 +117,27 @@ public class MagentoClientProductMediaUnitTest {
       logger.info("image updated: {}", client.media().updateProductImage(productSku, entryId, position, filename,  bytes, type, imageFileName));
    }
 
+   @Test
+   public void test_add_second_image() throws IOException {
+      String productSku = "PN-4040";
+
+      MagentoClient client = new MagentoClient(Mediator.url);
+      client.loginAsAdmin(Mediator.adminUsername, Mediator.adminPassword);
+
+      String filename = "/m/b/mb01-blue-0.png";
+      int position = 1;
+      String type = "image/png";
+      String imageFileName = "new_image.png";
+
+      InputStream inputStream = MagentoClientProductUnitTest.class.getClassLoader().getResourceAsStream("sample.png");
+
+      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      int length;
+      byte[] bytes = new byte[1024];
+      while((length = inputStream.read(bytes, 0, 1024)) > 0) {
+         baos.write(bytes, 0, length);
+      }
+      bytes = baos.toByteArray();
+      logger.info("uploaded image id: {}", client.media().uploadProductImage(productSku, position, filename,  bytes, type, imageFileName));
+   }
 }

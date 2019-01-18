@@ -6,9 +6,9 @@ package com.github.chen0040.magento;
  */
 public class Mediator {
 
-   public static final String url = "http://magento2.demo.ubertheme.com/";
-   public static final String customerUsername = "roni_cost@example.com";
-   public static final String customerPassword = "roni_cost@example.com";
-   public static final String adminUsername = "megamenu";
-   public static final String adminPassword = "megamenu@123";
+   public static final String url = "http://local.magento";
+   public static final String customerUsername = "stocco";
+   public static final String customerPassword = "stocco123!";
+   public static final String adminUsername = "stocco";
+   public static final String adminPassword = "stocco123!";
 }

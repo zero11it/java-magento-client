@@ -12,10 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -119,6 +116,43 @@ public class MagentoProductManager extends MagentoHttpComponent {
       detail.put("weight", product.getWeight());
       detail.put("visibility", product.getVisibility());
       detail.put("status", product.getStatus());
+
+      Map<String, Object> stockItem = new HashMap<>();
+      if(product.getExtension_attributes()!= null && product.getExtension_attributes().getStock_item() != null){
+         stockItem.put("qty", product.getExtension_attributes().getStock_item().getQty());
+         stockItem.put("is_in_stock", product.getExtension_attributes().getStock_item().is_in_stock());
+
+
+         Map<String, Object> extensionAttributes = new HashMap<>();
+         extensionAttributes.put("stock_item", stockItem);
+
+         detail.put("extension_attributes", extensionAttributes);
+      }
+
+      List<Map<String, Object>> customAttributes = new ArrayList<>();
+      for (MagentoAttribute ma : product.getCustom_attributes()){
+         if(ma.getAttribute_code().equals("description")){
+            Map<String, Object> description =  new HashMap<>();
+            description.put("attribute_code", "description");
+            description.put("value", ma.getValue());
+
+            customAttributes.add(description);
+         } else if(ma.getAttribute_code().equals("short_description")){
+            Map<String, Object> shortDescription =  new HashMap<>();
+            shortDescription.put("attribute_code", "short_description");
+            shortDescription.put("value", ma.getValue());
+
+            customAttributes.add(shortDescription);
+         } else if(ma.getAttribute_code().equals("category_ids")){
+            Map<String, Object> categoryIds =  new HashMap<>();
+            categoryIds.put("attribute_code", "category_ids");
+            categoryIds.put("value", ma.getValue());
+
+            customAttributes.add(categoryIds);
+         }
+      }
+
+      detail.put("custom_attributes", customAttributes);
 
       Map<String, Object> req = new HashMap<>();
       req.put("product", detail);

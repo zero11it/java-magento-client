@@ -9,10 +9,20 @@ Add the following dependency to your POM file:
 <dependency>
     <groupId>com.github.stasbranger</groupId>
     <artifactId>java-magento-client</artifactId>
-    <version>1.0.16</version>
+    <version>1.0.18</version>
 </dependency>
 ```
-
+and the following repository:
+```xml
+<repository>
+    <id>java-magento-client-mvn-repo</id>
+    <url>https://raw.github.com/stasbranger/java-magento-client/reposirory/</url>
+    <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+    </snapshots>
+</repository>
+```        
 # Features
 
 * Support for token based authentication (ideal for Android or Spring application)
