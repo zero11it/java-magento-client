@@ -96,7 +96,7 @@ public abstract class MagentoHttpComponent {
             return false;
          }
       } catch(JSONException exception){
-         return true;
+         return false;
       }
       return true;
    }
