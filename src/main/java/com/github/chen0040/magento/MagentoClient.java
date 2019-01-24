@@ -7,8 +7,6 @@ import com.github.chen0040.magento.models.*;
 import com.github.chen0040.magento.services.*;
 import com.github.chen0040.magento.utils.HttpClient;
 import com.github.chen0040.magento.utils.StringUtils;
-import lombok.Getter;
-import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,8 +14,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-@Getter
-@Setter
 public class MagentoClient extends MagentoHttpComponent implements Serializable {
    private static final long serialVersionUID = 3001998767951271632L;
    private static final String relativePath4LoginAsClient = "rest/V1/integration/customer/token";
@@ -42,6 +38,86 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
    private MagentoProductMediaManager media;
    private MagentoGuestCartManager guestCart;
    private MagentoMyCartManager myCart;
+
+   public String getToken() {
+      return token;
+   }
+
+   public void setToken(String token) {
+      this.token = token;
+   }
+
+   public String getBaseUri() {
+      return baseUri;
+   }
+
+   public void setBaseUri(String baseUri) {
+      this.baseUri = baseUri;
+   }
+
+   public boolean isAdmin() {
+      return admin;
+   }
+
+   public void setAdmin(boolean admin) {
+      this.admin = admin;
+   }
+
+   public boolean isAuthenticated() {
+      return authenticated;
+   }
+
+   public void setAuthenticated(boolean authenticated) {
+      this.authenticated = authenticated;
+   }
+
+   public MagentoProductManager getProducts() {
+      return products;
+   }
+
+   public void setProducts(MagentoProductManager products) {
+      this.products = products;
+   }
+
+   public MagentoCategoryManager getCategories() {
+      return categories;
+   }
+
+   public void setCategories(MagentoCategoryManager categories) {
+      this.categories = categories;
+   }
+
+   public MagentoInventoryStockManager getInventory() {
+      return inventory;
+   }
+
+   public void setInventory(MagentoInventoryStockManager inventory) {
+      this.inventory = inventory;
+   }
+
+   public MagentoProductMediaManager getMedia() {
+      return media;
+   }
+
+   public void setMedia(MagentoProductMediaManager media) {
+      this.media = media;
+   }
+
+   public MagentoGuestCartManager getGuestCart() {
+      return guestCart;
+   }
+
+   public void setGuestCart(MagentoGuestCartManager guestCart) {
+      this.guestCart = guestCart;
+   }
+
+   public MagentoMyCartManager getMyCart() {
+      return myCart;
+   }
+
+   public void setMyCart(MagentoMyCartManager myCart) {
+      this.myCart = myCart;
+   }
 
    public MagentoClient(String baseUri, HttpComponent httpComponent) {
       super(httpComponent);
