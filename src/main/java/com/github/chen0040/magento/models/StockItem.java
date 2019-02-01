@@ -7,6 +7,7 @@ public class StockItem {
     private long stock_id;
     private int qty;
     private boolean is_in_stock;
+    private boolean is_qty_decimal;
 
     public int getQty() {
         return qty;
@@ -46,5 +47,13 @@ public class StockItem {
 
     public void setStock_id(long stock_id) {
         this.stock_id = stock_id;
+    }
+
+    public boolean isIs_qty_decimal() {
+        return is_qty_decimal;
+    }
+
+    public void setIs_qty_decimal(boolean is_qty_decimal) {
+        this.is_qty_decimal = is_qty_decimal;
     }
 }
