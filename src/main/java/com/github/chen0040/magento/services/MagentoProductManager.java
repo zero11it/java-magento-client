@@ -33,11 +33,9 @@ public class MagentoProductManager extends MagentoHttpComponent {
       return client.token();
    }
 
-
    @Override public String baseUri() {
       return client.baseUri();
    }
-
 
    public ProductPage page(int pageIndex, int pageSize) {
       String uri = baseUri() + "/" + relativePath4Products
@@ -66,7 +64,22 @@ public class MagentoProductManager extends MagentoHttpComponent {
       return JSON.parseObject(json, Product.class);
    }
 
+   /**
+    * Get all children for Configurable product
+    * GET : /V1/configurable-products/{sku}/children
+    * @param sku
+    * @return list of product children
+    */
+   public List<Product> getProductChildren(String sku) {
+      String uri = baseUri() + "/rest/V1/configurable-products/" + escape(sku) + "/children";
 
+      String json = getSecured(uri);
+
+      if(!validate(json)) {
+         return null;
+      }
+      return JSON.parseArray(json, Product.class);
+   }
 
 
 
