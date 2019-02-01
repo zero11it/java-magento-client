@@ -46,9 +46,9 @@ public class MagentoClientProductUnitTest {
         MagentoClient client = new MagentoClient(Mediator.url);
         client.loginAsAdmin(Mediator.adminUsername, Mediator.adminPassword);
 
-        Product p1 = client.products().getProductBySku("B201-SKU");
+        Product p1 = client.products().getProductBySku("Test");
         logger.info("product:\r\n{}", JSON.toJSONString(p1, SerializerFeature.PrettyFormat));
-        Product p2 = client.products().getProductBySku("B202-SKU");
+        Product p2 = client.products().getProductBySku("Test");
         logger.info("product:\r\n{}", JSON.toJSONString(p2, SerializerFeature.PrettyFormat));
     }
 

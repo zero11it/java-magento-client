@@ -28,7 +28,6 @@ public class Product {
    private String updated_at = "2017-05-03 03:46:13";
    private double weight = 1;
 
-   //@JSONField(deserializeUsing = ProductAttributeValueDeserializer.class)
    private ExtensionAttributes extension_attributes = new ExtensionAttributes();
    private List<String> product_links = new ArrayList<>();
    private List<TierPrices> tier_prices = new ArrayList<>();
