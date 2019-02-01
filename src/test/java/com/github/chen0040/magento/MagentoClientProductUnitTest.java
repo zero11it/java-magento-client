@@ -48,8 +48,8 @@ public class MagentoClientProductUnitTest {
 
         Product p1 = client.products().getProductBySku("Test");
         logger.info("product:\r\n{}", JSON.toJSONString(p1, SerializerFeature.PrettyFormat));
-        Product p2 = client.products().getProductBySku("Test");
-        logger.info("product:\r\n{}", JSON.toJSONString(p2, SerializerFeature.PrettyFormat));
+        List<Product> children = client.products().getProductChildren("Test");
+        logger.info("children:\r\n{}", JSON.toJSONString(children, SerializerFeature.PrettyFormat));
     }
 
     @Test
