@@ -9,7 +9,7 @@ Add the following dependency to your POM file:
 <dependency>
     <groupId>com.github.stasbranger</groupId>
     <artifactId>java-magento-client</artifactId>
-    <version>1.0.19</version>
+    <version>1.0.20</version>
 </dependency>
 ```
 and the following repository:

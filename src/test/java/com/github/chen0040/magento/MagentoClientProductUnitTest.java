@@ -53,6 +53,17 @@ public class MagentoClientProductUnitTest {
     }
 
     @Test
+    public void test_get_product_wuth_slash_in_sku(){
+        MagentoClient client = new MagentoClient(Mediator.url);
+        client.loginAsAdmin(Mediator.adminUsername, Mediator.adminPassword);
+
+        Product p1 = client.products().getProductBySku("CFCL55/OXR");
+        logger.info("product:\r\n{}", JSON.toJSONString(p1, SerializerFeature.PrettyFormat));
+        List<Product> children = client.products().getProductChildren("CFCL55/OXR");
+        logger.info("children:\r\n{}", JSON.toJSONString(children, SerializerFeature.PrettyFormat));
+    }
+
+    @Test
     public void test_delete_product(){
         MagentoClient client = new MagentoClient(Mediator.url);
         client.loginAsAdmin(Mediator.adminUsername, Mediator.adminPassword);
@@ -79,6 +90,15 @@ public class MagentoClientProductUnitTest {
 
         ProductAttributePage page = client.products().getProductAttributes(0,10);
         logger.info("product attribute types:\r\n{}", JSON.toJSONString(page, SerializerFeature.PrettyFormat));
+    }
+
+    @Test
+    public void test_list_product_attribute_codes() {
+        MagentoClient client = new MagentoClient(Mediator.url);
+        client.loginAsAdmin(Mediator.adminUsername, Mediator.adminPassword);
+
+        ProductAttributePage page = client.products().getProductAttributeCodes("color","size");
+        logger.info("product attribute codes:\r\n{}", JSON.toJSONString(page, SerializerFeature.PrettyFormat));
     }
 
     @Test
