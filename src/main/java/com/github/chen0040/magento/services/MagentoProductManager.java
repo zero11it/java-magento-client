@@ -110,6 +110,24 @@ public class MagentoProductManager extends MagentoHttpComponent {
 
    }
 
+   public ProductAttributePage getProductAttributeCodes(String... codes){
+
+      String params = Arrays.toString(codes);
+      params = params.substring(1, params.length()-1).replace(" ", "");
+
+      String uri = baseUri() + "/rest/V1/products/attributes?searchCriteria[filter_groups][0][filters][0][field]=attribute_code" +
+              "&searchCriteria[filter_groups][0][filters][0][value]=" + params +
+              "&searchCriteria[filter_groups][0][filters][0][condition_type]=in";
+      String json = getSecured(uri);
+
+      if(!validate(json)) {
+         return null;
+      }
+
+      return JSON.parseObject(json, ProductAttributePage.class);
+
+   }
+
    public boolean hasProduct(String sku) {
       return getProductBySku(sku) != null;
    }
