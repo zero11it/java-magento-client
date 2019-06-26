@@ -128,7 +128,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 
    }
 
-    public List<Product> getProductsInCategory(Long id){
+    public ProductPage getProductsInCategory(Long id){
 
         String uri = baseUri() + "/rest/V1/products?searchCriteria[filter_groups][0][filters][0][field]=category_id" +
                 "&searchCriteria[filter_groups][0][filters][0][value]=" + id +
@@ -138,7 +138,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
         if(!validate(json)) {
             return null;
         }
-        return JSON.parseArray(json, Product.class);
+        return JSON.parseObject(json, ProductPage.class);
     }
 
    public boolean hasProduct(String sku) {

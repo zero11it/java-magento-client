@@ -47,7 +47,7 @@ public class MagentoClientProductUnitTest {
         String token = client.loginAsAdmin(Mediator.adminUsername, Mediator.adminPassword);
         logger.info("account with id = 1: {}", client.getAccountById(1));
 
-        List<Product> p2 = client.products().getProductsInCategory(14L);
+        ProductPage p2 = client.products().getProductsInCategory(14L);
         logger.info("product:\r\n{}", JSON.toJSONString(p2, SerializerFeature.PrettyFormat));
     }
 
