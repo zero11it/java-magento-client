@@ -42,6 +42,16 @@ public class MagentoClientProductUnitTest {
     }
 
     @Test
+    public void test_list_product_in_category(){
+        MagentoClient client = new MagentoClient(Mediator.url);
+        String token = client.loginAsAdmin(Mediator.adminUsername, Mediator.adminPassword);
+        logger.info("account with id = 1: {}", client.getAccountById(1));
+
+        List<Product> p2 = client.products().getProductsInCategory(14L);
+        logger.info("product:\r\n{}", JSON.toJSONString(p2, SerializerFeature.PrettyFormat));
+    }
+
+    @Test
     public void test_get_product(){
         MagentoClient client = new MagentoClient(Mediator.url);
         client.loginAsAdmin(Mediator.adminUsername, Mediator.adminPassword);

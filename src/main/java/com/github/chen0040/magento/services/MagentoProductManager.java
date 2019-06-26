@@ -130,7 +130,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 
     public List<Product> getProductsInCategory(Long id){
 
-        String uri = baseUri() + "/rest/V1/products/attributes?searchCriteria[filter_groups][0][filters][0][field]=category_id" +
+        String uri = baseUri() + "/rest/V1/products?searchCriteria[filter_groups][0][filters][0][field]=category_id" +
                 "&searchCriteria[filter_groups][0][filters][0][value]=" + id +
                 "&searchCriteria[filter_groups][0][filters][0][condition_type]=eq";
         String json = getSecured(uri);
