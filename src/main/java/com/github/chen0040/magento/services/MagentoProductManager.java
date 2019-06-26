@@ -128,6 +128,19 @@ public class MagentoProductManager extends MagentoHttpComponent {
 
    }
 
+    public List<Product> getProductsInCategory(Long id){
+
+        String uri = baseUri() + "/rest/V1/products/attributes?searchCriteria[filter_groups][0][filters][0][field]=category_id" +
+                "&searchCriteria[filter_groups][0][filters][0][value]=" + id +
+                "&searchCriteria[filter_groups][0][filters][0][condition_type]=eq";
+        String json = getSecured(uri);
+
+        if(!validate(json)) {
+            return null;
+        }
+        return JSON.parseArray(json, Product.class);
+    }
+
    public boolean hasProduct(String sku) {
       return getProductBySku(sku) != null;
    }
@@ -198,9 +211,6 @@ public class MagentoProductManager extends MagentoHttpComponent {
 
       return JSON.parseObject(json, Product.class);
    }
-
-
-
 
    public String page(String name, String value, String condition_type) {
       String uri = baseUri() + "/" + relativePath4Products
