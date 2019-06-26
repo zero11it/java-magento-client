@@ -23,6 +23,9 @@ and the following repository:
     </snapshots>
 </repository>
 ```        
+
+Add to repository : https://gist.github.com/fernandezpablo85/03cf8b0cd2e7d8527063
+
 # Features
 
 * Support for token based authentication (ideal for Android or Spring application)
