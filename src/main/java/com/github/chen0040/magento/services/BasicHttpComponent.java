@@ -1,6 +1,7 @@
 package com.github.chen0040.magento.services;
 
 
+import com.github.chen0040.magento.interfaces.HttpComponent;
 import com.github.chen0040.magento.utils.HttpClient;
 
 import java.util.Map;
