@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.github.chen0040.magento.MagentoClient;
-import com.github.chen0040.magento.models.SearchCriteria;
 import com.github.chen0040.magento.models.shipment.Shipment;
 import com.github.chen0040.magento.models.shipment.ShipmentComment;
 import com.github.chen0040.magento.models.shipment.ShipmentTrack;

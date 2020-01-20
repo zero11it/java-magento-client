@@ -10,7 +10,6 @@ import org.junit.Test;
 import com.github.chen0040.magento.enums.ConditionTypes;
 import com.github.chen0040.magento.models.product.Product;
 import com.github.chen0040.magento.models.shipment.Shipment;
-import com.github.chen0040.magento.models.shipment.ShipmentTrack;
 import com.github.chen0040.magento.models.store.StoreConfig;
 import com.github.chen0040.magento.models.store.StoreGroup;
 import com.github.chen0040.magento.models.store.StoreView;
