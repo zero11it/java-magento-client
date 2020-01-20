@@ -48,7 +48,7 @@ public class MagentoMyCartManager extends MagentoHttpComponent {
 	}
 
 	public Cart getCart() {
-		String json = getSecured(baseUri() + "/" + relativePath + "/" + cartId);
+		String json = getSecure(baseUri() + "/" + relativePath + "/" + cartId);
 
 		if (!validate(json)) {
 			return null;
@@ -59,7 +59,7 @@ public class MagentoMyCartManager extends MagentoHttpComponent {
 	}
 
 	public CartTotal getCartTotal() {
-		String json = getSecured(baseUri() + "/" + relativePath + "/" + cartId + "/totals");
+		String json = getSecure(baseUri() + "/" + relativePath + "/" + cartId + "/totals");
 
 		if (!validate(json)) {
 			return null;

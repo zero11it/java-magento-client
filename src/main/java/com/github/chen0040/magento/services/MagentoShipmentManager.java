@@ -51,7 +51,7 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 	
 	public Shipment getShipment(long id) {
 		String uri = baseUri() + "/" + relativePath4Shipments + "/" + id;
-		String json = getSecured(uri);
+		String json = getSecure(uri);
 		
 		if (!validate(json)) {
 			return null;
@@ -64,7 +64,7 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 	
 	public List<ShipmentComment> getShipmentComments(long id) {
 		String uri = baseUri() + "/" + relativePath4Shipments + "/" + id + "/comments";
-		String json = getSecured(uri);
+		String json = getSecure(uri);
 		
 		if (!validate(json)) {
 			return null;
@@ -77,7 +77,7 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 	
 	public String getLabel(long id) {
 		String uri = baseUri() + "/" + relativePath4Shipments + "/" + id + "/comments";
-		String json = getSecured(uri);
+		String json = getSecure(uri);
 		
 		if (!validate(json)) {
 			return null;
@@ -92,7 +92,25 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 		String uri = baseUri() + "/" + relativePath4Shipments + "s?"
 				+ "searchCriteria[currentPage]=" + currentPage + "&"
 				+ "searchCriteria[pageSize]=" + pageSize;
-		String json = getSecured(uri);
+		String json = getSecure(uri);
+
+		if (!validate(json)) {
+			return null;
+		}
+		json = json.replace("\"[",  "[").replace("]\"",  "]");
+		
+		logger.info("Got:\n{}", json);
+		
+		Map<String, String> resp = JSON.parseObject(json, new TypeReference<HashMap<String, String>>() {});
+		
+		return JSON.parseArray(resp.get("items"), Shipment.class);
+	}
+	
+	public List<Shipment> search(String currentPage, long pageSize) {
+		String uri = baseUri() + "/" + relativePath4Shipments + "s?"
+				+ "searchCriteria[currentPage]=" + currentPage + "&"
+				+ "searchCriteria[pageSize]=" + pageSize;
+		String json = getSecure(uri);
 
 		if (!validate(json)) {
 			return null;
@@ -111,7 +129,7 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 				+ "searchCriteria[filterGroups][0][filters][0][field]=" + field + "&"
 				+ "searchCriteria[filterGroups][0][filters][0][value]=" + value + "&"
 				+ "searchCriteria[filterGroups][0][filters][0][condition_type]=" + condition_type;
-		String json = getSecured(uri);
+		String json = getSecure(uri);
 
 		if (!validate(json)) {
 			return null;

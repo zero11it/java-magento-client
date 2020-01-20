@@ -47,7 +47,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		String uri = baseUri() + "/" + relativePath4Products
 				+ "?searchCriteria[currentPage]=" + pageIndex
 				+ "&searchCriteria[pageSize]=" + pageSize;
-		String json = getSecured(uri);
+		String json = getSecure(uri);
 
 		if (!validate(json)) {
 			return null;
@@ -62,12 +62,12 @@ public class MagentoProductManager extends MagentoHttpComponent {
 				+ "&searchCriteria[filter_groups][0][filters][0][value]=" + value
 				+ "&searchCriteria[filter_groups][0][filters][0][condition_type]=" + condition_type;
 
-		return getSecured(uri);
+		return getSecure(uri);
 	}
 
 	public Product getProductBySku(String sku) {
 		String uri = baseUri() + "/" + relativePath4Products + "/" + escape(sku);
-		String json = getSecured(uri);
+		String json = getSecure(uri);
 
 		if (!validate(json)) {
 			return null;
@@ -80,7 +80,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 
 	public List<MagentoAttributeType> getProductAttributeTypes() {
 		String uri = baseUri() + "/rest/V1/products/attributes/types";
-		String json = getSecured(uri);
+		String json = getSecure(uri);
 
 		if (!validate(json)) {
 			return null;
@@ -93,7 +93,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		String uri = baseUri() + "/rest/V1/products/attributes"
 				+ "?searchCriteria[currentPage]=" + pageIndex
 				+ "&searchCriteria[pageSize]=" + pageSize;
-		String json = getSecured(uri);
+		String json = getSecure(uri);
 
 		if (!validate(json)) {
 			return null;
@@ -104,7 +104,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 
 	public List<MagentoType> getProductTypes() {
 		String uri = baseUri() + "/rest/V1/products/types";
-		String json = getSecured(uri);
+		String json = getSecure(uri);
 
 		return JSON.parseArray(json, MagentoType.class);
 	}
@@ -113,7 +113,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		String uri = baseUri() + "/rest/V1/products/types"
 				+ "?searchCriteria[currentPage]=" + page
 				+ "&searchCriteria[pageSize]=" + pageSize;
-		String json = getSecured(uri);
+		String json = getSecure(uri);
 
 		return JSON.parseArray(json, MagentoType.class);
 	}

@@ -53,11 +53,17 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
 	private MagentoStoreManager store;
 	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
+	private MagentoOrderManager order;
+	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
 	private MagentoShipmentManager shipment;
 
 	public MagentoClient(String baseUri, HttpComponent httpComponent) {
 		super(httpComponent);
 
+		if (baseUri.endsWith("/")) {
+			baseUri = baseUri.substring(0, baseUri.length()-1);
+		}
+		
 		this.baseUri = baseUri;
 		this.products = new MagentoProductManager(this);
 		this.categories = new MagentoCategoryManager(this);
@@ -66,6 +72,7 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 		this.guestCart = new MagentoGuestCartManager(this);
 		this.myCart = new MagentoMyCartManager(this);
 		this.store = new MagentoStoreManager(this);
+		this.order = new MagentoOrderManager(this);
 		this.shipment = new MagentoShipmentManager(this);
 	}
 
@@ -80,7 +87,7 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 		}
 
 		String uri = this.baseUri + "/rest/V1/customers/me";
-		String json = getSecured(uri);
+		String json = getSecure(uri);
 
 		if (!validate(json)) {
 			return null;
@@ -96,7 +103,7 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 		}
 
 		String uri = this.baseUri + "/rest/V1/customers/" + id;
-		String json = getSecured(uri);
+		String json = getSecure(uri);
 		Map<String, Object> data = JSON.parseObject(json, new TypeReference<Map<String, Object>>() {
 		}.getType());
 		return data;
@@ -174,6 +181,10 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 	
 	public MagentoStoreManager store() {
 		return store;
+	}
+	
+	public MagentoOrderManager order() {
+		return order;
 	}
 	
 	public MagentoShipmentManager shipment() {

@@ -75,7 +75,7 @@ public class MagentoTest {
 	
 	@Test
 	public void testShipment() {
-		MagentoClient client = new MagentoClient("https://bsmagento2.web07.zero11.net");
+		MagentoClient client = new MagentoClient("https://bsmagento2.web07.zero11.net/");
 		client.loginAsAdmin("a.trucco", "zero11zero11");
 		
 		assertNotNull(client.shipment().search(0, 10000));
@@ -83,5 +83,13 @@ public class MagentoTest {
 		assertNotNull(shipments);
 		assertNotNull(client.shipment().saveShipment(shipments.get(0)));
 		assertNotNull(client.shipment().saveTrack(shipments.get(0).getTracks().get(0)));
+	}
+	
+	@Test
+	public void testOrder() {
+		MagentoClient client = new MagentoClient("https://bsmagento2.web07.zero11.net");
+		client.loginAsAdmin("a.trucco", "zero11zero11");
+		
+		assertNotNull(client.order().searchItems(0, 100));
 	}
 }

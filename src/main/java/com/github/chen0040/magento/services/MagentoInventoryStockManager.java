@@ -36,7 +36,7 @@ public class MagentoInventoryStockManager extends MagentoHttpComponent {
 
 	public StockItems getStockItems(String productSku) {
 		String url = baseUri() + "/" + relativePath + "/" + productSku;
-		String json = getSecured(url);
+		String json = getSecure(url);
 		
 		if (!validate(json)) {
 			return null;

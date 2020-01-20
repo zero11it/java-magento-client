@@ -35,7 +35,7 @@ public class MagentoStoreManager extends MagentoHttpComponent {
 
 	public List<StoreConfig> getStoreConfigs() {
 		String uri = baseUri() + "/" + relativePath4Store + "/storeConfigs";
-		String json = getSecured(uri);
+		String json = getSecure(uri);
 		
 		if (!validate(json)) {
 			return null;
@@ -48,7 +48,7 @@ public class MagentoStoreManager extends MagentoHttpComponent {
 	
 	public List<Website> getWebsites() {
 		String uri = baseUri() + "/" + relativePath4Store + "/websites";
-		String json = getSecured(uri);
+		String json = getSecure(uri);
 		
 		if (!validate(json)) {
 			return null;
@@ -61,7 +61,7 @@ public class MagentoStoreManager extends MagentoHttpComponent {
 	
 	public List<StoreGroup> getStoreGroups() {
 		String uri = baseUri() + "/" + relativePath4Store + "/storeGroups";
-		String json = getSecured(uri);
+		String json = getSecure(uri);
 		
 		if (!validate(json)) {
 			return null;
@@ -74,7 +74,7 @@ public class MagentoStoreManager extends MagentoHttpComponent {
 	
 	public List<StoreView> getStoreViews() {
 		String uri = baseUri() + "/" + relativePath4Store + "/storeViews";
-		String json = getSecured(uri);
+		String json = getSecure(uri);
 		
 		if (!validate(json)) {
 			return null;

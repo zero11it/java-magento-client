@@ -65,7 +65,7 @@ public abstract class MagentoHttpComponent {
 		return httpComponent.delete(url, headers);
 	}
 
-	public String getSecured(String uri) {
+	public String getSecure(String uri) {
 		Map<String, String> headers = new HashMap<>();
 		if (!StringUtils.isEmpty(this.token())) {
 			headers.put("Authorization", "Bearer " + this.token());
