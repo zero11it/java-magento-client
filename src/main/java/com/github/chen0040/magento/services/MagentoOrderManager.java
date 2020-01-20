@@ -101,6 +101,7 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 		if (!validate(json)) {
 			return null;
 		}
+		json = json.replace("\"[",  "[").replace("]\"",  "]");
 		
 		logger.info("Got:\n{}", json);
 		
