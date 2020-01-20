@@ -3,8 +3,9 @@ package com.github.chen0040.magento.models.shipment;
 import java.util.List;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.github.chen0040.magento.models.AttributeValueDeserializer;
+import com.alibaba.fastjson.serializer.IntegerCodec;
 import com.github.chen0040.magento.models.MagentoAttribute;
+import com.github.chen0040.magento.models.serialization.AttributeValueDeserializer;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +16,7 @@ public class Shipment {
 	private long billing_address_id;
 	private String created_at;
 	private long customer_id;
-	private boolean email_sent;
+	private long email_sent;
 	private long entity_id;
 	private String increment_id;
 	private long order_id;
@@ -33,4 +34,11 @@ public class Shipment {
 	
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
 	List<MagentoAttribute> extension_attributes;
+	
+	public boolean is_email_sent() {
+		return email_sent > 0;
+	}
+	public void set_email_sent(boolean val) {
+		email_sent = (val) ? 1 : 0;
+	}
 }

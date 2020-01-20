@@ -7,7 +7,10 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.github.chen0040.magento.enums.ConditionTypes;
 import com.github.chen0040.magento.models.product.Product;
+import com.github.chen0040.magento.models.shipment.Shipment;
+import com.github.chen0040.magento.models.shipment.ShipmentTrack;
 import com.github.chen0040.magento.models.store.StoreConfig;
 import com.github.chen0040.magento.models.store.StoreGroup;
 import com.github.chen0040.magento.models.store.StoreView;
@@ -77,5 +80,9 @@ public class MagentoTest {
 		client.loginAsAdmin("a.trucco", "zero11zero11");
 		
 		assertNotNull(client.shipment().search(0, 10000));
+		List<Shipment> shipments = client.shipment().search("order_id", "2", ConditionTypes.GTEQ);
+		assertNotNull(shipments);
+		assertNotNull(client.shipment().saveShipment(shipments.get(0)));
+		assertNotNull(client.shipment().saveTrack(shipments.get(0).getTracks().get(0)));
 	}
 }

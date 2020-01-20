@@ -40,6 +40,8 @@ public class MagentoStoreManager extends MagentoHttpComponent {
 		if (!validate(json)) {
 			return null;
 		}
+		
+		logger.info("Got:\n{}", json);
 
 		return JSON.parseArray(json, StoreConfig.class);
 	}
@@ -51,6 +53,8 @@ public class MagentoStoreManager extends MagentoHttpComponent {
 		if (!validate(json)) {
 			return null;
 		}
+		
+		logger.info("Got:\n{}", json);
 
 		return JSON.parseArray(json, Website.class);
 	}
@@ -62,6 +66,8 @@ public class MagentoStoreManager extends MagentoHttpComponent {
 		if (!validate(json)) {
 			return null;
 		}
+		
+		logger.info("Got:\n{}", json);
 
 		return JSON.parseArray(json, StoreGroup.class);
 	}
@@ -73,6 +79,8 @@ public class MagentoStoreManager extends MagentoHttpComponent {
 		if (!validate(json)) {
 			return null;
 		}
+		
+		logger.info("Got:\n{}", json);
 
 		return JSON.parseArray(json, StoreView.class);
 	}

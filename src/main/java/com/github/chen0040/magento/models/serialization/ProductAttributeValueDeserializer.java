@@ -1,4 +1,4 @@
-package com.github.chen0040.magento.models.product;
+package com.github.chen0040.magento.models.serialization;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;

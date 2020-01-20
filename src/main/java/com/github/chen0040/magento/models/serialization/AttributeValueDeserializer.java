@@ -1,4 +1,4 @@
-package com.github.chen0040.magento.models;
+package com.github.chen0040.magento.models.serialization;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -7,6 +7,7 @@ import com.alibaba.fastjson.parser.DefaultJSONParser;
 import com.alibaba.fastjson.parser.deserializer.ObjectDeserializer;
 import com.alibaba.fastjson.serializer.JSONSerializer;
 import com.alibaba.fastjson.serializer.ObjectSerializer;
+import com.github.chen0040.magento.models.MagentoAttribute;
 
 import java.io.IOException;
 import java.lang.reflect.Type;

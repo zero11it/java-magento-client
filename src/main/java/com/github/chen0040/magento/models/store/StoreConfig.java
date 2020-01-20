@@ -1,5 +1,11 @@
 package com.github.chen0040.magento.models.store;
 
+import java.util.List;
+
+import com.alibaba.fastjson.annotation.JSONField;
+import com.github.chen0040.magento.models.MagentoAttribute;
+import com.github.chen0040.magento.models.serialization.AttributeValueDeserializer;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,5 +28,7 @@ public class StoreConfig {
 	private String secure_base_link_url;
 	private String secure_base_static_url;
 	private String secure_base_media_url;
-	// TODO extension_attributes
+    
+    @JSONField(deserializeUsing = AttributeValueDeserializer.class)
+    private List<MagentoAttribute> extension_attributes;
 }
