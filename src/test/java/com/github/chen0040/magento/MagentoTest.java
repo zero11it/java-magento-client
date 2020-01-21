@@ -91,5 +91,6 @@ public class MagentoTest {
 		client.loginAsAdmin("a.trucco", "zero11zero11");
 		
 		assertNotNull(client.order().searchItems(0, 100));
+		assertNotNull(client.order().searchItems("Name", "test", ConditionTypes.EQ));
 	}
 }
