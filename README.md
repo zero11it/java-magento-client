@@ -7,16 +7,16 @@ Add the following dependency to your POM file:
 
 ```xml
 <dependency>
-    <groupId>com.github.stasbranger</groupId>
+    <groupId>com.github.a-trucco-zero11</groupId>
     <artifactId>java-magento-client</artifactId>
-    <version>1.1.2</version>
+    <version>1.0.5</version>
 </dependency>
 ```
 and the following repository:
 ```xml
 <repository>
     <id>java-magento-client-mvn-repo</id>
-    <url>https://raw.github.com/stasbranger/java-magento-client/reposirory/</url>
+    <url>https://raw.github.com/a-trucco-zero11/java-magento-client/reposirory/</url>
     <snapshots>
         <enabled>true</enabled>
         <updatePolicy>always</updatePolicy>
