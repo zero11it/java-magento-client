@@ -8,6 +8,8 @@ import com.github.chen0040.magento.models.product.Product;
 import com.github.chen0040.magento.models.product.ProductAttributePage;
 import com.github.chen0040.magento.models.product.ProductPage;
 import com.github.chen0040.magento.utils.StringUtils;
+import com.mgiorda.oauth.OAuthConfig;
+
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +51,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 				+ "&searchCriteria[pageSize]=" + pageSize;
 		String json = getSecure(uri);
 
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return null;
 		}
 
@@ -69,7 +71,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		String uri = baseUri() + "/" + relativePath4Products + "/" + escape(sku);
 		String json = getSecure(uri);
 
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return null;
 		}
 
@@ -82,7 +84,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		String uri = baseUri() + "/rest/V1/products/attributes/types";
 		String json = getSecure(uri);
 
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return null;
 		}
 
@@ -95,7 +97,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 				+ "&searchCriteria[pageSize]=" + pageSize;
 		String json = getSecure(uri);
 
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return null;
 		}
 
@@ -156,7 +158,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 
 		logger.info("returned: {}", json);
 		
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return null;
 		}
 
@@ -167,5 +169,15 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		String url = baseUri() + "/" + relativePath4Products + "/" + escape(sku);
 
 		return deleteSecure(url);
+	}
+
+	@Override
+	public boolean oauthEnabled() {
+		return client.oauthEnabled();
+	}
+
+	@Override
+	public OAuthConfig oAuth() {
+		return client.oAuth();
 	}
 }

@@ -7,6 +7,7 @@ import com.github.chen0040.magento.models.cart.Cart;
 import com.github.chen0040.magento.models.cart.CartItem;
 import com.github.chen0040.magento.models.cart.CartTotal;
 import com.github.chen0040.magento.utils.StringUtils;
+import com.mgiorda.oauth.OAuthConfig;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +37,7 @@ public class MagentoGuestCartManager extends MagentoHttpComponent {
 	public String newCart() {
 		String json = postSecure(baseUri() + "/" + relativePath, "");
 
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return null;
 		}
 
@@ -46,7 +47,7 @@ public class MagentoGuestCartManager extends MagentoHttpComponent {
 	public Cart getCart(String cartId) {
 		String json = getSecure(baseUri() + "/" + relativePath + "/" + cartId);
 
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return null;
 		}
 
@@ -59,7 +60,7 @@ public class MagentoGuestCartManager extends MagentoHttpComponent {
 	public CartTotal getCartTotal(String cartId) {
 		String json = getSecure(baseUri() + "/" + relativePath + "/" + cartId + "/totals");
 
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return null;
 		}
 
@@ -82,7 +83,7 @@ public class MagentoGuestCartManager extends MagentoHttpComponent {
 		
 		json = postSecure(baseUri() + "/" + relativePath + "/" + cartId + "/items", json);
 
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return null;
 		}
 
@@ -107,7 +108,7 @@ public class MagentoGuestCartManager extends MagentoHttpComponent {
 		
 		json = putSecure(baseUri() + "/" + relativePath + "/" + cartId + "/items/" + item.getItem_id(), json);
 
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return null;
 		}
 
@@ -121,12 +122,22 @@ public class MagentoGuestCartManager extends MagentoHttpComponent {
 	public boolean deleteItemInCart(String cartId, int itemId) {
 		String json = deleteSecure(baseUri() + "/" + relativePath + "/" + cartId + "/items/" + itemId);
 
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return false;
 		}
 
 		System.out.println(json);
 
 		return json.equalsIgnoreCase("true");
+	}
+
+	@Override
+	public boolean oauthEnabled() {
+		return client.oauthEnabled();
+	}
+
+	@Override
+	public OAuthConfig oAuth() {
+		return client.oAuth();
 	}
 }

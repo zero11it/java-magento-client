@@ -5,18 +5,16 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.chen0040.magento.MagentoClient;
 import com.github.chen0040.magento.enums.ImageType;
 import com.github.chen0040.magento.enums.ImageTypes;
-import com.github.chen0040.magento.models.product.Product;
 import com.github.chen0040.magento.models.product.ProductMedia;
-import com.github.chen0040.magento.models.product.ProductPage;
 import com.github.chen0040.magento.utils.StringUtils;
+import com.mgiorda.oauth.OAuthConfig;
+
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.net.URLEncoder;
 import java.util.*;
-import java.util.function.Function;
 
 /**
  * Created by xschen on 15/6/2017.
@@ -82,7 +80,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 		String body = JSON.toJSONString(req, SerializerFeature.BrowserCompatible);
 		String json = postSecure(uri, body);
 
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return -1L;
 		}
 		
@@ -228,7 +226,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 		String body = JSON.toJSONString(req, SerializerFeature.BrowserCompatible);
 		String json = putSecure(uri, body);
 
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return false;
 		}
 		return json.equalsIgnoreCase("true");
@@ -238,7 +236,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 		String uri = baseUri() + "/rest/V1/products/" + escape(sku) + "/media";
 		String json = getSecure(uri);
 
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return null;
 		}
 
@@ -250,7 +248,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 		String uri = baseUri() + "/rest/V1/products/" + escape(sku) + "/media/" + entryId;
 		String json = getSecure(uri);
 
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return null;
 		}
 
@@ -262,7 +260,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 		String uri = baseUri() + "/rest/V1/products/" + escape(sku) + "/media/" + entryId;
 		String json = deleteSecure(uri);
 
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return false;
 		}
 
@@ -373,5 +371,15 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 		logger.info("uploaded {} for product {}: {}", filename, sku, updated);
 
 		return updated;
+	}
+
+	@Override
+	public boolean oauthEnabled() {
+		return client.oauthEnabled();
+	}
+
+	@Override
+	public OAuthConfig oAuth() {
+		return client.oAuth();
 	}
 }

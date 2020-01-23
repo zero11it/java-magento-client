@@ -28,5 +28,6 @@
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/oauth1-signature-builder-1.0.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

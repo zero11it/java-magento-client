@@ -13,6 +13,7 @@ import com.github.chen0040.magento.MagentoClient;
 import com.github.chen0040.magento.models.shipment.Shipment;
 import com.github.chen0040.magento.models.shipment.ShipmentComment;
 import com.github.chen0040.magento.models.shipment.ShipmentTrack;
+import com.mgiorda.oauth.OAuthConfig;
 
 public class MagentoShipmentManager extends MagentoHttpComponent {
 
@@ -40,7 +41,7 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 		
 		String json = postSecure(uri, "");
 		
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return false;
 		}
 		
@@ -53,7 +54,7 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 		String uri = baseUri() + "/" + relativePath4Shipments + "/" + id;
 		String json = getSecure(uri);
 		
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return null;
 		}
 		
@@ -66,7 +67,7 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 		String uri = baseUri() + "/" + relativePath4Shipments + "/" + id + "/comments";
 		String json = getSecure(uri);
 		
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return null;
 		}
 		
@@ -79,7 +80,7 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 		String uri = baseUri() + "/" + relativePath4Shipments + "/" + id + "/comments";
 		String json = getSecure(uri);
 		
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return null;
 		}
 		
@@ -94,7 +95,7 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 				+ "searchCriteria[pageSize]=" + pageSize;
 		String json = getSecure(uri);
 
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return null;
 		}
 		json = json.replace("\"[",  "[").replace("]\"",  "]");
@@ -112,7 +113,7 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 				+ "searchCriteria[pageSize]=" + pageSize;
 		String json = getSecure(uri);
 
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return null;
 		}
 		json = json.replace("\"[",  "[").replace("]\"",  "]");
@@ -131,7 +132,7 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 				+ "searchCriteria[filterGroups][0][filters][0][condition_type]=" + condition_type;
 		String json = getSecure(uri);
 
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return null;
 		}
 		json = json.replace("\"[",  "[").replace("]\"",  "]");
@@ -154,7 +155,7 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 		
 		String json = postSecure(uri, body);
 		
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return null;
 		}
 		
@@ -174,7 +175,7 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 		
 		String json = postSecure(uri, body);
 		
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return null;
 		}
 		
@@ -188,10 +189,20 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 		
 		String json = deleteSecure(uri);
 		
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return false;
 		}
 		
 		return JSON.parseObject(json, Boolean.class).booleanValue();
+	}
+
+	@Override
+	public boolean oauthEnabled() {
+		return client.oauthEnabled();
+	}
+
+	@Override
+	public OAuthConfig oAuth() {
+		return client.oAuth();
 	}
 }

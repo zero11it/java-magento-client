@@ -8,6 +8,7 @@ import com.github.chen0040.magento.models.cart.Cart;
 import com.github.chen0040.magento.models.cart.CartItem;
 import com.github.chen0040.magento.models.cart.CartTotal;
 import com.github.chen0040.magento.utils.StringUtils;
+import com.mgiorda.oauth.OAuthConfig;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +41,7 @@ public class MagentoMyCartManager extends MagentoHttpComponent {
 	public String newQuote() {
 		String json = postSecure(baseUri() + "/" + relativePath + "/" + cartId, "");
 
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return null;
 		}
 
@@ -50,7 +51,7 @@ public class MagentoMyCartManager extends MagentoHttpComponent {
 	public Cart getCart() {
 		String json = getSecure(baseUri() + "/" + relativePath + "/" + cartId);
 
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return null;
 		}
 
@@ -61,7 +62,7 @@ public class MagentoMyCartManager extends MagentoHttpComponent {
 	public CartTotal getCartTotal() {
 		String json = getSecure(baseUri() + "/" + relativePath + "/" + cartId + "/totals");
 
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return null;
 		}
 
@@ -82,7 +83,7 @@ public class MagentoMyCartManager extends MagentoHttpComponent {
 		
 		json = postSecure(baseUri() + "/" + relativePath + "/" + cartId + "/items", json);
 
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return null;
 		}
 
@@ -105,7 +106,7 @@ public class MagentoMyCartManager extends MagentoHttpComponent {
 		
 		json = putSecure(baseUri() + "/" + relativePath + "/" + cartId + "/items/" + item.getItem_id(), json);
 
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return null;
 		}
 
@@ -117,7 +118,7 @@ public class MagentoMyCartManager extends MagentoHttpComponent {
 	public boolean deleteItemInCart(int itemId) {
 		String json = deleteSecure(baseUri() + "/" + relativePath + "/" + cartId + "/items/" + itemId);
 
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return false;
 		}
 
@@ -140,11 +141,21 @@ public class MagentoMyCartManager extends MagentoHttpComponent {
 		
 		json = putSecure(baseUri() + "/rest/V1/guest-carts/" + guestCartId, json);
 
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return false;
 		}
 
 		return true;
+	}
+
+	@Override
+	public boolean oauthEnabled() {
+		return client.oauthEnabled();
+	}
+
+	@Override
+	public OAuthConfig oAuth() {
+		return client.oAuth();
 	}
 
 }

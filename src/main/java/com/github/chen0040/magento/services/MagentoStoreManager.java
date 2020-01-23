@@ -11,6 +11,7 @@ import com.github.chen0040.magento.models.store.StoreConfig;
 import com.github.chen0040.magento.models.store.StoreGroup;
 import com.github.chen0040.magento.models.store.StoreView;
 import com.github.chen0040.magento.models.store.Website;
+import com.mgiorda.oauth.OAuthConfig;
 
 public class MagentoStoreManager extends MagentoHttpComponent {
 	
@@ -37,7 +38,7 @@ public class MagentoStoreManager extends MagentoHttpComponent {
 		String uri = baseUri() + "/" + relativePath4Store + "/storeConfigs";
 		String json = getSecure(uri);
 		
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return null;
 		}
 		
@@ -50,7 +51,7 @@ public class MagentoStoreManager extends MagentoHttpComponent {
 		String uri = baseUri() + "/" + relativePath4Store + "/websites";
 		String json = getSecure(uri);
 		
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return null;
 		}
 		
@@ -63,7 +64,7 @@ public class MagentoStoreManager extends MagentoHttpComponent {
 		String uri = baseUri() + "/" + relativePath4Store + "/storeGroups";
 		String json = getSecure(uri);
 		
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return null;
 		}
 		
@@ -76,12 +77,22 @@ public class MagentoStoreManager extends MagentoHttpComponent {
 		String uri = baseUri() + "/" + relativePath4Store + "/storeViews";
 		String json = getSecure(uri);
 		
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return null;
 		}
 		
 		logger.info("Got:\n{}", json);
 
 		return JSON.parseArray(json, StoreView.class);
+	}
+
+	@Override
+	public boolean oauthEnabled() {
+		return client.oauthEnabled();
+	}
+
+	@Override
+	public OAuthConfig oAuth() {
+		return client.oAuth();
 	}
 }

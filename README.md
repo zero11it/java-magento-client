@@ -16,7 +16,7 @@ and the following repository:
 ```xml
 <repository>
     <id>java-magento-client-mvn-repo</id>
-    <url>https://raw.github.com/a-trucco-zero11/java-magento-client/reposirory/</url>
+    <url>https://raw.github.com/a-trucco-zero11/java-magento-client/repository/</url>
     <snapshots>
         <enabled>true</enabled>
         <updatePolicy>always</updatePolicy>

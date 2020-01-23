@@ -93,4 +93,25 @@ public class MagentoTest {
 		assertNotNull(client.order().searchItems(0, 100));
 		assertNotNull(client.order().searchItems("Name", "test", ConditionTypes.EQ));
 	}
+	
+	@Test
+	public void testOAuth() {
+		MagentoClient client = new MagentoClient("https://bsmagento2.web07.zero11.net/");
+		
+		client.setOAuth(
+				"7dqcbluq2i4oq4ompesiyjd9a4eog6ms",
+				"uc38k78qnghjupv0vietqf52ueb25wo0",
+				"2yi0gc2xlm9wo6tpy8amx79hy032aj8h",
+				"adff0m430etk83cvbup7iijr7viu7wa0"
+		);
+		assertNotNull(client.oAuth());
+		
+		client.setOAuth(
+				"7dqcbluq2i4oq4ompesiyjd9a4eog6ms",
+				"uc38k78qnghjupv0vietqf52ueb25wo1",
+				"2yi0gc2xlm9wo6tpy8amx79hy032aj8h",
+				"adff0m430etk83cvbup7iijr7viu7wa0"
+		);
+		assertNull(client.oAuth());
+	}
 }

@@ -5,12 +5,14 @@ import com.alibaba.fastjson.TypeReference;
 import com.github.chen0040.magento.interfaces.HttpComponent;
 import com.github.chen0040.magento.models.*;
 import com.github.chen0040.magento.services.*;
-import com.github.chen0040.magento.utils.HttpClient;
 import com.github.chen0040.magento.utils.StringUtils;
-
+import com.mgiorda.oauth.OAuthConfig;
+import com.mgiorda.oauth.OAuthConfigBuilder;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+
+import org.apache.commons.validator.routines.UrlValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,11 +33,12 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 	private static final Logger logger = LoggerFactory.getLogger(MagentoClient.class);
 
 	private String token = null;
-
 	private String baseUri = "";
 
-	private boolean admin = false;
+	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
+	private OAuthConfig oauth = null;
 
+	private boolean admin = false;
 	private boolean authenticated = false;
 
 	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
@@ -59,12 +62,8 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 
 	public MagentoClient(String baseUri, HttpComponent httpComponent) {
 		super(httpComponent);
-
-		if (baseUri.endsWith("/")) {
-			baseUri = baseUri.substring(0, baseUri.length()-1);
-		}
 		
-		this.baseUri = baseUri;
+		setBaseUri(baseUri);
 		this.products = new MagentoProductManager(this);
 		this.categories = new MagentoCategoryManager(this);
 		this.inventory = new MagentoInventoryStockManager(this);
@@ -79,6 +78,22 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 	public MagentoClient(String baseUri) {
 		this(baseUri, new BasicHttpComponent());
 	}
+	
+	public void setBaseUri(String baseUri) {
+		String[] schemes = {"https"};
+		UrlValidator validator = new UrlValidator(schemes);
+		
+		if (!validator.isValid(baseUri)) {
+			logger.error("URL " + baseUri + " is invalid, setting to https://invalid.url (NOTE: URL *must* include 'https://')");
+			baseUri = "https://invalid.url";
+		}
+
+		if (baseUri.endsWith("/")) {
+			baseUri = baseUri.substring(0, baseUri.length()-1);
+		}
+		
+		this.baseUri = baseUri;
+	} 
 
 	public Account getMyAccount() {
 		if (admin) {
@@ -89,7 +104,7 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 		String uri = this.baseUri + "/rest/V1/customers/me";
 		String json = getSecure(uri);
 
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return null;
 		}
 
@@ -130,7 +145,6 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 	}
 
 	public void logout() {
-		// String uri = baseUri + "/rest/V1/integration/customer/revoke";
 		authenticated = false;
 		token = null;
 	}
@@ -147,12 +161,34 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 		
 		if (token.contains("You did not sign in correctly or your account is temporarily disabled")
 				|| token.contains("Invalid login or password")) {
-			this.token = "";
+			this.token = null;
 			return token;
 		}
 		authenticated = true;
 		
 		return token;
+	}
+	
+	public boolean setOAuth(String consumerKey, String consumerSecret, String accessToken, String accessSecret) {
+		String testQuery = "/rest/V1/products/types";
+		
+		oauth = new OAuthConfigBuilder(consumerKey, consumerSecret)
+				.setTokenKeys(accessToken, accessSecret)
+				.build();
+		
+		if (!validateJSON(getSecure(baseUri + testQuery))) {
+			oauth = null;
+			logger.error("OAuth validation FAILED, check that your tokens are correct.");
+		}
+		else {
+			logger.info("OAuth validation was a SUCCESS, OAuth config object is {}", oauth);
+		}
+		
+		return oauth != null;
+	}
+	
+	public void disableOAuth() {
+		oauth = null;
 	}
 
 	public MagentoCategoryManager categories() {
@@ -199,5 +235,15 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 	@Override
 	public String baseUri() {
 		return this.baseUri;
+	}
+
+	@Override
+	public boolean oauthEnabled() {
+		return (oAuth() != null);
+	}
+
+	@Override
+	public OAuthConfig oAuth() {
+		return oauth;
 	}
 }

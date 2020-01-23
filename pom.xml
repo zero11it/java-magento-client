@@ -471,9 +471,6 @@
 
         <!-- Utilities -->
 
-
-
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -493,6 +490,13 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.24</version>
         </dependency>
+        
+        <!-- https://mvnrepository.com/artifact/commons-validator/commons-validator -->
+		<dependency>
+		    <groupId>commons-validator</groupId>
+		    <artifactId>commons-validator</artifactId>
+		    <version>1.6</version>
+		</dependency>
 
     </dependencies>
 </project>

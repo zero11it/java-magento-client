@@ -10,6 +10,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.chen0040.magento.MagentoClient;
 import com.github.chen0040.magento.models.category.Category;
 import com.github.chen0040.magento.models.category.CategoryProduct;
+import com.mgiorda.oauth.OAuthConfig;
 
 /**
  * Created by xschen on 12/6/2017.
@@ -27,7 +28,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		String url = baseUri() + "/" + relativePath4Categories + "/" + categoryId;
 		String json = deleteSecure(url);
 		
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return false;
 		}
 		
@@ -57,7 +58,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		String body = JSON.toJSONString(req, SerializerFeature.BrowserCompatible);
 		String json = postSecure(url, body);
 
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return -1;
 		}
 		
@@ -87,7 +88,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		String body = JSON.toJSONString(req, SerializerFeature.BrowserCompatible);
 		String json = postSecure(url, body);
 
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return false;
 		}
 		return json.equalsIgnoreCase("true");
@@ -97,7 +98,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		String uri = baseUri() + "/" + relativePath4Categories;
 		String json = getSecure(uri);
 		
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return null;
 		}
 
@@ -119,7 +120,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 	private Category getCategoryByUrl(String uri) {
 		String json = getSecure(uri);
 		
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return null;
 		}
 		
@@ -151,7 +152,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		String uri = baseUri() + "/" + relativePath4Categories + "/" + id + "/products";
 		String json = getSecure(uri);
 
-		if (!validate(json)) {
+		if (!validateJSON(json)) {
 			return null;
 		}
 
@@ -190,5 +191,15 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		String json = deleteSecure(uri);
 		
 		return json.equals("true");
+	}
+
+	@Override
+	public boolean oauthEnabled() {
+		return client.oauthEnabled();
+	}
+
+	@Override
+	public OAuthConfig oAuth() {
+		return client.oAuth();
 	}
 }
