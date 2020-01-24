@@ -30,6 +30,7 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 	private static final long serialVersionUID = 3001998767951271632L;
 	private static final String relativePath4LoginAsClient = "rest/V1/integration/customer/token";
 	private static final String relativePath4LoginAsAdmin = "rest/V1/integration/admin/token";
+	private static final String invalidUrlPlaceholder = "https://invalid.url";
 
 	private static final Logger logger = LoggerFactory.getLogger(MagentoClient.class);
 
@@ -85,7 +86,7 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 		UrlValidator validator = new UrlValidator(schemes);
 		
 		if (!validator.isValid(baseUri)) {
-			logger.error("URL " + baseUri + " is invalid, setting to https://invalid.url (NOTE: URL *must* include 'https://')");
+			logger.error("URL " + baseUri + " is invalid, setting to " + invalidUrlPlaceholder + " (NOTE: URL *must* include 'https://')");
 			baseUri = "https://invalid.url";
 		}
 
@@ -127,17 +128,32 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 
 	public String loginAsClient(String username, String password) {
 		String uri = baseUri + "/" + relativePath4LoginAsClient;
+		String token = login(username, password, uri);
+		
+		return token;
+	}
+
+	public String loginAsAdmin(String username, String password) {
+		String uri = baseUri + "/" + relativePath4LoginAsAdmin;
+		String token = login(username, password, uri);
+		
+		if (token != null) {
+			admin = true;
+		}
+		return token;
+	}
+	
+	private String login(String username, String password, String uri) {
 		Map<String, String> data = new HashMap<>();
 		
 		data.put("username", username);
 		data.put("password", password);
-		this.token = StringUtils.stripQuotation(httpComponent.jsonPost(uri, data));
+		token = StringUtils.stripQuotation(httpComponent.jsonPost(uri, data));
 		
-		logger.info("loginAsClient returns: {}", token);
-
-		if (token.contains("You did not sign in correctly or your account is temporarily disabled")
-				|| token.contains("Invalid login or password")) {
-			this.token = "";
+		logger.info("login returns: {}", token);
+		
+		if (!StringUtils.isAlphanumeric(token)) {
+			this.token = null;
 			return token;
 		}
 		authenticated = true;
@@ -148,26 +164,6 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 	public void logout() {
 		authenticated = false;
 		token = null;
-	}
-
-	public String loginAsAdmin(String username, String password) {
-		String uri = baseUri + "/" + relativePath4LoginAsAdmin;
-		Map<String, String> data = new HashMap<>();
-		
-		data.put("username", username);
-		data.put("password", password);
-		token = StringUtils.stripQuotation(httpComponent.jsonPost(uri, data));
-		
-		logger.info("loginAsAdmin returns: {}", token);
-		
-		if (token.contains("You did not sign in correctly or your account is temporarily disabled")
-				|| token.contains("Invalid login or password")) {
-			this.token = null;
-			return token;
-		}
-		authenticated = true;
-		
-		return token;
 	}
 	
 	public boolean setOAuth(String consumerKey, String consumerSecret, String accessToken, String accessSecret) {

@@ -18,6 +18,21 @@ import com.github.chen0040.magento.models.store.Website;
 public class MagentoTest {
 
 	@Test
+	public void testLogin() {
+		MagentoClient client = new MagentoClient("https://bsmagento2.web07.zero11.net");
+		String token = client.loginAsAdmin("a.trucco", "zero11zero11");
+		
+		assertNotNull(token);
+		
+		token = client.loginAsAdmin("a", "z");
+		assertNull(token);
+
+		client = new MagentoClient("a");
+		token = client.loginAsAdmin("a.trucco", "zero11zero11");
+		assertNull(token);
+	}
+	
+	@Test
 	public void testProduct() {
 		MagentoClient client = new MagentoClient("https://bsmagento2.web07.zero11.net");
 		client.loginAsAdmin("a.trucco", "zero11zero11");

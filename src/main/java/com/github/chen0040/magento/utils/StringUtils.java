@@ -28,4 +28,13 @@ public class StringUtils {
 
 		return sb.toString();
 	}
+	
+	public static boolean isAlphanumeric(String text) {
+		for (char ch : text.toCharArray()) {
+			if (!Character.isLetterOrDigit(ch)) {
+				return false;
+			}
+		}
+		return true;
+	}
 }
