@@ -85,8 +85,15 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 		String[] schemes = {"https"};
 		UrlValidator validator = new UrlValidator(schemes);
 		
+		if (baseUri.startsWith("http://")) {
+			baseUri = baseUri.replace("http", "https");
+		}
+		else if (!baseUri.startsWith("https://")) {
+			baseUri = "https://" + baseUri;
+		}
+		
 		if (!validator.isValid(baseUri)) {
-			logger.error("URL " + baseUri + " is invalid, setting to " + invalidUrlPlaceholder + " (NOTE: URL *must* include 'https://')");
+			logger.error("URL " + baseUri + " is invalid, setting to " + invalidUrlPlaceholder);
 			baseUri = "https://invalid.url";
 		}
 
@@ -128,18 +135,21 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 
 	public String loginAsClient(String username, String password) {
 		String uri = baseUri + "/" + relativePath4LoginAsClient;
-		String token = login(username, password, uri);
+		
+		login(username, password, uri);
 		
 		return token;
 	}
 
 	public String loginAsAdmin(String username, String password) {
 		String uri = baseUri + "/" + relativePath4LoginAsAdmin;
-		String token = login(username, password, uri);
+		
+		login(username, password, uri);
 		
 		if (token != null) {
 			admin = true;
 		}
+		
 		return token;
 	}
 	
@@ -153,7 +163,7 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 		logger.info("login returns: {}", token);
 		
 		if (!StringUtils.isAlphanumeric(token)) {
-			this.token = null;
+			token = null;
 			return token;
 		}
 		authenticated = true;

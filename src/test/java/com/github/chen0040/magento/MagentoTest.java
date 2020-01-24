@@ -30,6 +30,14 @@ public class MagentoTest {
 		client = new MagentoClient("a");
 		token = client.loginAsAdmin("a.trucco", "zero11zero11");
 		assertNull(token);
+		
+		client = new MagentoClient("http://bsmagento2.web07.zero11.net");
+		token = client.loginAsAdmin("a.trucco", "zero11zero11");
+		assertNotNull(token);
+		
+		client = new MagentoClient("bsmagento2.web07.zero11.net");
+		token = client.loginAsAdmin("a.trucco", "zero11zero11");
+		assertNotNull(token);
 	}
 	
 	@Test
