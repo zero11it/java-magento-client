@@ -13,7 +13,7 @@ import com.github.chen0040.magento.MagentoClient;
 import com.github.chen0040.magento.models.shipment.Shipment;
 import com.github.chen0040.magento.models.shipment.ShipmentComment;
 import com.github.chen0040.magento.models.shipment.ShipmentTrack;
-import com.mgiorda.oauth.OAuthConfig;
+import com.github.mgiorda.oauth.OAuthConfig;
 
 public class MagentoShipmentManager extends MagentoHttpComponent {
 

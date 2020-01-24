@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.chen0040.magento.MagentoClient;
 import com.github.chen0040.magento.models.StockItems;
-import com.mgiorda.oauth.OAuthConfig;
+import com.github.mgiorda.oauth.OAuthConfig;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

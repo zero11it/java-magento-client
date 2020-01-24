@@ -493,10 +493,16 @@
         
         <!-- https://mvnrepository.com/artifact/commons-validator/commons-validator -->
 		<dependency>
-		    <groupId>commons-validator</groupId>
-		    <artifactId>commons-validator</artifactId>
-		    <version>1.6</version>
+			<groupId>commons-validator</groupId>
+			<artifactId>commons-validator</artifactId>
+			<version>1.6</version>
 		</dependency>
 
-    </dependencies>
+		<dependency>
+			<groupId>it.zero11</groupId>
+			<artifactId>oauth1-signature-builder</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+	</dependencies>
 </project>

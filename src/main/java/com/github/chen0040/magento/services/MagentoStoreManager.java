@@ -11,7 +11,7 @@ import com.github.chen0040.magento.models.store.StoreConfig;
 import com.github.chen0040.magento.models.store.StoreGroup;
 import com.github.chen0040.magento.models.store.StoreView;
 import com.github.chen0040.magento.models.store.Website;
-import com.mgiorda.oauth.OAuthConfig;
+import com.github.mgiorda.oauth.OAuthConfig;
 
 public class MagentoStoreManager extends MagentoHttpComponent {
 	

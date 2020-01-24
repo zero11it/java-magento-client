@@ -18,7 +18,7 @@ import com.github.chen0040.magento.models.order.OrderRefund;
 import com.github.chen0040.magento.models.order.SalesDataShipment;
 import com.github.chen0040.magento.models.order.StatusHistory;
 import com.github.chen0040.magento.utils.RESTUtils;
-import com.mgiorda.oauth.OAuthConfig;
+import com.github.mgiorda.oauth.OAuthConfig;
 
 public class MagentoOrderManager extends MagentoHttpComponent {
 

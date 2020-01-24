@@ -7,7 +7,7 @@ import com.github.chen0040.magento.enums.ImageType;
 import com.github.chen0040.magento.enums.ImageTypes;
 import com.github.chen0040.magento.models.product.ProductMedia;
 import com.github.chen0040.magento.utils.StringUtils;
-import com.mgiorda.oauth.OAuthConfig;
+import com.github.mgiorda.oauth.OAuthConfig;
 
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;

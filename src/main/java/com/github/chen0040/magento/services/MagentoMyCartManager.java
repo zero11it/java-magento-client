@@ -8,7 +8,7 @@ import com.github.chen0040.magento.models.cart.Cart;
 import com.github.chen0040.magento.models.cart.CartItem;
 import com.github.chen0040.magento.models.cart.CartTotal;
 import com.github.chen0040.magento.utils.StringUtils;
-import com.mgiorda.oauth.OAuthConfig;
+import com.github.mgiorda.oauth.OAuthConfig;
 
 import java.util.HashMap;
 import java.util.Map;

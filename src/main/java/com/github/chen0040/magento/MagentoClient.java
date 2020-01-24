@@ -6,8 +6,9 @@ import com.github.chen0040.magento.interfaces.HttpComponent;
 import com.github.chen0040.magento.models.*;
 import com.github.chen0040.magento.services.*;
 import com.github.chen0040.magento.utils.StringUtils;
-import com.mgiorda.oauth.OAuthConfig;
-import com.mgiorda.oauth.OAuthConfigBuilder;
+import com.github.mgiorda.oauth.OAuthConfig;
+import com.github.mgiorda.oauth.OAuthConfigBuilder;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;

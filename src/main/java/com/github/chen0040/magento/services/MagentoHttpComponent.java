@@ -5,9 +5,10 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.TypeReference;
 import com.github.chen0040.magento.interfaces.HttpComponent;
 import com.github.chen0040.magento.utils.StringUtils;
-import com.mgiorda.oauth.HttpMethod;
-import com.mgiorda.oauth.OAuthConfig;
-import com.mgiorda.oauth.OAuthSignature;
+import com.github.mgiorda.oauth.HttpMethod;
+import com.github.mgiorda.oauth.OAuthConfig;
+import com.github.mgiorda.oauth.OAuthSignature;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -8,7 +8,7 @@ import com.github.chen0040.magento.models.product.Product;
 import com.github.chen0040.magento.models.product.ProductAttributePage;
 import com.github.chen0040.magento.models.product.ProductPage;
 import com.github.chen0040.magento.utils.StringUtils;
-import com.mgiorda.oauth.OAuthConfig;
+import com.github.mgiorda.oauth.OAuthConfig;
 
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
