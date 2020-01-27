@@ -176,7 +176,7 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 		token = null;
 	}
 	
-	public boolean setOAuth(String consumerKey, String consumerSecret, String accessToken, String accessSecret) {
+	public OAuthConfig setOAuth(String consumerKey, String consumerSecret, String accessToken, String accessSecret) {
 		String testQuery = "/rest/V1/products/types";
 		
 		oauth = new OAuthConfigBuilder(consumerKey, consumerSecret)
@@ -191,7 +191,29 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 			logger.info("OAuth validation was a SUCCESS, OAuth config object is {}", oauth);
 		}
 		
-		return oauth != null;
+		return oauth;
+	}
+	
+	// FIXME : Magento 2 OAuth token request is currently bugged, test if/when it won't be
+	public OAuthConfig setOAuth(String consumerKey, String consumerSecret) {
+		String tokenRequest = "/oauth/token/request";
+		
+		oauth = new OAuthConfigBuilder(consumerKey, consumerSecret)
+				.setTokenKeys("", "")
+				.build();
+		
+		String resp = postSecure(baseUri + tokenRequest, "");
+		
+		if (!resp.contains("oauth_token")) {
+			oauth = null;
+			return null;
+		}
+		
+		String[] tokens = resp.split("&");
+		String accessToken = tokens[0].replace("oauth_token=", "");
+		String accessSecret = tokens[1].replace("oauth_token_secret=", "");
+		
+		return setOAuth(consumerKey, consumerSecret, accessToken, accessSecret);
 	}
 	
 	public void disableOAuth() {
