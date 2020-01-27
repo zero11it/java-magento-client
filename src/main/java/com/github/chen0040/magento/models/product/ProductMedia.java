@@ -12,11 +12,11 @@ import java.util.List;
 @Getter
 @Setter
 public class ProductMedia {
-	private long id = 1;
-	private String media_type = "image";
-	private String label = "Image";
-	private int position = 1;
-	private boolean disabled = false;
-	private List<String> types = new ArrayList<>();
-	private String file = "new_image.png";
+	private long id;
+	private String media_type;
+	private String label;
+	private int position;
+	private boolean disabled;
+	private List<String> types;
+	private String file;
 }

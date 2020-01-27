@@ -9,8 +9,8 @@ import lombok.Setter;
 @Setter
 @Getter
 public class MagentoAttribute {
-	private String attribute_code = "description";
-	private Object value = "Full simple product Description 1";
+	private String attribute_code;
+	private Object value;
 
 	public MagentoAttribute() {
 

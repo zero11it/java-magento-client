@@ -1,4 +1,4 @@
-package com.github.chen0040.magento.models;
+package com.github.chen0040.magento.models.product;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,8 +8,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class FilterGroup {
-	private String name;
+public class ProductAttributeType {
 	private String value;
-	private String condition_type;
+	private String label;
 }

@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AttributeValueDeserializer implements ObjectDeserializer {
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T deserialze(DefaultJSONParser parser, Type type, Object o) {
 		Object obj = parser.parse();

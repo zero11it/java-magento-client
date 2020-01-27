@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import com.github.chen0040.magento.enums.ConditionTypes;
 import com.github.chen0040.magento.models.product.Product;
+import com.github.chen0040.magento.models.search.SearchCriteria;
 import com.github.chen0040.magento.models.shipment.Shipment;
 import com.github.chen0040.magento.models.store.StoreConfig;
 import com.github.chen0040.magento.models.store.StoreGroup;
@@ -56,6 +57,8 @@ public class MagentoTest {
 		
 		client.products().deleteProduct("new-test");
 		assertNull(client.products().getProductBySku("new-test"));
+		
+		assertNotNull(client.products().searchProduct(new SearchCriteria().setPage(0, null)));
 	}
 	
 	@Test

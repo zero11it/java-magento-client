@@ -6,7 +6,7 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.github.chen0040.magento.models.SearchCriteria;
+import com.github.chen0040.magento.models.search.SearchCriteria;
 
 /**
  * Created by xschen on 12/6/2017.

@@ -3,23 +3,25 @@ package com.github.chen0040.magento.services;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.chen0040.magento.MagentoClient;
-import com.github.chen0040.magento.models.*;
 import com.github.chen0040.magento.models.product.Product;
-import com.github.chen0040.magento.models.product.ProductAttributePage;
-import com.github.chen0040.magento.models.product.ProductPage;
-import com.github.chen0040.magento.utils.StringUtils;
+import com.github.chen0040.magento.models.product.ProductAttribute;
+import com.github.chen0040.magento.models.product.ProductAttributeGroup;
+import com.github.chen0040.magento.models.product.ProductAttributeOption;
+import com.github.chen0040.magento.models.product.ProductAttributeSet;
+import com.github.chen0040.magento.models.product.ProductAttributeType;
+import com.github.chen0040.magento.models.product.ProductType;
+import com.github.chen0040.magento.models.search.SearchCriteria;
+import com.github.chen0040.magento.utils.RESTUtils;
 import com.github.mgiorda.oauth.OAuthConfig;
 
-import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * Created by xschen on 12/6/2017.
@@ -28,7 +30,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 
 	private static final Logger logger = LoggerFactory.getLogger(MagentoProductManager.class);
 	private MagentoClient client;
-	private static final String relativePath4Products = "rest/V1/products";
+	private static final String relativePath4Products = "/rest/V1/products";
 
 	public MagentoProductManager(MagentoClient client) {
 		super(client.getHttpComponent());
@@ -45,115 +47,287 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return client.baseUri();
 	}
 
-	public ProductPage page(int pageIndex, int pageSize) {
-		String uri = baseUri() + "/" + relativePath4Products
-				+ "?searchCriteria[currentPage]=" + pageIndex
-				+ "&searchCriteria[pageSize]=" + pageSize;
+	public List<Product> searchProduct(SearchCriteria searchCriteria) {
+		String uri = baseUri() + relativePath4Products + "?" + searchCriteria;
 		String json = getSecure(uri);
-
+		
 		if (!validateJSON(json)) {
 			return null;
 		}
-
-		return JSON.parseObject(json, ProductPage.class);
-	}
-
-	public String page(String field, String value, String condition_type) {
-		String uri = baseUri() + "/" + relativePath4Products
-				+ "?searchCriteria[filter_groups][0][filters][0][field]=" + field
-				+ "&searchCriteria[filter_groups][0][filters][0][value]=" + value
-				+ "&searchCriteria[filter_groups][0][filters][0][condition_type]=" + condition_type;
-
-		return getSecure(uri);
+		
+		return RESTUtils.getArrayByKey(json, "items", Product.class);
 	}
 
 	public Product getProductBySku(String sku) {
-		String uri = baseUri() + "/" + relativePath4Products + "/" + escape(sku);
+		String uri = baseUri() + relativePath4Products + "/" + escape(sku);
 		String json = getSecure(uri);
 
 		if (!validateJSON(json)) {
 			return null;
 		}
-
-		System.out.println("output: " + json);
 
 		return JSON.parseObject(json, Product.class);
 	}
 
-	public List<MagentoAttributeType> getProductAttributeTypes() {
-		String uri = baseUri() + "/rest/V1/products/attributes/types";
+	public List<ProductAttribute> getProductAttributes() {
+		String uri = baseUri() + relativePath4Products + "/attributes?searchCriteria[currentPage]=0";
+		String json = getSecure(uri);
+
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+
+		return RESTUtils.getArrayByKey(json, "items", ProductAttribute.class);
+	}
+	
+	public ProductAttribute getProductAttributeByCode(String attributeCode) {
+		String uri = baseUri() + relativePath4Products + "/attributes/" + attributeCode;
 		String json = getSecure(uri);
 
 		if (!validateJSON(json)) {
 			return null;
 		}
 
-		return JSON.parseArray(json, MagentoAttributeType.class);
+		return JSON.parseObject(json, ProductAttribute.class);
+	}
+	
+	public List<ProductAttribute> getProductAttributesInSet(long attributeSetId) {
+		String uri = baseUri() + relativePath4Products + "/attribute-sets/" + attributeSetId + "/attributes";
+		String json = getSecure(uri);
+
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+
+		return RESTUtils.getArrayByKey(json, "items", ProductAttribute.class);
+	}
+	
+	public List<ProductAttributeOption> getProductAttributeOptions(String attributeCode) {
+		String uri = baseUri() + relativePath4Products + "/attributes/" + attributeCode + "/options";
+		String json = getSecure(uri);
+
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+		return JSON.parseArray(json, ProductAttributeOption.class);
 	}
 
-	public ProductAttributePage getProductAttributes(int pageIndex, int pageSize) {
-		String uri = baseUri() + "/rest/V1/products/attributes"
-				+ "?searchCriteria[currentPage]=" + pageIndex
-				+ "&searchCriteria[pageSize]=" + pageSize;
+	public List<ProductAttributeType> getProductAttributeTypes() {
+		String uri = baseUri() + relativePath4Products + "/attributes/types";
 		String json = getSecure(uri);
 
 		if (!validateJSON(json)) {
 			return null;
 		}
 
-		return JSON.parseObject(json, ProductAttributePage.class);
+		return JSON.parseArray(json, ProductAttributeType.class);
 	}
-
-	public List<MagentoType> getProductTypes() {
-		String uri = baseUri() + "/rest/V1/products/types";
+	
+	public List<ProductAttributeGroup> getProductAttributeGroups() {
+		String uri = baseUri() + relativePath4Products + "/attribute-sets/groups/list";
 		String json = getSecure(uri);
 
-		return JSON.parseArray(json, MagentoType.class);
+		if (!validateJSON(json)) {
+			return null;
+		}
+
+		return RESTUtils.getArrayByKey(json, "items", ProductAttributeGroup.class);
 	}
 
-	public List<MagentoType> getProductTypes(int page, int pageSize) {
-		String uri = baseUri() + "/rest/V1/products/types"
-				+ "?searchCriteria[currentPage]=" + page
-				+ "&searchCriteria[pageSize]=" + pageSize;
+	public List<ProductAttributeSet> getProductAttributeSets() {
+		String uri = baseUri() + relativePath4Products + "/attributes/types";
 		String json = getSecure(uri);
 
-		return JSON.parseArray(json, MagentoType.class);
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+		return RESTUtils.getArrayByKey(json, "items", ProductAttributeSet.class);
 	}
 
+	public List<ProductType> getProductTypes() {
+		String uri = baseUri() + relativePath4Products + "/types";
+		String json = getSecure(uri);
+
+		return JSON.parseArray(json, ProductType.class);
+	}
+	
+	public List<ProductPrice> getProductPrices(List<String> skus) {
+		String uri = baseUri() + relativePath4Products + "/base-prices-information";
+		String json = postSecure(uri, RESTUtils.payloadWrapper("skus", skus));
+		
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+		return JSON.parseArray(json, ProductPrice.class);
+	}
+	
+	public List<ProductCost> getProductCosts(List<String> skus) {
+		String uri = baseUri() + relativePath4Products + "/cost-information";
+		String json = postSecure(uri, RESTUtils.payloadWrapper("skus", skus));
+		
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+		return JSON.parseArray(json, ProductCost.class);
+	}
+
+	public boolean hasProductAttributeSet(long attributeSetId) {
+		List<ProductAttributeSet> attributeSets = getProductAttributeSets();
+		
+		return attributeSets.stream()
+				.filter(set -> set.getAttribute_set_id() == attributeSetId)
+				.collect(Collectors.toList())
+				.size() > 0;
+	}
+	
+	public boolean hasProductAttributeGroup(String attributeGroupId) {
+		List<ProductAttributeGroup> attributeGroups = getProductAttributeGroups();
+		
+		return attributeGroups.stream()
+				.filter(set -> set.getAttribute_group_id().equals(attributeGroupId))
+				.collect(Collectors.toList())
+				.size() > 0;
+	}
+	
 	public boolean hasProduct(String sku) {
 		return getProductBySku(sku) != null;
 	}
 	
+	public ProductAttributeSet saveProductAttributeSet(ProductAttributeSet attributeSet) {
+		String uri = baseUri() + relativePath4Products + "/attribute-sets";
+		String body = "{"
+				+ "\"attributeSet\" : " + JSON.toJSONString(attributeSet) + ","
+				+ "\"skeletonId\" : " + new Random().nextInt()
+				+ "}";
+		
+		logger.info("Posting: {}", body);
+		
+		String json;
+		
+		if (hasProductAttributeSet(attributeSet.getAttribute_set_id())) {
+			json = putSecure(uri, body);
+		}
+		else {
+			json = postSecure(uri, body);
+		}
+		
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+		return JSON.parseObject(json, ProductAttributeSet.class);
+	}
+	
+	public ProductAttributeGroup saveProductAttributeGroup(ProductAttributeGroup attributeGroup) {
+		String uri = baseUri() + relativePath4Products + "/attribute-sets/groups";
+		String body = "{"
+				+ "\"group\" : " + JSON.toJSONString(attributeGroup)
+				+ "}";
+		
+		logger.info("Posting: {}", body);
+		
+		String json = postSecure(uri, body);
+		
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+		return JSON.parseObject(json, ProductAttributeGroup.class);
+	}
+	
+	public ProductAttributeGroup saveProductAttributeGroup(ProductAttributeGroup attributeGroup, long attributeSetId) {
+		String uri = baseUri() + relativePath4Products + "/attribute-sets/" + attributeSetId + "/groups";
+		String body = "{"
+				+ "\"group\" : " + JSON.toJSONString(attributeGroup)
+				+ "}";
+		
+		logger.info("Posting: {}", body);
+		
+		String json = putSecure(uri, body);
+		
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+		return JSON.parseObject(json, ProductAttributeGroup.class);
+	}
+	
+	public Long saveAttribute(long attributeSetId, long attributeGroupId, String attributeCode) {
+		String uri = baseUri() + relativePath4Products + "/attribute-sets/attributes";
+		Map<String, String> req = new HashMap<>();
+		
+		req.put("attributeSetId", new Long(attributeSetId).toString());
+		req.put("attributeGroupId", new Long(attributeGroupId).toString());
+		req.put("attributeCode", attributeCode);
+		req.put("sortOrder", "0");
+		
+		String body = JSON.toJSONString(req);
+
+		logger.info("Posting: {}", body);
+		
+		String json = postSecure(uri, body);
+		Long resp;
+		
+		try {
+			resp = JSON.parseObject(json, Long.class);
+		}
+		catch (NumberFormatException exception) {
+			resp = null;
+		}
+		
+		return resp;
+	}
+	
+	public ProductAttribute saveAttribute(ProductAttribute attribute, String attributeCode) {
+		String uri = baseUri() + relativePath4Products + "/attribute-sets/attributes/" + attributeCode;
+		String body = RESTUtils.payloadWrapper("attribute", attribute);
+		
+		logger.info("Posting: {}", body);
+		
+		String json = putSecure(uri, body);
+		
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+		return JSON.parseObject(json, ProductAttribute.class);
+	}
+	
+	public ProductAttribute saveAttributeOption(ProductAttributeOption option, String attributeCode) {
+		String uri = baseUri() + relativePath4Products + "/attribute-sets/attributes/" + attributeCode + "/options";
+		String body = RESTUtils.payloadWrapper("option", option);
+		
+		logger.info("Posting: {}", body);
+		
+		String json = putSecure(uri, body);
+		
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+		return JSON.parseObject(json, ProductAttribute.class);
+	}
+	
 	public Product saveProduct(Product product) {
 		String sku = product.getSku();
-		String url = baseUri() + "/" + relativePath4Products;
-
-		Map<String, Object> detail = new HashMap<>();
-
-/*		detail.put("sku", product.getSku());
-		detail.put("name", product.getName());
-		detail.put("price", product.getPrice());
-		detail.put("status", product.getStatus());
-		detail.put("type_id", product.getType_id());
-		detail.put("attribute_set_id", product.getAttribute_set_id());
-		detail.put("weight", product.getWeight());
-		detail.put("visibility", product.getVisibility());
-		detail.put("status", product.getStatus());
-		
-		Map<String, Object> req = new HashMap<>();
-		req.put("product", detail);
-
-		String body = JSON.toJSONString(req, SerializerFeature.PrettyFormat);*/
+		String uri = baseUri() + relativePath4Products;
 		String body = "{\n\"product\" : " + JSON.toJSONString(product, SerializerFeature.PrettyFormat) + "\n}";
 		
 		logger.info("posting:\r\n{}", body);
 		
 		String json;
+		
 		if (hasProduct(sku)) {
-			url = url + "/" + escape(sku);
-			json = putSecure(url, body);
+			uri = uri + "/" + escape(sku);
+			json = putSecure(uri, body);
 		} else {
-			json = postSecure(url, body);
+			json = postSecure(uri, body);
 		}
 
 		logger.info("returned: {}", json);
@@ -164,11 +338,86 @@ public class MagentoProductManager extends MagentoHttpComponent {
 
 		return JSON.parseObject(json, Product.class);
 	}
+	
+	public List<PriceUpdateResult> updateProductPrices(List<ProductPrice> prices) {
+		String uri = baseUri() + relativePath4Products + "/base-prices";
+		String body = RESTUtils.payloadWrapper("prices", prices);
+		
+		String json = postSecure(uri, body);
+		
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+		return JSON.parseArray(json, PriceUpdateResult.class);
+	}
+	
+	public List<PriceUpdateResult> updateProductCosts(List<ProductCost> costs) {
+		String uri = baseUri() + relativePath4Products + "/base-prices";
+		String body = RESTUtils.payloadWrapper("prices", costs);
+		
+		String json = postSecure(uri, body);
+		
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+		return JSON.parseArray(json, PriceUpdateResult.class);
+	}
+	
+	public Boolean deleteProductAttributeGroup(long groupId) {
+		String uri = baseUri() + relativePath4Products + "/attribute-sets/groups/" + groupId;
+		
+		String json = deleteSecure(uri);
+		
+		return Boolean.parseBoolean(json);
+	}
+	
+	public Boolean deleteProductAttributeSet(long attributeSetId) {
+		String uri = baseUri() + relativePath4Products + "/attribute-sets/sets/" + attributeSetId;
+		
+		String json = deleteSecure(uri);
+		
+		return Boolean.parseBoolean(json);
+	}
+	
+	public Boolean deleteProductAttributeInSet(long attributeSetId, String attributeCode) {
+		String uri = baseUri() + relativePath4Products + "/attribute-sets/" + attributeSetId + "/attributes/" + attributeCode;
+		
+		String json = deleteSecure(uri);
+		
+		return Boolean.parseBoolean(json);
+	}
+	
+	public Boolean deleteProductAttribute(String attributeCode) {
+		String uri = baseUri() + relativePath4Products + "/attributes/" + attributeCode;
+		
+		String json = deleteSecure(uri);
+		
+		return Boolean.parseBoolean(json);
+	}
+	
+	public Boolean deleteProductAttributeOption(String attributeCode, String optionId) {
+		String uri = baseUri() + relativePath4Products + "/attributes/" + attributeCode + "/options/" + optionId;
+		
+		String json = deleteSecure(uri);
+		
+		return Boolean.parseBoolean(json);
+	}
+	
+	public Boolean deleteProductCosts(List<String> skus) {
+		String uri = baseUri() + relativePath4Products + "/cost-delete";
+		String body = RESTUtils.payloadWrapper("skus", skus);
+		
+		String json = postSecure(uri, body);
+		
+		return Boolean.parseBoolean(json);
+	}
 
 	public String deleteProduct(String sku) {
-		String url = baseUri() + "/" + relativePath4Products + "/" + escape(sku);
+		String uri = baseUri() + relativePath4Products + "/" + escape(sku);
 
-		return deleteSecure(url);
+		return deleteSecure(uri);
 	}
 
 	@Override

@@ -7,7 +7,7 @@ import java.util.List;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.github.chen0040.magento.models.MagentoAttribute;
 import com.github.chen0040.magento.models.TierPrices;
-import com.github.chen0040.magento.models.serialization.ProductAttributeValueDeserializer;
+import com.github.chen0040.magento.models.serialization.AttributeValueDeserializer;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -39,12 +39,12 @@ public class Product {
 	private String updated_at;
 	private double weight;
 
-	@JSONField(deserializeUsing = ProductAttributeValueDeserializer.class)
+	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
 	private List<MagentoAttribute> extension_attributes = new ArrayList<>();
 	private List<String> product_links = new ArrayList<>();
 	private List<TierPrices> tier_prices = new ArrayList<>();
 
-	@JSONField(deserializeUsing = ProductAttributeValueDeserializer.class)
+	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
 	private List<MagentoAttribute> custom_attributes = new ArrayList<>();
 
 }

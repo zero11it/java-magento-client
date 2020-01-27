@@ -1,4 +1,4 @@
-package com.github.chen0040.magento.models;
+package com.github.chen0040.magento.models.product;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +8,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class MagentoAttributeType {
-	private String value;
+public class ProductType {
+	private String name;
 	private String label;
 }
