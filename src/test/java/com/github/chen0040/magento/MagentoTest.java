@@ -59,6 +59,8 @@ public class MagentoTest {
 		assertNull(client.products().getProductBySku("new-test"));
 		
 		assertNotNull(client.products().searchProduct(new SearchCriteria().setPage(0, null)));
+		
+		assertNotNull(client.products().getProductAttributeSets());
 	}
 	
 	@Test

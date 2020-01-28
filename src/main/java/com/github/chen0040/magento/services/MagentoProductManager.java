@@ -148,7 +148,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 	}
 
 	public List<ProductAttributeSet> getProductAttributeSets() {
-		String uri = baseUri() + relativePath4Products + "/attributes/types";
+		String uri = baseUri() + relativePath4Products + "/attribute-sets/sets/list?searchCriteria[currentPage]=0";
 		String json = getSecure(uri);
 
 		if (!validateJSON(json)) {
