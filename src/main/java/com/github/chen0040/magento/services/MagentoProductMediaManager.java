@@ -6,6 +6,8 @@ import com.github.chen0040.magento.MagentoClient;
 import com.github.chen0040.magento.enums.ImageType;
 import com.github.chen0040.magento.enums.ImageTypes;
 import com.github.chen0040.magento.models.product.ProductMedia;
+import com.github.chen0040.magento.models.product.media.ProductImage;
+import com.github.chen0040.magento.utils.RESTUtils;
 import com.github.chen0040.magento.utils.StringUtils;
 import com.github.mgiorda.oauth.OAuthConfig;
 
@@ -39,6 +41,18 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 	@Override
 	public String baseUri() {
 		return client.baseUri();
+	}
+	
+	public Integer uploadImage(String sku, ProductImage image) {
+		String uri = baseUri() + "/rest/V1/products/" + sku + "/media";
+		String body = RESTUtils.payloadWrapper("entry", image);
+		String json = postSecure(uri, body);
+		
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+		return JSON.parseObject(json, Integer.class);
 	}
 
 	public long uploadProductImage(String sku, int position, String filename, byte[] imageBytes, String imageType,
@@ -136,7 +150,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 			}
 			bytes = baos.toByteArray();
 
-			long uploadedId = client.media().uploadProductImage(sku, position, filename, bytes, type, imageName);
+			long uploadedId = client.products().media().uploadProductImage(sku, position, filename, bytes, type, imageName);
 
 			logger.info("uploaded {} for product {}: {}", imageFilePath, sku, uploadedId);
 

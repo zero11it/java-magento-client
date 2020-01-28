@@ -50,8 +50,6 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
 	private MagentoInventoryStockManager inventory;
 	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
-	private MagentoProductMediaManager media;
-	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
 	private MagentoGuestCartManager guestCart;
 	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
 	private MagentoMyCartManager myCart;
@@ -69,7 +67,6 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 		this.products = new MagentoProductManager(this);
 		this.categories = new MagentoCategoryManager(this);
 		this.inventory = new MagentoInventoryStockManager(this);
-		this.media = new MagentoProductMediaManager(this);
 		this.guestCart = new MagentoGuestCartManager(this);
 		this.myCart = new MagentoMyCartManager(this);
 		this.store = new MagentoStoreManager(this);
@@ -230,10 +227,6 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 
 	public MagentoInventoryStockManager inventory() {
 		return inventory;
-	}
-
-	public MagentoProductMediaManager media() {
-		return media;
 	}
 
 	public MagentoGuestCartManager guestCart() {

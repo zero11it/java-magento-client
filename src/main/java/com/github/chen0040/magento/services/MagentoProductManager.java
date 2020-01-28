@@ -14,6 +14,9 @@ import com.github.chen0040.magento.models.search.SearchCriteria;
 import com.github.chen0040.magento.utils.RESTUtils;
 import com.github.mgiorda.oauth.OAuthConfig;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,10 +34,17 @@ public class MagentoProductManager extends MagentoHttpComponent {
 	private static final Logger logger = LoggerFactory.getLogger(MagentoProductManager.class);
 	private MagentoClient client;
 	private static final String relativePath4Products = "/rest/V1/products";
+	private MagentoProductMediaManager media;
 
 	public MagentoProductManager(MagentoClient client) {
 		super(client.getHttpComponent());
+		
 		this.client = client;
+		this.media = new MagentoProductMediaManager(client);
+	}
+	
+	public MagentoProductMediaManager media() {
+		return media;
 	}
 
 	@Override
