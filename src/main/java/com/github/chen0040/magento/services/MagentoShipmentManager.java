@@ -39,52 +39,44 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 	public boolean email(long id) {
 		String uri = baseUri() + "/" + relativePath4Shipments + "/" + id + "/emails";
 		
-		String json = postSecure(uri, "");
+		String json = postSecure(uri, "", logger);
 		
 		if (!validateJSON(json)) {
 			return false;
 		}
-		
-		logger.info("Got:\n{}", json);
 		
 		return JSON.parseObject(json, Boolean.class).booleanValue();
 	}
 	
 	public Shipment getShipment(long id) {
 		String uri = baseUri() + "/" + relativePath4Shipments + "/" + id;
-		String json = getSecure(uri);
+		String json = getSecure(uri, logger);
 		
 		if (!validateJSON(json)) {
 			return null;
 		}
-		
-		logger.info("Got:\n{}", json);
 		
 		return JSON.parseObject(json, Shipment.class);
 	}
 	
 	public List<ShipmentComment> getShipmentComments(long id) {
 		String uri = baseUri() + "/" + relativePath4Shipments + "/" + id + "/comments";
-		String json = getSecure(uri);
+		String json = getSecure(uri, logger);
 		
 		if (!validateJSON(json)) {
 			return null;
 		}
-		
-		logger.info("Got:\n{}", json);
 		
 		return JSON.parseArray(json, ShipmentComment.class);
 	}
 	
 	public String getLabel(long id) {
 		String uri = baseUri() + "/" + relativePath4Shipments + "/" + id + "/comments";
-		String json = getSecure(uri);
+		String json = getSecure(uri, logger);
 		
 		if (!validateJSON(json)) {
 			return null;
 		}
-		
-		logger.info("Got:\n{}", json);
 		
 		return json;
 	}
@@ -93,14 +85,12 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 		String uri = baseUri() + "/" + relativePath4Shipments + "s?"
 				+ "searchCriteria[currentPage]=" + currentPage + "&"
 				+ "searchCriteria[pageSize]=" + pageSize;
-		String json = getSecure(uri);
+		String json = getSecure(uri, logger);
 
 		if (!validateJSON(json)) {
 			return null;
 		}
 		json = json.replace("\"[",  "[").replace("]\"",  "]");
-		
-		logger.info("Got:\n{}", json);
 		
 		Map<String, String> resp = JSON.parseObject(json, new TypeReference<HashMap<String, String>>() {});
 		
@@ -111,14 +101,12 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 		String uri = baseUri() + "/" + relativePath4Shipments + "s?"
 				+ "searchCriteria[currentPage]=" + currentPage + "&"
 				+ "searchCriteria[pageSize]=" + pageSize;
-		String json = getSecure(uri);
+		String json = getSecure(uri, logger);
 
 		if (!validateJSON(json)) {
 			return null;
 		}
 		json = json.replace("\"[",  "[").replace("]\"",  "]");
-		
-		logger.info("Got:\n{}", json);
 		
 		Map<String, String> resp = JSON.parseObject(json, new TypeReference<HashMap<String, String>>() {});
 		
@@ -130,14 +118,12 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 				+ "searchCriteria[filterGroups][0][filters][0][field]=" + field + "&"
 				+ "searchCriteria[filterGroups][0][filters][0][value]=" + value + "&"
 				+ "searchCriteria[filterGroups][0][filters][0][condition_type]=" + condition_type;
-		String json = getSecure(uri);
+		String json = getSecure(uri, logger);
 
 		if (!validateJSON(json)) {
 			return null;
 		}
 		json = json.replace("\"[",  "[").replace("]\"",  "]");
-		
-		logger.info("Got:\n{}", json);
 		
 		Map<String, String> resp = JSON.parseObject(json, new TypeReference<HashMap<String, String>>() {});
 		
@@ -151,15 +137,12 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 		req.put("entity", shipment);
 		
 		String body = JSON.toJSONString(req);
-		logger.info("Posting:\n{}", body);
 		
-		String json = postSecure(uri, body);
+		String json = postSecure(uri, body, logger);
 		
 		if (!validateJSON(json)) {
 			return null;
 		}
-		
-		logger.info("Got:\n{}", json);
 		
 		return JSON.parseObject(json, Shipment.class);
 	}
@@ -171,15 +154,12 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 		req.put("entity", track);
 		
 		String body = JSON.toJSONString(req);
-		logger.info("Posting:\n{}", body);
 		
-		String json = postSecure(uri, body);
+		String json = postSecure(uri, body, logger);
 		
 		if (!validateJSON(json)) {
 			return null;
 		}
-		
-		logger.info("Got:\n{}", json);
 		
 		return JSON.parseObject(json, ShipmentTrack.class);
 	}
@@ -187,7 +167,7 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 	public boolean deleteTrack(long id) {
 		String uri = baseUri() + "/" + relativePath4Shipments + "/track/" + id;
 		
-		String json = deleteSecure(uri);
+		String json = deleteSecure(uri, logger);
 		
 		if (!validateJSON(json)) {
 			return false;

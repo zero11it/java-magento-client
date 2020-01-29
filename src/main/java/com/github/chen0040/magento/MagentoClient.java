@@ -108,7 +108,7 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 		}
 
 		String uri = this.baseUri + "/rest/V1/customers/me";
-		String json = getSecure(uri);
+		String json = getSecure(uri, logger);
 
 		if (!validateJSON(json)) {
 			return null;
@@ -124,7 +124,7 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 		}
 
 		String uri = this.baseUri + "/rest/V1/customers/" + id;
-		String json = getSecure(uri);
+		String json = getSecure(uri, logger);
 		Map<String, Object> data = JSON.parseObject(json, new TypeReference<Map<String, Object>>() {
 		}.getType());
 		return data;
@@ -180,7 +180,7 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 				.setTokenKeys(accessToken, accessSecret)
 				.build();
 		
-		if (!validateJSON(getSecure(baseUri + testQuery))) {
+		if (!validateJSON(getSecure(baseUri + testQuery, logger))) {
 			oauth = null;
 			logger.error("OAuth validation FAILED, check that your tokens are correct.");
 		}
@@ -199,7 +199,7 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 				.setTokenKeys("", "")
 				.build();
 		
-		String resp = postSecure(baseUri + tokenRequest, "");
+		String resp = postSecure(baseUri + tokenRequest, "", logger);
 		
 		if (!resp.contains("oauth_token")) {
 			oauth = null;

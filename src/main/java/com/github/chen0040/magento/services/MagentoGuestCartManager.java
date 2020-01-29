@@ -12,10 +12,14 @@ import com.github.mgiorda.oauth.OAuthConfig;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Created by xschen on 10/7/2017.
  */
 public class MagentoGuestCartManager extends MagentoHttpComponent {
+	private static final Logger logger = LoggerFactory.getLogger(MagentoGuestCartManager.class);
 	protected String relativePath = "rest/V1/guest-carts";
 	protected final MagentoClient client;
 
@@ -35,7 +39,7 @@ public class MagentoGuestCartManager extends MagentoHttpComponent {
 	}
 
 	public String newCart() {
-		String json = postSecure(baseUri() + "/" + relativePath, "");
+		String json = postSecure(baseUri() + "/" + relativePath, "", logger);
 
 		if (!validateJSON(json)) {
 			return null;
@@ -45,7 +49,7 @@ public class MagentoGuestCartManager extends MagentoHttpComponent {
 	}
 
 	public Cart getCart(String cartId) {
-		String json = getSecure(baseUri() + "/" + relativePath + "/" + cartId);
+		String json = getSecure(baseUri() + "/" + relativePath + "/" + cartId, logger);
 
 		if (!validateJSON(json)) {
 			return null;
@@ -58,7 +62,7 @@ public class MagentoGuestCartManager extends MagentoHttpComponent {
 	}
 
 	public CartTotal getCartTotal(String cartId) {
-		String json = getSecure(baseUri() + "/" + relativePath + "/" + cartId + "/totals");
+		String json = getSecure(baseUri() + "/" + relativePath + "/" + cartId + "/totals", logger);
 
 		if (!validateJSON(json)) {
 			return null;
@@ -81,7 +85,7 @@ public class MagentoGuestCartManager extends MagentoHttpComponent {
 		
 		String json = JSON.toJSONString(request, SerializerFeature.BrowserCompatible);
 		
-		json = postSecure(baseUri() + "/" + relativePath + "/" + cartId + "/items", json);
+		json = postSecure(baseUri() + "/" + relativePath + "/" + cartId + "/items", json, logger);
 
 		if (!validateJSON(json)) {
 			return null;
@@ -106,7 +110,7 @@ public class MagentoGuestCartManager extends MagentoHttpComponent {
 		
 		String json = JSON.toJSONString(request, SerializerFeature.BrowserCompatible);
 		
-		json = putSecure(baseUri() + "/" + relativePath + "/" + cartId + "/items/" + item.getItem_id(), json);
+		json = putSecure(baseUri() + "/" + relativePath + "/" + cartId + "/items/" + item.getItem_id(), json, logger);
 
 		if (!validateJSON(json)) {
 			return null;
@@ -120,7 +124,7 @@ public class MagentoGuestCartManager extends MagentoHttpComponent {
 	}
 
 	public boolean deleteItemInCart(String cartId, int itemId) {
-		String json = deleteSecure(baseUri() + "/" + relativePath + "/" + cartId + "/items/" + itemId);
+		String json = deleteSecure(baseUri() + "/" + relativePath + "/" + cartId + "/items/" + itemId, logger);
 
 		if (!validateJSON(json)) {
 			return false;

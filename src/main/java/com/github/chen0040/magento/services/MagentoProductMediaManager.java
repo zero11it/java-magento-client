@@ -23,9 +23,7 @@ import java.util.*;
  */
 // TODO
 public class MagentoProductMediaManager extends MagentoHttpComponent {
-
 	private static final Logger logger = LoggerFactory.getLogger(MagentoProductMediaManager.class);
-
 	private MagentoClient client;
 
 	public MagentoProductMediaManager(MagentoClient client) {
@@ -46,7 +44,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 	public Integer uploadImage(String sku, ProductImage image) {
 		String uri = baseUri() + "/rest/V1/products/" + sku + "/media";
 		String body = RESTUtils.payloadWrapper("entry", image);
-		String json = postSecure(uri, body);
+		String json = postSecure(uri, body, logger);
 		
 		if (!validateJSON(json)) {
 			return null;
@@ -92,7 +90,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 
 		req.put("entry", entry);
 		String body = JSON.toJSONString(req, SerializerFeature.BrowserCompatible);
-		String json = postSecure(uri, body);
+		String json = postSecure(uri, body, logger);
 
 		if (!validateJSON(json)) {
 			return -1L;
@@ -238,7 +236,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 		req.put("entry", entry);
 		
 		String body = JSON.toJSONString(req, SerializerFeature.BrowserCompatible);
-		String json = putSecure(uri, body);
+		String json = putSecure(uri, body, logger);
 
 		if (!validateJSON(json)) {
 			return false;
@@ -248,7 +246,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 
 	public List<ProductMedia> getProductMediaList(String sku) {
 		String uri = baseUri() + "/rest/V1/products/" + escape(sku) + "/media";
-		String json = getSecure(uri);
+		String json = getSecure(uri, logger);
 
 		if (!validateJSON(json)) {
 			return null;
@@ -260,7 +258,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 	public ProductMedia getProductMedia(String sku, long entryId) {
 
 		String uri = baseUri() + "/rest/V1/products/" + escape(sku) + "/media/" + entryId;
-		String json = getSecure(uri);
+		String json = getSecure(uri, logger);
 
 		if (!validateJSON(json)) {
 			return null;
@@ -272,7 +270,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 	public boolean deleteProductMedia(String sku, long entryId) {
 
 		String uri = baseUri() + "/rest/V1/products/" + escape(sku) + "/media/" + entryId;
-		String json = deleteSecure(uri);
+		String json = deleteSecure(uri, logger);
 
 		if (!validateJSON(json)) {
 			return false;

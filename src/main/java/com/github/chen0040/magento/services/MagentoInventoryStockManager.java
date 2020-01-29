@@ -17,8 +17,8 @@ import java.util.Map;
  * Created by xschen on 12/6/2017.
  */
 public class MagentoInventoryStockManager extends MagentoHttpComponent {
-	private static final String relativePath = "rest/V1/stockItems";
 	private static final Logger logger = LoggerFactory.getLogger(MagentoInventoryStockManager.class);
+	private static final String relativePath = "rest/V1/stockItems";
 	private MagentoClient client;
 
 	public MagentoInventoryStockManager(MagentoClient client) {
@@ -37,8 +37,8 @@ public class MagentoInventoryStockManager extends MagentoHttpComponent {
 	}
 
 	public StockItems getStockItems(String productSku) {
-		String url = baseUri() + "/" + relativePath + "/" + productSku;
-		String json = getSecure(url);
+		String uri = baseUri() + "/" + relativePath + "/" + productSku;
+		String json = getSecure(uri, logger);
 		
 		if (!validateJSON(json)) {
 			return null;
@@ -50,7 +50,7 @@ public class MagentoInventoryStockManager extends MagentoHttpComponent {
 	}
 
 	public String saveStockItems(String productSku, StockItems si) {
-		String url = baseUri() + "/rest/V1/products/" + escape(productSku) + "/stockItems/" + si.getItem_id();
+		String uri = baseUri() + "/rest/V1/products/" + escape(productSku) + "/stockItems/" + si.getItem_id();
 		Map<String, Object> req = new HashMap<>();
 		Map<String, Object> obj = new HashMap<>();
 		
@@ -88,7 +88,7 @@ public class MagentoInventoryStockManager extends MagentoHttpComponent {
 		req.put("stockItem", obj);
 		
 		String body = JSON.toJSONString(req, SerializerFeature.BrowserCompatible);
-		String stockId = putSecure(url, body);
+		String stockId = putSecure(uri, body, logger);
 
 		if (!validateJSON(stockId)) {
 			return null;

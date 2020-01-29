@@ -14,7 +14,6 @@ import com.github.chen0040.magento.models.store.Website;
 import com.github.mgiorda.oauth.OAuthConfig;
 
 public class MagentoStoreManager extends MagentoHttpComponent {
-	
 	private static final Logger logger = LoggerFactory.getLogger(MagentoProductManager.class);
 	private MagentoClient client;
 	private static final String relativePath4Store = "rest/V1/store";
@@ -36,7 +35,7 @@ public class MagentoStoreManager extends MagentoHttpComponent {
 
 	public List<StoreConfig> getStoreConfigs() {
 		String uri = baseUri() + "/" + relativePath4Store + "/storeConfigs";
-		String json = getSecure(uri);
+		String json = getSecure(uri, logger);
 		
 		if (!validateJSON(json)) {
 			return null;
@@ -49,7 +48,7 @@ public class MagentoStoreManager extends MagentoHttpComponent {
 	
 	public List<Website> getWebsites() {
 		String uri = baseUri() + "/" + relativePath4Store + "/websites";
-		String json = getSecure(uri);
+		String json = getSecure(uri, logger);
 		
 		if (!validateJSON(json)) {
 			return null;
@@ -62,7 +61,7 @@ public class MagentoStoreManager extends MagentoHttpComponent {
 	
 	public List<StoreGroup> getStoreGroups() {
 		String uri = baseUri() + "/" + relativePath4Store + "/storeGroups";
-		String json = getSecure(uri);
+		String json = getSecure(uri, logger);
 		
 		if (!validateJSON(json)) {
 			return null;
@@ -75,7 +74,7 @@ public class MagentoStoreManager extends MagentoHttpComponent {
 	
 	public List<StoreView> getStoreViews() {
 		String uri = baseUri() + "/" + relativePath4Store + "/storeViews";
-		String json = getSecure(uri);
+		String json = getSecure(uri, logger);
 		
 		if (!validateJSON(json)) {
 			return null;

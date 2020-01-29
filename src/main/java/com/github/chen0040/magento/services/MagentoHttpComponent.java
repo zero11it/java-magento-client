@@ -61,28 +61,44 @@ public abstract class MagentoHttpComponent {
 		return headers;
 	}
 
-	public String postSecure(String url, String body) {
+	public String postSecure(String url, String body, Logger logger) {
 		Map<String, String> headers = buildHeaders(HttpMethod.POST, url);
 		
-		return httpComponent.post(url, body, headers);
+		logger.info("POST-ing: {}", body);
+		
+		String resp = httpComponent.post(url, body, headers);
+		logger.info("Got: {}", resp);
+		
+		return resp;
 	}
 
-	public String putSecure(String url, String body) {
+	public String putSecure(String url, String body, Logger logger) {
 		Map<String, String> headers = buildHeaders(HttpMethod.PUT, url);
 		
-		return httpComponent.put(url, body, headers);
+		logger.info("PUT-ting: {}", body);
+		
+		String resp = httpComponent.put(url, body, headers);
+		logger.info("Got: {}", resp);
+		
+		return resp;
 	}
 
-	public String deleteSecure(String url) {
+	public String deleteSecure(String url, Logger logger) {
 		Map<String, String> headers = buildHeaders(HttpMethod.DELETE, url);
 		
-		return httpComponent.delete(url, headers);
+		String resp = httpComponent.delete(url, headers);
+		logger.info("Got: {}", resp);
+		
+		return resp;
 	}
 
-	public String getSecure(String url) {
+	public String getSecure(String url, Logger logger) {
 		Map<String, String> headers = buildHeaders(HttpMethod.GET, url);
 		
-		return httpComponent.get(url, headers);
+		String resp = httpComponent.get(url, headers);
+		logger.info("Got: {}", resp);
+		
+		return resp;
 	}
 
 	public String escape(String text) {

@@ -21,7 +21,6 @@ import com.github.chen0040.magento.utils.RESTUtils;
 import com.github.mgiorda.oauth.OAuthConfig;
 
 public class MagentoOrderManager extends MagentoHttpComponent {
-
 	private static final Logger logger = LoggerFactory.getLogger(MagentoProductManager.class);
 	private MagentoClient client;
 	private static final String relativePath4Orders = "rest/V1/order";
@@ -44,13 +43,11 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 	public Order getOrder(long id) {
 		String uri = baseUri() + "/" + relativePath4Orders + "s/" + id;
 		
-		String json = getSecure(uri);
+		String json = getSecure(uri, logger);
 		
 		if (!validateJSON(json)) {
 			return null;
 		}
-		
-		logger.info("Got:\n{}", json);
 		
 		return JSON.parseObject(json, Order.class);
 	}
@@ -58,13 +55,11 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 	public List<OrderItem> getItems(long id) {
 		String uri = baseUri() + "/" + relativePath4Orders + "s/items/" + id;
 		
-		String json = getSecure(uri);
+		String json = getSecure(uri, logger);
 		
 		if (!validateJSON(json)) {
 			return null;
 		}
-		
-		logger.info("Got:\n{}", json);
 		
 		return JSON.parseArray(json, OrderItem.class);
 	}
@@ -72,13 +67,11 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 	public String getStatuses(long id) {
 		String uri = baseUri() + "/" + relativePath4Orders + "s/statuses/" + id;
 		
-		String json = getSecure(uri);
+		String json = getSecure(uri, logger);
 		
 		if (!validateJSON(json)) {
 			return null;
 		}
-		
-		logger.info("Got:\n{}", json);
 		
 		return json;
 	}
@@ -86,13 +79,11 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 	public List<StatusHistory> getComments(long id) {
 		String uri = baseUri() + "/" + relativePath4Orders + "s/comments/" + id;
 		
-		String json = getSecure(uri);
+		String json = getSecure(uri, logger);
 		
 		if (!validateJSON(json)) {
 			return null;
 		}
-		
-		logger.info("Got:\n{}", json);
 		
 		return JSON.parseArray(json, StatusHistory.class);
 	}
@@ -102,14 +93,12 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 				+ "searchCriteria[currentPage]=" + currentPage + "&"
 				+ "searchCriteria[pageSize]=" + pageSize;
 		
-		String json = getSecure(uri);
+		String json = getSecure(uri, logger);
 		
 		if (!validateJSON(json)) {
 			return null;
 		}
 		json = json.replace("\"[",  "[").replace("]\"",  "]");
-		
-		logger.info("Got:\n{}", json);
 		
 		Map<String, String> resp = JSON.parseObject(json, new TypeReference<HashMap<String, String>>() {});
 		
@@ -121,14 +110,12 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 				+ "searchCriteria[filterGroups][0][filters][0][field]=" + field + "&"
 				+ "searchCriteria[filterGroups][0][filters][0][value]=" + value + "&"
 				+ "searchCriteria[filterGroups][0][filters][0][condition_type]=" + condition_type;
-		String json = getSecure(uri);
+		String json = getSecure(uri, logger);
 
 		if (!validateJSON(json)) {
 			return null;
 		}
 		json = json.replace("\"[",  "[").replace("]\"",  "]");
-		
-		logger.info("Got:\n{}", json);
 		
 		Map<String, String> resp = JSON.parseObject(json, new TypeReference<HashMap<String, String>>() {});
 		
@@ -137,7 +124,7 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 	
 	public boolean cancelOrder(long id) {
 		String uri = baseUri() + "/" + relativePath4Orders + "s/" + id + "/cancel";
-		String json = postSecure(uri, "");
+		String json = postSecure(uri, "", logger);
 		
 		if (!validateJSON(json)) {
 			return false;
@@ -149,7 +136,7 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 	public boolean addComment(long id, StatusHistory comment) {
 		String uri = baseUri() + "/" + relativePath4Orders + "s/" + id + "/comments";
 		
-		String json = putSecure(uri, RESTUtils.payloadWrapper("statusHistory", comment));
+		String json = putSecure(uri, RESTUtils.payloadWrapper("statusHistory", comment), logger);
 		
 		if (!validateJSON(json)) {
 			return false;
@@ -160,7 +147,7 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 	
 	public boolean emailOrder(long id) {
 		String uri = baseUri() + "/" + relativePath4Orders + "s/" + id + "/emails";
-		String json = postSecure(uri, "");
+		String json = postSecure(uri, "", logger);
 		
 		if (!validateJSON(json)) {
 			return false;
@@ -171,7 +158,7 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 	
 	public boolean holdOrder(long id) {
 		String uri = baseUri() + "/" + relativePath4Orders + "s/" + id + "/hold";
-		String json = postSecure(uri, "");
+		String json = postSecure(uri, "", logger);
 		
 		if (!validateJSON(json)) {
 			return false;
@@ -182,7 +169,7 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 	
 	public boolean unholdOrder(long id) {
 		String uri = baseUri() + "/" + relativePath4Orders + "s/" + id + "/unhold";
-		String json = postSecure(uri, "");
+		String json = postSecure(uri, "", logger);
 		
 		if (!validateJSON(json)) {
 			return false;
@@ -194,7 +181,7 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 	public Order saveOrder(Order order) {
 		String uri = baseUri() + "/" + relativePath4Orders + "s/";
 		
-		String json = postSecure(uri, RESTUtils.payloadWrapper("entity", order));
+		String json = postSecure(uri, RESTUtils.payloadWrapper("entity", order), logger);
 		
 		if (!validateJSON(json)) {
 			return null;
@@ -206,7 +193,7 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 	public Order createOrder(Order order) {
 		String uri = baseUri() + "/" + relativePath4Orders + "s/create";
 		
-		String json = putSecure(uri, RESTUtils.payloadWrapper("entity", order));
+		String json = putSecure(uri, RESTUtils.payloadWrapper("entity", order), logger);
 		
 		if (!validateJSON(json)) {
 			return null;
@@ -218,7 +205,7 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 	public Address createOrderAddress(String parent_id, Address address) {
 		String uri = baseUri() + "/" + relativePath4Orders + "s/" + parent_id;
 		
-		String json = putSecure(uri, RESTUtils.payloadWrapper("entity", address));
+		String json = putSecure(uri, RESTUtils.payloadWrapper("entity", address), logger);
 		
 		if (!validateJSON(json)) {
 			return null;
@@ -230,7 +217,7 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 	public long createOrderInvoice(long orderId, OrderInvoice invoice) {
 		String uri = baseUri() + "/" + relativePath4Orders + "/" + orderId + "/invoice";
 		
-		String json = postSecure(uri, JSON.toJSONString(invoice));
+		String json = postSecure(uri, JSON.toJSONString(invoice), logger);
 		
 		if (!validateJSON(json)) {
 			return -1;
@@ -242,7 +229,7 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 	public long createOrderRefund(long orderId, OrderRefund refund) {
 		String uri = baseUri() + "/" + relativePath4Orders + "/" + orderId + "/refund";
 		
-		String json = postSecure(uri, JSON.toJSONString(refund));
+		String json = postSecure(uri, JSON.toJSONString(refund), logger);
 		
 		if (!validateJSON(json)) {
 			return -1;
@@ -254,7 +241,7 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 	public long shipOrder(long orderId, SalesDataShipment shipment) {
 		String uri = baseUri() + "/" + relativePath4Orders + "/" + orderId + "/ship";
 		
-		String json = postSecure(uri, JSON.toJSONString(shipment));
+		String json = postSecure(uri, JSON.toJSONString(shipment), logger);
 		
 		if (!validateJSON(json)) {
 			return -1;

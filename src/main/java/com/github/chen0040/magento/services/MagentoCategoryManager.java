@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.chen0040.magento.MagentoClient;
@@ -16,6 +19,7 @@ import com.github.mgiorda.oauth.OAuthConfig;
  * Created by xschen on 12/6/2017.
  */
 public class MagentoCategoryManager extends MagentoHttpComponent {
+	private static final Logger logger = LoggerFactory.getLogger(MagentoCategoryManager.class);
 	private MagentoClient client;
 	private static final String relativePath4Categories = "rest/V1/categories";
 
@@ -25,8 +29,8 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 	}
 
 	public boolean deleteCategory(long categoryId) {
-		String url = baseUri() + "/" + relativePath4Categories + "/" + categoryId;
-		String json = deleteSecure(url);
+		String uri = baseUri() + "/" + relativePath4Categories + "/" + categoryId;
+		String json = deleteSecure(uri, logger);
 		
 		if (!validateJSON(json)) {
 			return false;
@@ -54,9 +58,9 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		
 		req.put("category", cat);
 		
-		String url = baseUri() + "/" + relativePath4Categories;
+		String uri = baseUri() + "/" + relativePath4Categories;
 		String body = JSON.toJSONString(req, SerializerFeature.BrowserCompatible);
-		String json = postSecure(url, body);
+		String json = postSecure(uri, body, logger);
 
 		if (!validateJSON(json)) {
 			return -1;
@@ -84,9 +88,9 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		
 		req.put("category", cat);
 		
-		String url = baseUri() + "/" + relativePath4Categories + "/" + category.getId();
+		String uri = baseUri() + "/" + relativePath4Categories + "/" + category.getId();
 		String body = JSON.toJSONString(req, SerializerFeature.BrowserCompatible);
-		String json = postSecure(url, body);
+		String json = postSecure(uri, body, logger);
 
 		if (!validateJSON(json)) {
 			return false;
@@ -96,7 +100,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 
 	public Category getCategories() {
 		String uri = baseUri() + "/" + relativePath4Categories;
-		String json = getSecure(uri);
+		String json = getSecure(uri, logger);
 		
 		if (!validateJSON(json)) {
 			return null;
@@ -118,7 +122,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 	}
 
 	private Category getCategoryByUrl(String uri) {
-		String json = getSecure(uri);
+		String json = getSecure(uri, logger);
 		
 		if (!validateJSON(json)) {
 			return null;
@@ -150,7 +154,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 
 	public List<CategoryProduct> getProductsInCategory(long id) {
 		String uri = baseUri() + "/" + relativePath4Categories + "/" + id + "/products";
-		String json = getSecure(uri);
+		String json = getSecure(uri, logger);
 
 		if (!validateJSON(json)) {
 			return null;
@@ -171,7 +175,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		req.put("productLink", detail);
 		
 		String body = JSON.toJSONString(req, SerializerFeature.BrowserCompatible);
-		String json = putSecure(uri, body);
+		String json = putSecure(uri, body, logger);
 
 		return json.equals("true");
 	}
@@ -188,7 +192,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 
 	public boolean removeProductFromCategory(long categoryId, String productSku) {
 		String uri = baseUri() + "/" + relativePath4Categories + "/" + categoryId + "/products/" + productSku;
-		String json = deleteSecure(uri);
+		String json = deleteSecure(uri, logger);
 		
 		return json.equals("true");
 	}

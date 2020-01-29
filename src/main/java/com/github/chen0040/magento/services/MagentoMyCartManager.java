@@ -13,10 +13,14 @@ import com.github.mgiorda.oauth.OAuthConfig;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Created by xschen on 11/7/2017.
  */
 public class MagentoMyCartManager extends MagentoHttpComponent {
+	private static final Logger logger = LoggerFactory.getLogger(MagentoMyCartManager.class);
 	protected final MagentoClient client;
 	private static final String relativePath = "rest/V1/carts";
 	private static final String cartId = "mine";
@@ -39,7 +43,7 @@ public class MagentoMyCartManager extends MagentoHttpComponent {
 	}
 
 	public String newQuote() {
-		String json = postSecure(baseUri() + "/" + relativePath + "/" + cartId, "");
+		String json = postSecure(baseUri() + "/" + relativePath + "/" + cartId, "", logger);
 
 		if (!validateJSON(json)) {
 			return null;
@@ -49,7 +53,7 @@ public class MagentoMyCartManager extends MagentoHttpComponent {
 	}
 
 	public Cart getCart() {
-		String json = getSecure(baseUri() + "/" + relativePath + "/" + cartId);
+		String json = getSecure(baseUri() + "/" + relativePath + "/" + cartId, logger);
 
 		if (!validateJSON(json)) {
 			return null;
@@ -60,7 +64,7 @@ public class MagentoMyCartManager extends MagentoHttpComponent {
 	}
 
 	public CartTotal getCartTotal() {
-		String json = getSecure(baseUri() + "/" + relativePath + "/" + cartId + "/totals");
+		String json = getSecure(baseUri() + "/" + relativePath + "/" + cartId + "/totals", logger);
 
 		if (!validateJSON(json)) {
 			return null;
@@ -81,7 +85,7 @@ public class MagentoMyCartManager extends MagentoHttpComponent {
 		
 		String json = JSON.toJSONString(request, SerializerFeature.BrowserCompatible);
 		
-		json = postSecure(baseUri() + "/" + relativePath + "/" + cartId + "/items", json);
+		json = postSecure(baseUri() + "/" + relativePath + "/" + cartId + "/items", json, logger);
 
 		if (!validateJSON(json)) {
 			return null;
@@ -104,7 +108,7 @@ public class MagentoMyCartManager extends MagentoHttpComponent {
 		
 		String json = JSON.toJSONString(request, SerializerFeature.BrowserCompatible);
 		
-		json = putSecure(baseUri() + "/" + relativePath + "/" + cartId + "/items/" + item.getItem_id(), json);
+		json = putSecure(baseUri() + "/" + relativePath + "/" + cartId + "/items/" + item.getItem_id(), json, logger);
 
 		if (!validateJSON(json)) {
 			return null;
@@ -116,7 +120,7 @@ public class MagentoMyCartManager extends MagentoHttpComponent {
 	}
 
 	public boolean deleteItemInCart(int itemId) {
-		String json = deleteSecure(baseUri() + "/" + relativePath + "/" + cartId + "/items/" + itemId);
+		String json = deleteSecure(baseUri() + "/" + relativePath + "/" + cartId + "/items/" + itemId, logger);
 
 		if (!validateJSON(json)) {
 			return false;
@@ -139,7 +143,7 @@ public class MagentoMyCartManager extends MagentoHttpComponent {
 		
 		String json = JSON.toJSONString(request, SerializerFeature.BrowserCompatible);
 		
-		json = putSecure(baseUri() + "/rest/V1/guest-carts/" + guestCartId, json);
+		json = putSecure(baseUri() + "/rest/V1/guest-carts/" + guestCartId, json, logger);
 
 		if (!validateJSON(json)) {
 			return false;
