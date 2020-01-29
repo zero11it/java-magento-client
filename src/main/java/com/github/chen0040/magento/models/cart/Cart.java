@@ -1,9 +1,11 @@
 package com.github.chen0040.magento.models.cart;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.github.chen0040.magento.models.Customer;
@@ -13,14 +15,16 @@ import com.github.chen0040.magento.models.Customer;
  */
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Cart {
-	private long id = 0;
-	private String created_at = "";
-	private String updated_at = "";
-	private boolean is_active = true;
-	private boolean is_virtual = false;
-	private List<CartItem> items = new ArrayList<>();
-	private int items_count = 0;
-	private int items_qty = 0;
-	private Customer customer = new Customer();
+	private Integer id;
+	private Date created_at;
+	private Date updated_at;
+	private Boolean is_active;
+	private Boolean is_virtual;
+	private List<CartItem> items;
+	private Integer items_count;
+	private Integer items_qty;
+	private Customer customer;
 }
