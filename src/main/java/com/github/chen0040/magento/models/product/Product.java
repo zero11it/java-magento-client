@@ -30,6 +30,9 @@ public class Product {
 
 	public static final Integer STATUS_DISABLED = 2;
 	public static final Integer STATUS_ENABLED = 1;
+	
+	public static final String TYPE_SIMPLE = "simple";
+	public static final String TYPE_CONFIGURABLE = "configurable";
 
 	private Integer id;
 	@NonNull private String sku;
@@ -43,12 +46,14 @@ public class Product {
 	private String updated_at;
 	private Double weight;
 
+	@SuppressWarnings("rawtypes")
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
-	private List<MagentoAttribute> extension_attributes = new ArrayList<>();
-	private List<String> product_links = new ArrayList<>();
-	private List<TierPrices> tier_prices = new ArrayList<>();
+	private List<MagentoAttribute> extension_attributes;
+	private List<String> product_links;
+	private List<TierPrices> tier_prices;
 
+	@SuppressWarnings("rawtypes")
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
-	private List<MagentoAttribute> custom_attributes = new ArrayList<>();
+	private List<MagentoAttribute> custom_attributes;
 
 }
