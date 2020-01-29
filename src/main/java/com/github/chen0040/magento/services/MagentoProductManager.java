@@ -199,9 +199,18 @@ public class MagentoProductManager extends MagentoHttpComponent {
 				.size() > 0;
 	}
 	
+	public boolean hasAttribute(ProductAttribute attribute) {
+		List<ProductAttribute> attributes = getProductAttributes().stream()
+				.filter(attr -> attr.getAttribute_code().equals(attribute.getAttribute_code()))
+				.collect(Collectors.toList());
+		
+		return attributes.size() > 0;
+	}
+	
 	public boolean hasProduct(String sku) {
 		return getProductBySku(sku) != null;
 	}
+	
 	public ProductAttributeSet saveProductAttributeSet(ProductAttributeSet attributeSet) {
 		ProductAttributeSet defaultSet = getProductAttributeSets().stream()
 				.filter(set -> set.getAttribute_set_name().toLowerCase().equals("default"))
@@ -300,7 +309,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		
 		return JSON.parseObject(json, ProductAttribute.class);
 	}
-	
+
 	public ProductAttribute saveAttribute(ProductAttribute attribute, String attributeCode) {
 		String uri = baseUri() + relativePath4Products + "/attribute-sets/attributes/" + attributeCode;
 		String body = RESTUtils.payloadWrapper("attribute", attribute);
