@@ -341,8 +341,6 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		String uri = baseUri() + relativePath4Products;
 		String body = "{\n\"product\" : " + JSON.toJSONString(product, SerializerFeature.PrettyFormat) + "\n}";
 		
-		;
-		
 		String json;
 		
 		if (hasProduct(sku)) {

@@ -35,6 +35,7 @@ public class ProductOption {
 	private Integer image_size_y;
 	List<ProductOptionValue> values;
 	
+	@SuppressWarnings("rawtypes")
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
 	private List<MagentoAttribute> extension_attributes;
 }

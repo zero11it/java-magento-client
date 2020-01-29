@@ -1,7 +1,6 @@
 package com.github.chen0040.magento.models.product;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.alibaba.fastjson.annotation.JSONField;
@@ -45,10 +44,7 @@ public class Product {
 	private String created_at;
 	private String updated_at;
 	private Double weight;
-
-	@SuppressWarnings("rawtypes")
-	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
-	private List<MagentoAttribute> extension_attributes;
+	private ProductExtensionAttributes extension_attributes;
 	private List<String> product_links;
 	private List<TierPrices> tier_prices;
 
