@@ -372,7 +372,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 	}
 	
 	public Boolean deleteProductAttributeSet(long attributeSetId) {
-		String uri = baseUri() + relativePath4Products + "/attribute-sets/sets/" + attributeSetId;
+		String uri = baseUri() + relativePath4Products + "/attribute-sets/" + attributeSetId;
 		
 		String json = deleteSecure(uri, logger);
 		

@@ -12,9 +12,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ProductAttributeSet {
+	@JSONField(serialize = false)
 	 private long attribute_set_id;
 	 private String attribute_set_name;
 	 private long sort_order;
+	@JSONField(serialize = false)
 	 private long entity_type_id;
 	 
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)

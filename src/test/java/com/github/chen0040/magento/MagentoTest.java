@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import com.github.chen0040.magento.enums.ConditionTypes;
 import com.github.chen0040.magento.models.product.Product;
+import com.github.chen0040.magento.models.product.ProductAttributeSet;
 import com.github.chen0040.magento.models.search.SearchCriteria;
 import com.github.chen0040.magento.models.shipment.Shipment;
 import com.github.chen0040.magento.models.store.StoreConfig;
@@ -61,6 +62,11 @@ public class MagentoTest {
 		assertNotNull(client.products().searchProduct(new SearchCriteria().setPage(0, null)));
 		
 		assertNotNull(client.products().getProductAttributeSets());
+		
+		ProductAttributeSet set = new ProductAttributeSet().setAttribute_set_name("aaa").setSort_order(1);
+		set = client.products().saveProductAttributeSet(set);
+		assertNotNull(set);
+		assertTrue(client.products().deleteProductAttributeSet(set.getAttribute_set_id()));
 	}
 	
 	@Test
