@@ -20,7 +20,6 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -203,12 +202,20 @@ public class MagentoProductManager extends MagentoHttpComponent {
 	public boolean hasProduct(String sku) {
 		return getProductBySku(sku) != null;
 	}
-	
 	public ProductAttributeSet saveProductAttributeSet(ProductAttributeSet attributeSet) {
+		ProductAttributeSet defaultSet = getProductAttributeSets().stream()
+				.filter(set -> set.getAttribute_set_name().toLowerCase().equals("default"))
+				.collect(Collectors.toList())
+				.get(0);
+		
+		return saveProductAttributeSet(attributeSet, defaultSet);
+	}
+	
+	public ProductAttributeSet saveProductAttributeSet(ProductAttributeSet attributeSet, ProductAttributeSet baseAttributeSet) {
 		String uri = baseUri() + relativePath4Products + "/attribute-sets";
 		String body = "{"
 				+ "\"attributeSet\" : " + JSON.toJSONString(attributeSet) + ","
-				+ "\"skeletonId\" : " + new Random().nextInt()
+				+ "\"skeletonId\" : " + baseAttributeSet.getAttribute_set_id()
 				+ "}";
 		
 		String json;
