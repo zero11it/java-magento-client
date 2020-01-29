@@ -12,11 +12,18 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductExtensionAttributes {
-	List<CategoryLink> category_links = new ArrayList<ProductExtensionAttributes.CategoryLink>();
-	StockItem stock_item;
+	private List<CategoryLink> category_links;
+	private StockItem stock_item;
+	private int categoryPosition = 0;
 	
-	public ProductExtensionAttributes addCategoryLink(Integer position, String category_id) {
-		this.category_links.add(new CategoryLink(position, category_id));
+	
+	public ProductExtensionAttributes addCategoryLink(String category_id) {
+		if (category_links == null) {
+			category_links = new ArrayList<CategoryLink>();
+		}
+		
+		category_links.add(new CategoryLink(categoryPosition, category_id));
+		categoryPosition += 1;
 		
 		return this;
 	}

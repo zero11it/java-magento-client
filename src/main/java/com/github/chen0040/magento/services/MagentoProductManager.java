@@ -336,6 +336,19 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, ProductAttribute.class);
 	}
 	
+	public Boolean assignConfigurableProductModel(String parentSku, String childSku) {
+		String uri = baseUri() + "/configurable-products/" + parentSku + "/child";
+		String body = String.format("{ \"childSku\" : \"%s\" }", childSku);
+		
+		String json = postSecure(uri, body, logger);
+		
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+		return JSON.parseObject(json, Boolean.class);
+	}
+	
 	public Product saveProduct(Product product) {
 		String sku = product.getSku();
 		String uri = baseUri() + relativePath4Products;
