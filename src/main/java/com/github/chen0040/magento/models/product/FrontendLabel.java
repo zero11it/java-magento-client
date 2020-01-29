@@ -5,14 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
- * Created by xschen on 12/6/2017.
- */
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductAttributeType {
-	private String value;
-	private String label;
+public class FrontendLabel {
+	String label;
+	Long store_id;
 }

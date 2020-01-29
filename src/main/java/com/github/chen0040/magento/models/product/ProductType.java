@@ -1,6 +1,8 @@
 package com.github.chen0040.magento.models.product;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -8,6 +10,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductType {
 	private String name;
 	private String label;

@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import com.github.chen0040.magento.enums.ConditionTypes;
 import com.github.chen0040.magento.models.product.Product;
+import com.github.chen0040.magento.models.product.ProductAttribute;
 import com.github.chen0040.magento.models.product.ProductAttributeSet;
 import com.github.chen0040.magento.models.search.SearchCriteria;
 import com.github.chen0040.magento.models.shipment.Shipment;
@@ -67,6 +68,17 @@ public class MagentoTest {
 		set = client.products().saveProductAttributeSet(set);
 		assertNotNull(set);
 		assertTrue(client.products().deleteProductAttributeSet(set.getAttribute_set_id()));
+		
+		ProductAttribute attr = new ProductAttribute()
+				.setAttribute_code("aaa")
+				.setEntity_type_id("4")
+				.setIs_required(true)
+				.setFrontend_input("text")
+				.setDefault_frontend_label("azm");
+		attr = client.products().saveAttribute(attr);
+		assertNotNull(attr);
+		
+		assertTrue(client.products().deleteProductAttribute(attr.getAttribute_code()));
 	}
 	
 	@Test

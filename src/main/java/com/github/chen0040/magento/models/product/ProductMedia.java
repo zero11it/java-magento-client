@@ -1,9 +1,10 @@
 package com.github.chen0040.magento.models.product;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,12 +12,14 @@ import java.util.List;
  */
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductMedia {
-	private long id;
+	private Integer id;
 	private String media_type;
 	private String label;
-	private int position;
-	private boolean disabled;
+	private Integer position;
+	private Boolean disabled;
 	private List<String> types;
 	private String file;
 }

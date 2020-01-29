@@ -1,6 +1,8 @@
 package com.github.chen0040.magento.models.product;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -13,8 +15,10 @@ import com.github.chen0040.magento.models.search.SearchCriteria;
  */
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductAttributePage {
 	private List<ProductAttribute> items = new ArrayList<>();
-	private int total_count = 1000;
+	private Integer total_count = 1000;
 	private SearchCriteria search_criteria = new SearchCriteria();
 }

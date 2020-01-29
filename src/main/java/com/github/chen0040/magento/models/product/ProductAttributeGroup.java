@@ -6,15 +6,19 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.github.chen0040.magento.models.MagentoAttribute;
 import com.github.chen0040.magento.models.serialization.AttributeValueDeserializer;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductAttributeGroup {
 	 private String attribute_group_id;
 	 private String attribute_group_name;
-	 private long attribute_set_id;
+	 private Integer attribute_set_id;
 	 
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
 	private List<MagentoAttribute> extension_attributes;

@@ -220,7 +220,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		
 		String json;
 		
-		if (hasProductAttributeSet(attributeSet.getAttribute_set_id())) {
+		if (attributeSet.getAttribute_set_id() != null && hasProductAttributeSet(attributeSet.getAttribute_set_id())) {
 			json = putSecure(uri, body, logger);
 		}
 		else {
@@ -264,7 +264,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, ProductAttributeGroup.class);
 	}
 	
-	public Long saveAttribute(long attributeSetId, long attributeGroupId, String attributeCode) {
+	public Long assignAttribute(long attributeSetId, long attributeGroupId, String attributeCode) {
 		String uri = baseUri() + relativePath4Products + "/attribute-sets/attributes";
 		Map<String, String> req = new HashMap<>();
 		
@@ -286,6 +286,19 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		}
 		
 		return resp;
+	}
+	
+	public ProductAttribute saveAttribute(ProductAttribute attribute) {
+		String uri = baseUri() + relativePath4Products + "/attributes";
+		String body = RESTUtils.payloadWrapper("attribute", attribute);
+		
+		String json = postSecure(uri, body, logger);
+		
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+		return JSON.parseObject(json, ProductAttribute.class);
 	}
 	
 	public ProductAttribute saveAttribute(ProductAttribute attribute, String attributeCode) {

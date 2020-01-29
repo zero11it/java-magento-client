@@ -6,15 +6,19 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.github.chen0040.magento.models.MagentoAttribute;
 import com.github.chen0040.magento.models.serialization.AttributeValueDeserializer;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class StoreConfig {
-	private long id;
+	private Integer id;
 	private String code;
-	private long website_id;
+	private Integer website_id;
 	private String locale;
 	private String base_currency_code;
 	private String default_display_currency_code;

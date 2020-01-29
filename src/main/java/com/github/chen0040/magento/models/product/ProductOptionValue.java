@@ -1,6 +1,6 @@
 package com.github.chen0040.magento.models.product;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,10 +11,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductAttributeOption {
-	private String label;
-	private String value;
+public class ProductOptionValue {
+	private String title;
 	private Integer sort_order;
-	private Boolean is_default;
-	List<ProductAttributeOptionStoreLabel> store_labels;
+	private BigDecimal price;
+	private String price_type;
+	private String sku;
+	private Integer option_type_id;
 }
