@@ -453,7 +453,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, ConfigurableProductOption.class);
 	}
 	
-	public Integer addConfigurableProductOption(ConfigurableProductOption option, String sku) {
+	public Integer addConfigurableProductOption(String sku, ConfigurableProductOption option) {
 		String uri = baseUri() + relativePath4ConfigurableProducts + "/" + sku + "/options";
 		String body = RESTUtils.payloadWrapper("option", option);
 		
@@ -466,7 +466,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, Integer.class);
 	}
 	
-	public Integer updateConfigurableProductOption(ConfigurableProductOption option, String sku, Integer optionId) {
+	public Integer updateConfigurableProductOption(String sku, Integer optionId, ConfigurableProductOption option) {
 		String uri = baseUri() + relativePath4ConfigurableProducts + "/" + sku + "/options/" + optionId;
 		String body = RESTUtils.payloadWrapper("option", option);
 		
