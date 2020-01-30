@@ -3,6 +3,8 @@ package com.github.chen0040.magento.models.product;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +16,8 @@ import lombok.Setter;
 public class ProductExtensionAttributes {
 	private List<CategoryLink> category_links;
 	private StockItem stock_item;
+	
+	@JSONField(serialize = false, deserialize = false)
 	private int categoryPosition = 0;
 	
 	
