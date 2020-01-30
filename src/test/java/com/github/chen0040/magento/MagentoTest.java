@@ -94,7 +94,7 @@ public class MagentoTest {
 				.setIs_required(false)
 				.setIs_user_defined(true)
 		));
-		client.products().addAttributeOption("brown", "test");
+		client.products().addOptionToAttribute("test", "brown");
 		System.out.println(client.products().getProductAttributeOptions("test"));
 		assertTrue(client.products().deleteProductAttribute("test"));
 	}

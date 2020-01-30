@@ -121,6 +121,24 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		
 		return JSON.parseArray(json, ProductAttributeOption.class);
 	}
+	
+	public String getProductAttributeOptionValue(String attributeCode, String label) {
+		List<ProductAttributeOption> options = getProductAttributeOptions(attributeCode);
+		
+		if (options == null) {
+			return null;
+		}
+		
+		List<ProductAttributeOption> labelOptions = options.stream()
+			.filter(option -> option.getLabel().equals(label))
+			.collect(Collectors.toList());
+		
+		if (labelOptions.size() == 0) {
+			return null;
+		}
+		
+		return labelOptions.get(0).getValue();
+	}
 
 	public List<ProductAttributeType> getProductAttributeTypes() {
 		String uri = baseUri() + relativePath4Products + "/attributes/types";
@@ -339,7 +357,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, String.class);
 	}
 	
-	public String addAttributeOption(String label, String attributeCode) {
+	public String addOptionToAttribute(String attributeCode, String label) {
 		List<ProductAttributeOption> options = getProductAttributeOptions(attributeCode);
 		Optional<ProductAttributeOption> ourOption = options.stream()
 				.filter(option -> option.getLabel().equals(label))
