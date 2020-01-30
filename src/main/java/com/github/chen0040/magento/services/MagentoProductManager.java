@@ -29,6 +29,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 	private static final Logger logger = LoggerFactory.getLogger(MagentoProductManager.class);
 	private MagentoClient client;
 	private static final String relativePath4Products = "/rest/V1/products";
+	private static final String relativePath4ConfigurableProducts = "/rest/V1/configurable-products";
 	private MagentoProductMediaManager media;
 
 	public MagentoProductManager(MagentoClient client) {
@@ -336,19 +337,6 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, ProductAttribute.class);
 	}
 	
-	public Boolean assignConfigurableProductModel(String parentSku, String childSku) {
-		String uri = baseUri() + "/configurable-products/" + parentSku + "/child";
-		String body = String.format("{ \"childSku\" : \"%s\" }", childSku);
-		
-		String json = postSecure(uri, body, logger);
-		
-		if (!validateJSON(json)) {
-			return null;
-		}
-		
-		return JSON.parseObject(json, Boolean.class);
-	}
-	
 	public Product saveProduct(Product product) {
 		String sku = product.getSku();
 		String uri = baseUri() + relativePath4Products;
@@ -368,6 +356,43 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		}
 
 		return JSON.parseObject(json, Product.class);
+	}
+	
+	public List<Product> getConfigurableProductChildren(String parentSku) {
+		String uri = baseUri() + relativePath4ConfigurableProducts + "/" + parentSku + "/children";
+		
+		String json = getSecure(uri, logger);
+		
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+		return JSON.parseArray(json, Product.class);
+	}
+	
+	public Boolean assignConfigurableProductChild(String parentSku, String childSku) {
+		String uri = baseUri() + relativePath4ConfigurableProducts + "/" + parentSku + "/child";
+		String body = String.format("{ \"childSku\" : \"%s\" }", childSku);
+		
+		String json = postSecure(uri, body, logger);
+		
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+		return JSON.parseObject(json, Boolean.class);
+	}
+	
+	public Boolean deleteConfigurableProductChild(String parentSku, String childSku) {
+		String uri = baseUri() + relativePath4ConfigurableProducts + "/" + parentSku + "/children/" + childSku;
+		
+		String json = deleteSecure(uri, logger);
+		
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+		return JSON.parseObject(json, Boolean.class);
 	}
 	
 	public List<PriceUpdateResult> updateProductPrices(List<ProductPrice> prices) {
