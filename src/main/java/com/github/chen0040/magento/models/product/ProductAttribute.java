@@ -25,7 +25,7 @@ public class ProductAttribute {
 	private Boolean is_visible_in_grid;
 	private Boolean is_filterable_in_grid;
 	private Integer position;
-	private List<String> apply_to;
+	private List<Product.TYPE> apply_to;
 	private String is_searchable;
 	private String is_visible_in_advanced_search;
 	private String is_comparable;

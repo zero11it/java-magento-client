@@ -3,6 +3,7 @@ package com.github.chen0040.magento;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
@@ -79,6 +80,23 @@ public class MagentoTest {
 		assertNotNull(attr);
 		
 		assertTrue(client.products().deleteProductAttribute(attr.getAttribute_code()));
+	}
+	@Test
+	public void testAttributes() {
+		MagentoClient client = new MagentoClient("https://bsmagento2.web07.zero11.net");
+		client.loginAsAdmin("a.trucco", "zero11zero11");
+		
+		assertNotNull(client.products().saveAttribute(new ProductAttribute()
+				.setAttribute_code("test")
+				.setEntity_type_id("4")
+				.setFrontend_input("multiselect")
+				.setDefault_frontend_label("test")
+				.setIs_required(false)
+				.setIs_user_defined(true)
+		));
+		client.products().addAttributeOption("brown", "test");
+		System.out.println(client.products().getProductAttributeOptions("test"));
+		assertTrue(client.products().deleteProductAttribute("test"));
 	}
 	
 	@Test

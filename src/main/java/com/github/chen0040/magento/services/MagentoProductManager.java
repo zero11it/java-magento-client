@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -324,17 +325,31 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, ProductAttribute.class);
 	}
 	
-	public ProductAttribute saveAttributeOption(ProductAttributeOption option, String attributeCode) {
-		String uri = baseUri() + relativePath4Products + "/attribute-sets/attributes/" + attributeCode + "/options";
+	public String saveAttributeOption(ProductAttributeOption option, String attributeCode) {
+		String uri = baseUri() + relativePath4Products + "/attributes/" + attributeCode + "/options";
 		String body = RESTUtils.payloadWrapper("option", option);
 		
-		String json = putSecure(uri, body, logger);
+		String json = postSecure(uri, body, logger);
 		
 		if (!validateJSON(json)) {
 			return null;
 		}
 		
-		return JSON.parseObject(json, ProductAttribute.class);
+		return JSON.parseObject(json, String.class);
+	}
+	
+	public String addAttributeOption(String label, String attributeCode) {
+		List<ProductAttributeOption> options = getProductAttributeOptions(attributeCode);
+		Optional<ProductAttributeOption> ourOption = options.stream()
+				.filter(option -> option.getLabel().equals(label))
+				.findAny();
+		
+		if (ourOption.isPresent()) {
+			logger.info(label + " already present.");
+			return label + " already present.";
+		}
+		
+		return saveAttributeOption(new ProductAttributeOption().setLabel(label), attributeCode);
 	}
 	
 	public Product saveProduct(Product product) {

@@ -22,16 +22,25 @@ import lombok.Setter;
 @RequiredArgsConstructor
 @NoArgsConstructor
 public class Product {
-	public static final Integer VISIBILITY_NOT_VISIBLE = 1;
-	public static final Integer VISIBILITY_IN_CATALOG = 2;
-	public static final Integer VISIBILITY_IN_SEARCH = 3;
-	public static final Integer VISIBILITY_BOTH = 4;
-
-	public static final Integer STATUS_DISABLED = 2;
-	public static final Integer STATUS_ENABLED = 1;
+	public static final class VISIBILITY {
+		public static final Integer NOT_VISIBLE = 1;
+		public static final Integer IN_CATALOG = 2;
+		public static final Integer IN_SEARCH = 3;
+		public static final Integer BOTH = 4;
+	}
 	
-	public static final String TYPE_SIMPLE = "simple";
-	public static final String TYPE_CONFIGURABLE = "configurable";
+	public static final class STATUS {
+		public static final Integer DISABLED = 2;
+		public static final Integer ENABLED = 1;
+	}
+	
+	public static enum TYPE {
+		simple,
+		configurable,
+		virtual,
+		bundle,
+		downloadable;
+	}
 
 	private Integer id;
 	@NonNull private String sku;
