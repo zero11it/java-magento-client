@@ -34,12 +34,12 @@ public class Product {
 		public static final Integer ENABLED = 1;
 	}
 	
-	public static enum TYPE {
-		simple,
-		configurable,
-		virtual,
-		bundle,
-		downloadable;
+	public static final class TYPE {
+		public static final String SIMPLE = "simple";
+		public static final String CONFIGURABLE = "configurable";
+		public static final String VIRTUAL = "virtual";
+		public static final String BUNDLE = "bundle";
+		public static final String DOWNLOADABLE = "downloadable";
 	}
 
 	private Integer id;
