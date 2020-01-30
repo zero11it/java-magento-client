@@ -3,6 +3,7 @@ package com.github.chen0040.magento.services;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.chen0040.magento.MagentoClient;
+import com.github.chen0040.magento.models.product.ConfigurableProductOption;
 import com.github.chen0040.magento.models.product.Product;
 import com.github.chen0040.magento.models.product.ProductAttribute;
 import com.github.chen0040.magento.models.product.ProductAttributeGroup;
@@ -408,6 +409,80 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		}
 		
 		return JSON.parseObject(json, Boolean.class);
+	}
+	
+	public List<ConfigurableProductOption> getConfigurableProductOptions(String sku) {
+		String uri = baseUri() + relativePath4ConfigurableProducts + "/" + sku + "/options/all";
+		
+		String json = getSecure(uri, logger);
+		
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+		return JSON.parseArray(json, ConfigurableProductOption.class);
+	}
+	
+	public ConfigurableProductOption getConfigurableProductOption(String sku, Integer optionId) {
+		String uri = baseUri() + relativePath4ConfigurableProducts + "/" + sku + "/options/" + optionId;
+		
+		String json = getSecure(uri, logger);
+		
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+		return JSON.parseObject(json, ConfigurableProductOption.class);
+	}
+	
+	public Integer addConfigurableProductOption(ConfigurableProductOption option, String sku) {
+		String uri = baseUri() + relativePath4ConfigurableProducts + "/" + sku + "/options";
+		String body = RESTUtils.payloadWrapper("option", option);
+		
+		String json = postSecure(uri, body, logger);
+		
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+		return JSON.parseObject(json, Integer.class);
+	}
+	
+	public Integer updateConfigurableProductOption(ConfigurableProductOption option, String sku, Integer optionId) {
+		String uri = baseUri() + relativePath4ConfigurableProducts + "/" + sku + "/options/" + optionId;
+		String body = RESTUtils.payloadWrapper("option", option);
+		
+		String json = putSecure(uri, body, logger);
+		
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+		return JSON.parseObject(json, Integer.class);
+	}
+	
+	public Boolean deleteConfigurableProductOption(String sku, Integer optionId) {
+		String uri = baseUri() + relativePath4ConfigurableProducts + "/" + sku + "/options/" + optionId;
+		
+		String json = deleteSecure(uri, logger);
+		
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+		return JSON.parseObject(json, Boolean.class);
+	}
+	
+	public List<Product> generateProductVariationsFromOptions(Product product, List<ConfigurableProductOption> options) {
+		String uri = baseUri() + relativePath4ConfigurableProducts + "/variation";
+		
+		String json = deleteSecure(uri, logger);
+		
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+		return JSON.parseArray(json, Product.class);
 	}
 	
 	public List<PriceUpdateResult> updateProductPrices(List<ProductPrice> prices) {
