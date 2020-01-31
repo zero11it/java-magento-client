@@ -127,7 +127,10 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 	}
 	
 	public void switchStoreView(String code) {
-		if (!storeCodes.contains(code)) {
+		if (code.toLowerCase().equals("default")) {
+			switchStoreViewToDefault();
+		}
+		else if (!storeCodes.contains(code)) {
 			logger.error(code + ": No such view was registered");
 		}
 		else {
