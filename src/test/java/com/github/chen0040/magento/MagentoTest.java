@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.Test;
 
@@ -97,6 +98,43 @@ public class MagentoTest {
 		client.products().addOptionToAttribute("test", "brown");
 		System.out.println(client.products().getProductAttributeOptions("test"));
 		assertTrue(client.products().deleteProductAttribute("test"));
+		
+		List<String> rewixAttributeNames = Arrays.asList(
+				//"availability", --> stock qty
+				"brand",
+				//"code", --> sku
+				"country_selling_restrictions",
+				"currency",
+				"description", // descriptions handled by store views
+				"id",    // actually "id"
+				"intra",
+				// "models",  --> handled by Magento configurable product
+				//"pictures", --> handled by Magento media
+				"tags",
+				"taxable",
+				//"street_price", --> price
+				"suggested_price",
+				// Model-specific attributes
+				"barcode",
+				"color", // actually "color"
+				"size"   // actually "size
+		);
+		
+		try {
+			client.products().deleteProductAttributeSet(
+					client.products().getProductAttributeSets().stream()
+					.filter(set -> set.getAttribute_set_name().equals("Rewix (brandsdistribution)"))
+					.collect(Collectors.toList())
+					.get(0).getAttribute_set_id()
+			);
+		}
+		catch (IndexOutOfBoundsException exception) {
+			;
+		}
+		
+		for (String attr : rewixAttributeNames) {
+			client.products().deleteProductAttribute("rewix_" + attr);
+		}
 	}
 	
 	@Test

@@ -3,8 +3,17 @@ package com.github.chen0040.magento;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.github.chen0040.magento.interfaces.HttpComponent;
-import com.github.chen0040.magento.models.*;
-import com.github.chen0040.magento.services.*;
+import com.github.chen0040.magento.models.Account;
+import com.github.chen0040.magento.services.BasicHttpComponent;
+import com.github.chen0040.magento.services.MagentoCategoryManager;
+import com.github.chen0040.magento.services.MagentoGuestCartManager;
+import com.github.chen0040.magento.services.MagentoHttpComponent;
+import com.github.chen0040.magento.services.MagentoInventoryStockManager;
+import com.github.chen0040.magento.services.MagentoMyCartManager;
+import com.github.chen0040.magento.services.MagentoOrderManager;
+import com.github.chen0040.magento.services.MagentoProductManager;
+import com.github.chen0040.magento.services.MagentoShipmentManager;
+import com.github.chen0040.magento.services.MagentoStoreManager;
 import com.github.chen0040.magento.utils.StringUtils;
 import com.github.mgiorda.oauth.OAuthConfig;
 import com.github.mgiorda.oauth.OAuthConfigBuilder;
@@ -19,7 +28,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by xschen on 12/6/2017.
@@ -36,6 +47,9 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 
 	private String token = null;
 	private String baseUri = "";
+	private String defaultUri = "";
+	
+	private Set<String> storeCodes;
 
 	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
 	private OAuthConfig oauth = null;
@@ -99,7 +113,31 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 		}
 		
 		this.baseUri = baseUri;
-	} 
+		this.defaultUri = baseUri;
+		this.storeCodes = new HashSet<String>();
+	}
+	
+	public void addStoreView(String code) {
+		if (!store().hasStoreView(code)) {
+			logger.error(code + ": No such view exists");
+		}
+		else {
+			storeCodes.add(code);
+		}
+	}
+	
+	public void switchStoreView(String code) {
+		if (!storeCodes.contains(code)) {
+			logger.error(code + ": No such view was registered");
+		}
+		else {
+			baseUri = defaultUri + "/" + code;
+		}
+	}
+	
+	public void switchStoreViewToDefault() {
+		baseUri = defaultUri;
+	}
 
 	public Account getMyAccount() {
 		if (admin) {

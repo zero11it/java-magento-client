@@ -59,6 +59,18 @@ public class MagentoStoreManager extends MagentoHttpComponent {
 		return JSON.parseArray(json, Website.class);
 	}
 	
+	public boolean hasWebsite(String code) {
+		return getWebsites().stream()
+				.map(website -> website.getCode())
+				.anyMatch(websiteCode -> websiteCode.equals(code));
+	}
+	
+	public boolean hasWebsiteName(String name) {
+		return getStoreGroups().stream()
+				.map(website -> website.getName())
+				.anyMatch(websiteName -> websiteName.equals(name));
+	}
+	
 	public List<StoreGroup> getStoreGroups() {
 		String uri = baseUri() + "/" + relativePath4Store + "/storeGroups";
 		String json = getSecure(uri, logger);
@@ -72,6 +84,18 @@ public class MagentoStoreManager extends MagentoHttpComponent {
 		return JSON.parseArray(json, StoreGroup.class);
 	}
 	
+	public boolean hasStoreGroup(String code) {
+		return getStoreGroups().stream()
+				.map(group -> group.getCode())
+				.anyMatch(groupCode -> groupCode.equals(code));
+	}
+	
+	public boolean hasStoreGroupName(String name) {
+		return getStoreGroups().stream()
+				.map(group -> group.getName())
+				.anyMatch(groupName -> groupName.equals(name));
+	}
+	
 	public List<StoreView> getStoreViews() {
 		String uri = baseUri() + "/" + relativePath4Store + "/storeViews";
 		String json = getSecure(uri, logger);
@@ -83,6 +107,18 @@ public class MagentoStoreManager extends MagentoHttpComponent {
 		logger.info("Got:\n{}", json);
 
 		return JSON.parseArray(json, StoreView.class);
+	}
+	
+	public boolean hasStoreView(String code) {
+		return getStoreViews().stream()
+				.map(view -> view.getCode())
+				.anyMatch(storeCode -> storeCode.equals(code));
+	}
+	
+	public boolean hasStoreViewName(String name) {
+		return getStoreViews().stream()
+				.map(view -> view.getName())
+				.anyMatch(storeName -> storeName.equals(name));
 	}
 
 	@Override

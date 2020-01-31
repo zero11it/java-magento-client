@@ -100,7 +100,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, ProductAttribute.class);
 	}
 	
-	public List<ProductAttribute> getProductAttributesInSet(long attributeSetId) {
+	public List<ProductAttribute> getProductAttributesInSet(Integer attributeSetId) {
 		String uri = baseUri() + relativePath4Products + "/attribute-sets/" + attributeSetId + "/attributes";
 		String json = getSecure(uri, logger);
 
@@ -202,7 +202,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return JSON.parseArray(json, ProductCost.class);
 	}
 
-	public boolean hasProductAttributeSet(long attributeSetId) {
+	public boolean hasProductAttributeSet(Integer attributeSetId) {
 		List<ProductAttributeSet> attributeSets = getProductAttributeSets();
 		
 		return attributeSets.stream()
@@ -279,7 +279,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, ProductAttributeGroup.class);
 	}
 	
-	public ProductAttributeGroup saveProductAttributeGroup(ProductAttributeGroup attributeGroup, long attributeSetId) {
+	public ProductAttributeGroup saveProductAttributeGroup(ProductAttributeGroup attributeGroup, Integer attributeSetId) {
 		String uri = baseUri() + relativePath4Products + "/attribute-sets/" + attributeSetId + "/groups";
 		String body = "{"
 				+ "\"group\" : " + JSON.toJSONString(attributeGroup)
@@ -294,22 +294,22 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, ProductAttributeGroup.class);
 	}
 	
-	public Long assignAttribute(long attributeSetId, long attributeGroupId, String attributeCode) {
+	public Integer assignAttribute(Integer attributeSetId, Integer attributeGroupId, String attributeCode) {
 		String uri = baseUri() + relativePath4Products + "/attribute-sets/attributes";
 		Map<String, String> req = new HashMap<>();
 		
-		req.put("attributeSetId", new Long(attributeSetId).toString());
-		req.put("attributeGroupId", new Long(attributeGroupId).toString());
+		req.put("attributeSetId", new Integer(attributeSetId).toString());
+		req.put("attributeGroupId", new Integer(attributeGroupId).toString());
 		req.put("attributeCode", attributeCode);
 		req.put("sortOrder", "0");
 		
 		String body = JSON.toJSONString(req);
 		
 		String json = postSecure(uri, body, logger);
-		Long resp;
+		Integer resp;
 		
 		try {
-			resp = JSON.parseObject(json, Long.class);
+			resp = JSON.parseObject(json, Integer.class);
 		}
 		catch (NumberFormatException exception) {
 			resp = null;
@@ -529,7 +529,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return JSON.parseArray(json, PriceUpdateResult.class);
 	}
 	
-	public Boolean deleteProductAttributeGroup(long groupId) {
+	public Boolean deleteProductAttributeGroup(Integer groupId) {
 		String uri = baseUri() + relativePath4Products + "/attribute-sets/groups/" + groupId;
 		
 		String json = deleteSecure(uri, logger);
@@ -537,7 +537,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return Boolean.parseBoolean(json);
 	}
 	
-	public Boolean deleteProductAttributeSet(long attributeSetId) {
+	public Boolean deleteProductAttributeSet(Integer attributeSetId) {
 		String uri = baseUri() + relativePath4Products + "/attribute-sets/" + attributeSetId;
 		
 		String json = deleteSecure(uri, logger);
@@ -545,7 +545,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return Boolean.parseBoolean(json);
 	}
 	
-	public Boolean deleteProductAttributeInSet(long attributeSetId, String attributeCode) {
+	public Boolean deleteProductAttributeInSet(Integer attributeSetId, String attributeCode) {
 		String uri = baseUri() + relativePath4Products + "/attribute-sets/" + attributeSetId + "/attributes/" + attributeCode;
 		
 		String json = deleteSecure(uri, logger);
