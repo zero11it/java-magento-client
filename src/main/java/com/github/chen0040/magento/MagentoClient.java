@@ -28,9 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by xschen on 12/6/2017.
@@ -48,8 +46,6 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 	private String token = null;
 	private String baseUri = "";
 	private String defaultUri = "";
-	
-	private Set<String> storeCodes;
 
 	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
 	private OAuthConfig oauth = null;
@@ -114,24 +110,11 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 		
 		this.baseUri = baseUri;
 		this.defaultUri = baseUri;
-		this.storeCodes = new HashSet<String>();
-	}
-	
-	public void addStoreView(String code) {
-		if (!store().hasStoreView(code)) {
-			logger.error(code + ": No such view exists");
-		}
-		else {
-			storeCodes.add(code);
-		}
 	}
 	
 	public void switchStoreView(String code) {
 		if (code.toLowerCase().equals("default")) {
 			switchStoreViewToDefault();
-		}
-		else if (!storeCodes.contains(code)) {
-			logger.error(code + ": No such view was registered");
 		}
 		else {
 			baseUri = defaultUri + "/" + code;
