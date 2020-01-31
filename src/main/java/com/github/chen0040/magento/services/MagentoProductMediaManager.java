@@ -2,7 +2,6 @@ package com.github.chen0040.magento.services;
 
 import com.alibaba.fastjson.JSON;
 import com.github.chen0040.magento.MagentoClient;
-import com.github.chen0040.magento.models.product.ProductMedia;
 import com.github.chen0040.magento.models.product.media.ImageMIMEType;
 import com.github.chen0040.magento.models.product.media.ProductImage;
 import com.github.chen0040.magento.models.product.media.ProductImageContent;
@@ -11,9 +10,14 @@ import com.github.chen0040.magento.models.product.media.ProductVideoContent;
 import com.github.chen0040.magento.utils.RESTUtils;
 import com.github.mgiorda.oauth.OAuthConfig;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -75,6 +79,33 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 		return uploadImage(sku, image);
 	}
 	
+	public Integer uploadImageFromURL(String sku, String url, String label) {
+		File tmp = null;
+		try {
+			tmp = File.createTempFile(label, "." + FilenameUtils.getExtension(url));
+		}
+		catch (IOException exception) {
+			logger.error(exception.getMessage());
+		}
+		
+		try {
+			FileUtils.copyURLToFile(new URL(url), tmp);
+		}
+		catch (IOException exception) {
+			logger.error(exception.getMessage());
+		}
+		
+		ProductImage image = new ProductImage(
+				tmp.getAbsolutePath(),
+				ProductImageType.all(),
+				label
+		);
+		
+		tmp.delete();
+		
+		return uploadImage(sku, image);
+	}
+	
 	public Integer updateImage(String sku, String entryId, ProductImage image) {
 		String uri = baseUri() + "/rest/V1/products/" + sku + "/media/" + entryId;
 		String body = RESTUtils.payloadWrapper("entry", image);
@@ -110,13 +141,40 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 		return updateImage(sku, entryId, image);
 	}
 	
+	public Integer updateImageFromURL(String sku, String entryId, String url, String label) {
+		File tmp = null;
+		try {
+			tmp = File.createTempFile(label, "." + FilenameUtils.getExtension(url));
+		}
+		catch (IOException exception) {
+			logger.error(exception.getMessage());
+		}
+		
+		try {
+			FileUtils.copyURLToFile(new URL(url), tmp);
+		}
+		catch (IOException exception) {
+			logger.error(exception.getMessage());
+		}
+		
+		ProductImage image = new ProductImage(
+				tmp.getAbsolutePath(),
+				ProductImageType.all(),
+				label
+		);
+		
+		tmp.delete();
+		
+		return updateImage(sku, entryId, image);
+	}
+	
 	public Integer linkVideo(String sku, String label, ProductVideoContent video) {
 		ProductImage image = new ProductImage(label, video);
 		
 		return uploadImage(sku, image);
 	}
 
-	public List<ProductMedia> getProductMediaList(String sku) {
+	public List<ProductImage> getProductImages(String sku) {
 		String uri = baseUri() + "/rest/V1/products/" + escape(sku) + "/media";
 		
 		String json = getSecure(uri, logger);
@@ -125,10 +183,10 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 			return null;
 		}
 
-		return JSON.parseArray(json, ProductMedia.class);
+		return JSON.parseArray(json, ProductImage.class);
 	}
 
-	public ProductMedia getProductMedia(String sku, Integer entryId) {
+	public ProductImage getProductImage(String sku, Integer entryId) {
 		String uri = baseUri() + "/rest/V1/products/" + escape(sku) + "/media/" + entryId;
 		
 		String json = getSecure(uri, logger);
@@ -137,10 +195,10 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 			return null;
 		}
 
-		return JSON.parseObject(json, ProductMedia.class);
+		return JSON.parseObject(json, ProductImage.class);
 	}
 
-	public Boolean deleteProductMedia(String sku, Integer entryId) {
+	public Boolean deleteProductImage(String sku, Integer entryId) {
 		String uri = baseUri() + "/rest/V1/products/" + escape(sku) + "/media/" + entryId;
 		
 		String json = deleteSecure(uri, logger);
@@ -152,25 +210,25 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, Boolean.class);
 	}
 
-	public String getProductMediaAbsoluteUrl(String sku, Integer entryId) {
-		ProductMedia media = getProductMedia(sku, entryId);
+	public String getProductImageAbsoluteUrl(String sku, Integer entryId) {
+		ProductImage media = getProductImage(sku, entryId);
 		String filename = media.getFile();
 		
 		return baseUri() + "/pub/media/catalog/product/" + filename;
 	}
 
-	public String getProductMediaRelativeUrl(String sku, Integer entryId) {
-		ProductMedia media = getProductMedia(sku, entryId);
+	public String getProductImageRelativeUrl(String sku, Integer entryId) {
+		ProductImage media = getProductImage(sku, entryId);
 		String filename = media.getFile();
 		
 		return "/pub/media/catalog/product/" + filename;
 	}
 
-	public List<String> getProductMediaAbsoluteUrls(String sku) {
-		List<ProductMedia> mediaList = getProductMediaList(sku);
+	public List<String> getProductImageAbsoluteUrls(String sku) {
+		List<ProductImage> mediaList = getProductImages(sku);
 		List<String> result = new ArrayList<>();
 		
-		for (ProductMedia media : mediaList) {
+		for (ProductImage media : mediaList) {
 			String filename = media.getFile();
 			String uri = baseUri() + "/pub/media/catalog/product/" + filename;
 			result.add(uri);
@@ -179,11 +237,11 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 		return result;
 	}
 
-	public List<String> getProductMediaRelativeUrls(String sku) {
-		List<ProductMedia> mediaList = getProductMediaList(sku);
+	public List<String> getProductImageRelativeUrls(String sku) {
+		List<ProductImage> mediaList = getProductImages(sku);
 		List<String> result = new ArrayList<>();
 		
-		for (ProductMedia media : mediaList) {
+		for (ProductImage media : mediaList) {
 			String filename = media.getFile();
 			String uri = "/pub/media/catalog/product/" + filename;
 			result.add(uri);

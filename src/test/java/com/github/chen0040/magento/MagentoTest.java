@@ -13,6 +13,7 @@ import com.github.chen0040.magento.enums.ConditionTypes;
 import com.github.chen0040.magento.models.product.Product;
 import com.github.chen0040.magento.models.product.ProductAttribute;
 import com.github.chen0040.magento.models.product.ProductAttributeSet;
+import com.github.chen0040.magento.models.product.media.ProductImage;
 import com.github.chen0040.magento.models.search.SearchCriteria;
 import com.github.chen0040.magento.models.shipment.Shipment;
 import com.github.chen0040.magento.models.store.StoreConfig;
@@ -222,6 +223,17 @@ public class MagentoTest {
 		MagentoClient client = new MagentoClient("https://bsmagento2.web07.zero11.net/");
 		client.loginAsAdmin("a.trucco", "zero11zero11");
 		
-		assertNotNull(client.products().media().uploadImage("BYRON_BROWN", "/Users/arseniotrucco/byron.jpg", "byron"));
+		Integer id = client.products().media().uploadImage("BYRON_BROWN", "/Users/arseniotrucco/byron.jpg", "byron");
+		assertNotNull(id);
+		client.products().media().deleteProductImage("BYRON_BROWN", id);
+		
+		id = client.products().media().uploadImageFromURL("BYRON_BROWN", "https://www.fashionclothes.it/wp-content/uploads/2018/11/stock_product_image_83682_319861228.jpg", "byron");
+		assertNotNull(id);
+		client.products().media().deleteProductImage("BYRON_BROWN", id);
+		
+		List<ProductImage> images = client.products().media().getProductImages("BYRON_BROWN");
+		for (ProductImage image : images) {
+			client.products().media().deleteProductImage("BYRON_BROWN", image.getId());
+		}
 	}
 }
