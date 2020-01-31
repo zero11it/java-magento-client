@@ -5,30 +5,28 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 
-import com.alibaba.fastjson.annotation.JSONField;
-
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class ProductImage {
-	@JSONField(serialize = false)
-	private long id;
+	private Integer id;
 	private String media_type;
 	private String label;
-	private long position;
-	private boolean disabled;
+	private Integer position;
+	private Boolean disabled;
 	List<ProductImageType> types;
-	
-	@JSONField(serialize = false)
 	private String file;
 	ProductImageContent content;
 	Map<String, ProductVideoContent> extension_attributes;
@@ -36,15 +34,26 @@ public class ProductImage {
 	public ProductImage(String filePath, ProductImageType[] types, String label) {
 		this.media_type = "image";
 		this.label = label;
-		this.position = 1;
 		this.disabled = false;
 		this.types = Arrays.asList(types);
 		
 		String imageName = getImageName(filePath);
 		this.content = new ProductImageContent(encodeImage(filePath), getImageType(imageName), imageName);
 		
-		this.extension_attributes = new HashMap<String, ProductVideoContent>();
-		this.extension_attributes.put("extension_attributes", null);
+		this.extension_attributes = null;
+	}
+	
+	public ProductImage(String label, ProductVideoContent video) {
+		Map<String, ProductVideoContent> extension_attributes = Stream.of(new Object[][] {
+				{"video_content", video},
+		}).collect(Collectors.toMap(data -> (String) data[0], data -> (ProductVideoContent) data[1]));
+		
+		this.setMedia_type("video");
+		this.setLabel(label);
+		this.setDisabled(false);
+		this.setTypes(Arrays.asList(ProductImageType.image));
+		this.setExtension_attributes(extension_attributes);
+		
 	}
 
 	private String getImageName(String filePath) {

@@ -121,11 +121,13 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 		}
 		else {
 			baseUri = defaultUri + "/" + code;
+			logger.info("Client switched to view '" + code + "'");
 		}
 	}
 	
 	public void switchStoreViewToDefault() {
 		baseUri = defaultUri;
+		logger.info("Client switched to default view");
 	}
 
 	public Account getMyAccount() {
