@@ -26,7 +26,7 @@ public class ProductImage {
 	private String label;
 	private Integer position;
 	private Boolean disabled;
-	List<ProductImageType> types;
+	List<String> types;
 	private String file;
 	ProductImageContent content;
 	Map<String, ProductVideoContent> extension_attributes;
@@ -36,7 +36,9 @@ public class ProductImage {
 		this.label = label;
 		this.position = 1;
 		this.disabled = false;
-		this.types = Arrays.asList(types);
+		this.types = Arrays.asList(types).stream()
+				.map(type -> type.toString())
+				.collect(Collectors.toList());
 		
 		String imageName = getImageName(filePath);
 		this.content = new ProductImageContent(encodeImage(filePath), getImageType(imageName), imageName);
@@ -53,7 +55,7 @@ public class ProductImage {
 		this.setLabel(label);
 		this.setDisabled(false);
 		this.setPosition(1);
-		this.setTypes(Arrays.asList(ProductImageType.image));
+		this.setTypes(ProductImageType.image);
 		this.setExtension_attributes(extension_attributes);
 		
 	}
@@ -65,7 +67,7 @@ public class ProductImage {
 	}
 
 	private ImageMIMEType getImageType(String fileName) {
-		String[] tokens = fileName.split(".");
+		String[] tokens = fileName.split("\\.");
 		String ext = tokens[tokens.length-1].toLowerCase();
 		
 		if (ext.equals("bmp")) {
@@ -102,5 +104,21 @@ public class ProductImage {
 		}
 		
 		return Base64.encodeBase64String(imageBytes);
+	}
+	
+	public ProductImage setTypes(ProductImageType type) {
+		this.types = Arrays.asList(new ProductImageType[] {type}).stream()
+		.map(_type -> _type.toString())
+		.collect(Collectors.toList());
+		
+		return this;
+	}
+	
+	public ProductImage setTypes(ProductImageType... types) {
+		this.types = Arrays.asList(types).stream()
+		.map(_type -> _type.toString())
+		.collect(Collectors.toList());
+		
+		return this;
 	}
 }

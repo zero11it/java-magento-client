@@ -216,4 +216,12 @@ public class MagentoTest {
 		);
 		assertNull(client.oAuth());
 	}
+	
+	@Test
+	public void testImage() {
+		MagentoClient client = new MagentoClient("https://bsmagento2.web07.zero11.net/");
+		client.loginAsAdmin("a.trucco", "zero11zero11");
+		
+		assertNotNull(client.products().media().uploadImage("BYRON_BROWN", "/Users/arseniotrucco/byron.jpg", "byron"));
+	}
 }

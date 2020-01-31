@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 
 public class RESTUtils {
 	/**
@@ -26,7 +27,7 @@ public class RESTUtils {
 		
 		req.put(key, object);
 		
-		return JSON.toJSONString(req);
+		return JSON.toJSONString(req, SerializerFeature.PrettyFormat);
 	}
 	
 	/**

@@ -11,10 +11,11 @@ import com.github.chen0040.magento.models.product.media.ProductVideoContent;
 import com.github.chen0040.magento.utils.RESTUtils;
 import com.github.mgiorda.oauth.OAuthConfig;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.*;
 
 /**
  * Created by xschen on 15/6/2017.
@@ -68,7 +69,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 				.setLabel(label)
 				.setPosition(1)
 				.setDisabled(false)
-				.setTypes(Arrays.asList(new ProductImageType[] {ProductImageType.image, ProductImageType.small_image, ProductImageType.thumbnail}))
+				.setTypes(ProductImageType.all())
 				.setContent(new ProductImageContent(base64String, imageType, label + "." + imageType));
 		
 		return uploadImage(sku, image);
@@ -90,7 +91,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 	public Integer updateImage(String sku, String entryId, String imageFilePath, String label) {
 		ProductImage image = new ProductImage(
 				imageFilePath,
-				new ProductImageType[] {ProductImageType.image, ProductImageType.small_image, ProductImageType.thumbnail},
+				ProductImageType.all(),
 				label
 		);
 		
@@ -103,7 +104,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 				.setLabel(label)
 				.setPosition(1)
 				.setDisabled(false)
-				.setTypes(Arrays.asList(ProductImageType.all()))
+				.setTypes(ProductImageType.all())
 				.setContent(new ProductImageContent(base64String, imageType, label + "." + imageType));
 		
 		return updateImage(sku, entryId, image);
