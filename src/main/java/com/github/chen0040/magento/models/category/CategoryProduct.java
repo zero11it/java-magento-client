@@ -1,6 +1,7 @@
 package com.github.chen0040.magento.models.category;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -8,8 +9,9 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 public class CategoryProduct {
-	private String sku = "product_dynamic_13";
-	private int position = 1;
-	private long category_id = 15;
+	private String sku;
+	private Integer position;
+	private Integer category_id;
 }

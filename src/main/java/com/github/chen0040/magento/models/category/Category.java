@@ -1,24 +1,30 @@
 package com.github.chen0040.magento.models.category;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import com.github.chen0040.magento.models.MagentoAttribute;
 
 /**
  * Created by xschen on 12/6/2017.
  */
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Category {
-	private long id = 2;
-	private long parent_id = 1;
-	private String name = "Category Store Group 1 - website_id_1";
-	private boolean is_active = true;
-	private int position = 1;
-	private int level = 1;
-	private int product_count = 25;
-	List<CategoryAttribute> custom_attributes = new ArrayList<>();
-	private List<Category> children_data = new ArrayList<>();
+	private Integer id;
+	private Integer parent_id;
+	private String name;
+	private Boolean is_active;
+	private Integer position;
+	private Integer level;
+	private Integer product_count;
+	private List<Category> children_data;
+	@SuppressWarnings("rawtypes")
+	private List<MagentoAttribute> custom_attributes;
 }

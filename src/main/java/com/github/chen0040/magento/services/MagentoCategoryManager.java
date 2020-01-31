@@ -39,13 +39,13 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		return json.equalsIgnoreCase("true");
 	}
 
-	public long addCategory(Category category) {
+	public Integer addCategory(Category category) {
 		Map<String, Object> cat = new HashMap<>();
 		
 		cat.put("id", category.getId());
 		cat.put("parent_id", category.getParent_id());
 		cat.put("name", category.getName());
-		cat.put("is_active", category.is_active());
+		cat.put("is_active", category.getIs_active());
 		cat.put("position", category.getPosition());
 		cat.put("level", category.getLevel());
 		cat.put("children", "string");
@@ -63,19 +63,19 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		String json = postSecure(uri, body, logger);
 
 		if (!validateJSON(json)) {
-			return -1;
+			return null;
 		}
 		
-		return Long.parseLong(json);
+		return JSON.parseObject(json, Integer.class);
 	}
 
-	public boolean updateCategory(Category category) {
+	public Boolean updateCategory(Category category) {
 		Map<String, Object> cat = new HashMap<>();
 		
 		cat.put("id", category.getId());
 		cat.put("parent_id", category.getParent_id());
 		cat.put("name", category.getName());
-		cat.put("is_active", category.is_active());
+		cat.put("is_active", category.getIs_active());
 		cat.put("position", category.getPosition());
 		cat.put("level", category.getLevel());
 		cat.put("children", "string");
@@ -93,9 +93,10 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		String json = postSecure(uri, body, logger);
 
 		if (!validateJSON(json)) {
-			return false;
+			return null;
 		}
-		return json.equalsIgnoreCase("true");
+		
+		return JSON.parseObject(json, Boolean.class);
 	}
 
 	public Category getCategories() {
@@ -109,13 +110,13 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, Category.class);
 	}
 
-	public Category getCategoryByIdClean(long id) {
+	public Category getCategoryByIdClean(Integer id) {
 		String uri = baseUri() + "/" + relativePath4Categories + "/" + id;
 		
 		return getCategoryByUrl(uri);
 	}
 
-	public Category getRootCategoryById(long id) {
+	public Category getRootCategoryById(Integer id) {
 		String uri = baseUri() + "/" + relativePath4Categories + "?rootCategoryId=" + id;
 		
 		return getCategoryByUrl(uri);
@@ -131,13 +132,13 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, Category.class);
 	}
 
-	public Category getCategoryByIdWithChildren(long id) {
+	public Category getCategoryByIdWithChildren(Integer id) {
 		Category all = getCategories();
 		
 		return getCategoryById(all, id);
 	}
 
-	private Category getCategoryById(Category category, long id) {
+	private Category getCategoryById(Category category, Integer id) {
 		if (category.getId() == id) {
 			return category;
 		}
@@ -152,7 +153,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		return null;
 	}
 
-	public List<CategoryProduct> getProductsInCategory(long id) {
+	public List<CategoryProduct> getProductsInCategory(Integer id) {
 		String uri = baseUri() + "/" + relativePath4Categories + "/" + id + "/products";
 		String json = getSecure(uri, logger);
 
@@ -163,7 +164,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		return JSON.parseArray(json, CategoryProduct.class);
 	}
 
-	public boolean addProductToCategory(long categoryId, String productSku, int position) {
+	public boolean addProductToCategory(Integer categoryId, String productSku, Integer position) {
 		String uri = baseUri() + "/" + relativePath4Categories + "/" + categoryId + "/products";
 		Map<String, Object> req = new HashMap<>();
 		Map<String, Object> detail = new HashMap<>();
@@ -190,7 +191,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		return client.baseUri();
 	}
 
-	public boolean removeProductFromCategory(long categoryId, String productSku) {
+	public boolean removeProductFromCategory(Integer categoryId, String productSku) {
 		String uri = baseUri() + "/" + relativePath4Categories + "/" + categoryId + "/products/" + productSku;
 		String json = deleteSecure(uri, logger);
 		
