@@ -34,6 +34,7 @@ public class ProductImage {
 	public ProductImage(String filePath, ProductImageType[] types, String label) {
 		this.media_type = "image";
 		this.label = label;
+		this.position = 1;
 		this.disabled = false;
 		this.types = Arrays.asList(types);
 		
@@ -51,6 +52,7 @@ public class ProductImage {
 		this.setMedia_type("video");
 		this.setLabel(label);
 		this.setDisabled(false);
+		this.setPosition(1);
 		this.setTypes(Arrays.asList(ProductImageType.image));
 		this.setExtension_attributes(extension_attributes);
 		
