@@ -116,6 +116,9 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 		if (code.toLowerCase().equals("default")) {
 			switchStoreViewToDefault();
 		}
+		else if (!store().hasStoreView(code)) {
+			logger.error(code + ": No such view");
+		}
 		else {
 			baseUri = defaultUri + "/" + code;
 		}
