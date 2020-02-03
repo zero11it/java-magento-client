@@ -12,6 +12,7 @@ import com.github.chen0040.magento.MagentoClient;
 import com.github.chen0040.magento.models.category.Category;
 import com.github.chen0040.magento.models.category.CategoryProduct;
 import com.github.chen0040.magento.models.category.ProductLink;
+import com.github.chen0040.magento.models.search.SearchCriteria;
 import com.github.chen0040.magento.utils.RESTUtils;
 import com.github.mgiorda.oauth.OAuthConfig;
 
@@ -55,8 +56,8 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		return getProductsInCategory(categoryId).stream().anyMatch(product -> product.getCategory_id() == categoryId);
 	}
 
-	public List<Category> getCategories() {
-		String uri = baseUri() + "/" + relativePath4Categories;
+	public List<Category> searchCategories(SearchCriteria criteria) {
+		String uri = baseUri() + "/" + relativePath4Categories + "/list?" + criteria;
 		
 		String json = getSecure(uri, logger);
 		
@@ -64,7 +65,19 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 			return null;
 		}
 
-		return JSON.parseArray(json, Category.class);
+		return RESTUtils.getArrayByKey(json, "items", Category.class);
+	}
+	
+	public List<Category> getCategories() {
+		String uri = baseUri() + "/" + relativePath4Categories + "/list?searchCriteria[currentPage]=0";
+		
+		String json = getSecure(uri, logger);
+		
+		if (!validateJSON(json)) {
+			return null;
+		}
+
+		return RESTUtils.getArrayByKey(json, "items", Category.class);
 	}
 
 	public Category getCategory(Integer categoryId) {
