@@ -35,13 +35,13 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		
 		String json;
 		if (hasCategory(category)) {
-			json = putSecure(uri, body, logger);
-		}
-		else {
-			uri += getCategories().stream()
+			uri += "/" + getCategories().stream()
 					.filter(cat -> cat.getName().equals(category.getName()))
 					.collect(Collectors.toList())
 					.get(0).getId();
+			json = putSecure(uri, body, logger);
+		}
+		else {
 			json = postSecure(uri, body, logger);
 		}
 
