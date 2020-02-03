@@ -122,7 +122,10 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 
 	public Boolean addProductToCategory(Integer categoryId, String productSku) {
 		String uri = baseUri() + "/" + relativePath4Categories + "/" + categoryId + "/products";
-		String body = RESTUtils.payloadWrapper("productLink", new ProductLink(categoryId.toString(), productSku));
+		String body = RESTUtils.payloadWrapper("productLink", new ProductLink()
+				.setCategory_id(categoryId.toString())
+				.setSku(productSku)
+		);
 		
 		String json;
 		if (categoryHasProduct(categoryId, productSku)) {
