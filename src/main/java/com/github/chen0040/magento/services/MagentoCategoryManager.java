@@ -48,7 +48,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 	}
 
 	private boolean hasCategory(Category category) {
-		return getCategory(category.getId()) != null;
+		return getCategories().stream().anyMatch(cat -> cat.getName().equals(category.getName()));
 	}
 
 	private boolean categoryHasProduct(Integer categoryId, String productSku) {
