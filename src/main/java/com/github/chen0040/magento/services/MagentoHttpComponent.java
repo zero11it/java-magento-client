@@ -65,7 +65,6 @@ public abstract class MagentoHttpComponent {
 		Map<String, String> headers = buildHeaders(HttpMethod.POST, url);
 		
 		logger.info("POST-ing: {}", body);
-		
 		String resp = httpComponent.post(url, body, headers);
 		logger.info("Got: {}", resp);
 		
@@ -76,7 +75,6 @@ public abstract class MagentoHttpComponent {
 		Map<String, String> headers = buildHeaders(HttpMethod.PUT, url);
 		
 		logger.info("PUT-ting: {}", body);
-		
 		String resp = httpComponent.put(url, body, headers);
 		logger.info("Got: {}", resp);
 		
@@ -86,6 +84,7 @@ public abstract class MagentoHttpComponent {
 	public String deleteSecure(String url, Logger logger) {
 		Map<String, String> headers = buildHeaders(HttpMethod.DELETE, url);
 		
+		logger.info("DELETE-ing @ " + url);
 		String resp = httpComponent.delete(url, headers);
 		logger.info("Got: {}", resp);
 		
@@ -94,7 +93,8 @@ public abstract class MagentoHttpComponent {
 
 	public String getSecure(String url, Logger logger) {
 		Map<String, String> headers = buildHeaders(HttpMethod.GET, url);
-		
+
+		logger.info("GET-ting @ " + url);
 		String resp = httpComponent.get(url, headers);
 		logger.info("Got: {}", resp);
 		

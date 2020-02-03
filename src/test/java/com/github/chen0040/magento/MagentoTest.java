@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.junit.Test;
 
 import com.github.chen0040.magento.enums.ConditionTypes;
+import com.github.chen0040.magento.models.category.Category;
 import com.github.chen0040.magento.models.product.Product;
 import com.github.chen0040.magento.models.product.ProductAttribute;
 import com.github.chen0040.magento.models.product.ProductAttributeSet;
@@ -235,5 +236,19 @@ public class MagentoTest {
 		for (ProductImage image : images) {
 			client.products().media().deleteProductImage("BYRON_BROWN", image.getId());
 		}
+	}
+	
+	@Test
+	public void testCategory() {
+		MagentoClient client = new MagentoClient("https://bsmagento2.web07.zero11.net/");
+		client.loginAsAdmin("a.trucco", "zero11zero11");
+		
+		Category category = client.categories().addCategory(
+				new Category()
+				.setName("test")
+				.setIs_active(true)
+		);
+		assertNotNull(category);
+		assertTrue(client.categories().deleteCategory(category.getId()));
 	}
 }

@@ -1,18 +1,18 @@
 package com.github.chen0040.magento.services;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.chen0040.magento.MagentoClient;
 import com.github.chen0040.magento.models.category.Category;
 import com.github.chen0040.magento.models.category.CategoryProduct;
+import com.github.chen0040.magento.models.category.ProductLink;
+import com.github.chen0040.magento.utils.RESTUtils;
 import com.github.mgiorda.oauth.OAuthConfig;
 
 /**
@@ -28,79 +28,48 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		this.client = client;
 	}
 
-	public boolean deleteCategory(long categoryId) {
+	public Category addCategory(Category category) {
+		String uri = baseUri() + "/" + relativePath4Categories;
+		String body = RESTUtils.payloadWrapper("category", category);
+		
+		String json;
+		if (hasCategory(category)) {
+			json = putSecure(uri, body, logger);
+		}
+		else {
+			json = postSecure(uri, body, logger);
+		}
+
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+		return JSON.parseObject(json, Category.class);
+	}
+
+	private boolean hasCategory(Category category) {
+		return getCategory(category.getId()) != null;
+	}
+
+	private boolean categoryHasProduct(Integer categoryId, String productSku) {
+		return getProductsInCategory(categoryId).stream().anyMatch(product -> product.getCategory_id() == categoryId);
+	}
+
+	public List<Category> getCategories() {
+		String uri = baseUri() + "/" + relativePath4Categories;
+		
+		String json = getSecure(uri, logger);
+		
+		if (!validateJSON(json)) {
+			return null;
+		}
+
+		return JSON.parseArray(json, Category.class);
+	}
+
+	public Category getCategory(Integer categoryId) {
 		String uri = baseUri() + "/" + relativePath4Categories + "/" + categoryId;
-		String json = deleteSecure(uri, logger);
 		
-		if (!validateJSON(json)) {
-			return false;
-		}
-		
-		return json.equalsIgnoreCase("true");
-	}
-
-	public Integer addCategory(Category category) {
-		Map<String, Object> cat = new HashMap<>();
-		
-		cat.put("id", category.getId());
-		cat.put("parent_id", category.getParent_id());
-		cat.put("name", category.getName());
-		cat.put("is_active", category.getIs_active());
-		cat.put("position", category.getPosition());
-		cat.put("level", category.getLevel());
-		cat.put("children", "string");
-		cat.put("include_in_menu", true);
-		cat.put("available_sort_by", new ArrayList<>());
-		cat.put("extension_attributes", new ArrayList<>());
-		cat.put("custom_attributes", new ArrayList<>());
-		
-		Map<String, Object> req = new HashMap<>();
-		
-		req.put("category", cat);
-		
-		String uri = baseUri() + "/" + relativePath4Categories;
-		String body = JSON.toJSONString(req, SerializerFeature.BrowserCompatible);
-		String json = postSecure(uri, body, logger);
-
-		if (!validateJSON(json)) {
-			return null;
-		}
-		
-		return JSON.parseObject(json, Integer.class);
-	}
-
-	public Boolean updateCategory(Category category) {
-		Map<String, Object> cat = new HashMap<>();
-		
-		cat.put("id", category.getId());
-		cat.put("parent_id", category.getParent_id());
-		cat.put("name", category.getName());
-		cat.put("is_active", category.getIs_active());
-		cat.put("position", category.getPosition());
-		cat.put("level", category.getLevel());
-		cat.put("children", "string");
-		cat.put("include_in_menu", true);
-		cat.put("available_sort_by", new ArrayList<>());
-		cat.put("extension_attributes", new ArrayList<>());
-		cat.put("custom_attributes", new ArrayList<>());
-		
-		Map<String, Object> req = new HashMap<>();
-		
-		req.put("category", cat);
-		
-		String uri = baseUri() + "/" + relativePath4Categories + "/" + category.getId();
-		String body = JSON.toJSONString(req, SerializerFeature.BrowserCompatible);
-		String json = postSecure(uri, body, logger);
-
-		if (!validateJSON(json)) {
-			return null;
-		}
-		
-		return JSON.parseObject(json, Boolean.class);
-	}
-
-	public Category getCategories() {
-		String uri = baseUri() + "/" + relativePath4Categories;
 		String json = getSecure(uri, logger);
 		
 		if (!validateJSON(json)) {
@@ -110,51 +79,21 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, Category.class);
 	}
 
-	public Category getCategoryByIdClean(Integer id) {
-		String uri = baseUri() + "/" + relativePath4Categories + "/" + id;
+	public Category getCategoryWithChildren(Integer categoryId) {
+		String uri = baseUri() + "/" + relativePath4Categories + "?rootCategoryId=" + categoryId;
 		
-		return getCategoryByUrl(uri);
-	}
-
-	public Category getRootCategoryById(Integer id) {
-		String uri = baseUri() + "/" + relativePath4Categories + "?rootCategoryId=" + id;
-		
-		return getCategoryByUrl(uri);
-	}
-
-	private Category getCategoryByUrl(String uri) {
 		String json = getSecure(uri, logger);
 		
 		if (!validateJSON(json)) {
 			return null;
 		}
-		
+
 		return JSON.parseObject(json, Category.class);
 	}
 
-	public Category getCategoryByIdWithChildren(Integer id) {
-		Category all = getCategories();
+	public List<CategoryProduct> getProductsInCategory(Integer categoryId) {
+		String uri = baseUri() + "/" + relativePath4Categories + "/" + categoryId + "/products";
 		
-		return getCategoryById(all, id);
-	}
-
-	private Category getCategoryById(Category category, Integer id) {
-		if (category.getId() == id) {
-			return category;
-		}
-		
-		for (Category child : category.getChildren_data()) {
-			Category cat = getCategoryById(child, id);
-			if (cat != null) {
-				return cat;
-			}
-		}
-		
-		return null;
-	}
-
-	public List<CategoryProduct> getProductsInCategory(Integer id) {
-		String uri = baseUri() + "/" + relativePath4Categories + "/" + id + "/products";
 		String json = getSecure(uri, logger);
 
 		if (!validateJSON(json)) {
@@ -164,21 +103,59 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		return JSON.parseArray(json, CategoryProduct.class);
 	}
 
-	public boolean addProductToCategory(Integer categoryId, String productSku, Integer position) {
+	public Boolean addProductToCategory(Integer categoryId, String productSku) {
 		String uri = baseUri() + "/" + relativePath4Categories + "/" + categoryId + "/products";
-		Map<String, Object> req = new HashMap<>();
-		Map<String, Object> detail = new HashMap<>();
+		String body = RESTUtils.payloadWrapper("productLink", new ProductLink(categoryId.toString(), productSku));
 		
-		detail.put("sku", productSku);
-		detail.put("position", position);
-		detail.put("category_id", categoryId);
-		detail.put("extension_attributes", new HashMap<>());
-		req.put("productLink", detail);
+		String json;
+		if (categoryHasProduct(categoryId, productSku)) {
+			json = putSecure(uri, body, logger);
+		}
+		else {
+			json = postSecure(uri, body, logger);
+		}
 		
-		String body = JSON.toJSONString(req, SerializerFeature.BrowserCompatible);
-		String json = putSecure(uri, body, logger);
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+		return JSON.parseObject(json, Boolean.class);
+	}
 
-		return json.equals("true");
+	public Boolean removeProductFromCategory(Integer categoryId, String productSku) {
+		String uri = baseUri() + "/" + relativePath4Categories + "/" + categoryId + "/products/" + productSku;
+		
+		String json = deleteSecure(uri, logger);
+
+		return JSON.parseObject(json, Boolean.class);
+	}
+
+	public Boolean deleteCategory(Integer categoryId) {
+		String uri = baseUri() + "/" + relativePath4Categories + "/" + categoryId;
+		
+		String json = deleteSecure(uri, logger);
+		
+		if (!validateJSON(json)) {
+			return false;
+		}
+		
+		return JSON.parseObject(json, Boolean.class);
+	}
+	
+	public Boolean moveCategory(Integer categoryId, Integer fromId, Integer toId) {
+		String uri = baseUri() + "/" + relativePath4Categories + "/" + categoryId + "/move";
+		String body = JSON.toJSONString(Stream.of(new Object[][] {
+			{"parentId", fromId},
+			{"afterId", toId}
+		}).collect(Collectors.toMap(data -> (String) data[0], data -> (Integer) data[1])));
+		
+		String json = putSecure(uri, body, logger);
+		
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+		return JSON.parseObject(json, Boolean.class);
 	}
 
 	@Override
@@ -189,13 +166,6 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 	@Override
 	public String baseUri() {
 		return client.baseUri();
-	}
-
-	public boolean removeProductFromCategory(Integer categoryId, String productSku) {
-		String uri = baseUri() + "/" + relativePath4Categories + "/" + categoryId + "/products/" + productSku;
-		String json = deleteSecure(uri, logger);
-		
-		return json.equals("true");
 	}
 
 	@Override

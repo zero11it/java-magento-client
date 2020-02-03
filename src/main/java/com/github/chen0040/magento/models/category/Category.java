@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.List;
 
 import com.github.chen0040.magento.models.MagentoAttribute;
@@ -23,8 +24,26 @@ public class Category {
 	private Boolean is_active;
 	private Integer position;
 	private Integer level;
-	private Integer product_count;
-	private List<Category> children_data;
-	@SuppressWarnings("rawtypes")
-	private List<MagentoAttribute> custom_attributes;
+	private String children;
+	private Date created_at;
+	private Date updated_at;
+	private String path;
+	List<String> available_sort_by;
+	private Boolean include_in_menu;
+	List<MagentoAttribute<String>> custom_attributes;
+	
+	public Category addChild(String categoryId) {
+		if (children == null) {
+			children = categoryId;
+		}
+		else {
+			children += ", " + categoryId;
+		}
+		
+		return this;
+	}
+	
+	public Category addChild(Category category) {
+		return addChild(category.getId().toString());
+	}
 }
