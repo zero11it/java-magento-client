@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.github.chen0040.magento.MagentoClient;
+import com.github.chen0040.magento.models.search.ConditionType;
 import com.github.chen0040.magento.models.shipment.Shipment;
 import com.github.chen0040.magento.models.shipment.ShipmentComment;
 import com.github.chen0040.magento.models.shipment.ShipmentTrack;
@@ -113,7 +114,7 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 		return JSON.parseArray(resp.get("items"), Shipment.class);
 	}
 	
-	public List<Shipment> search(String field, String value, String condition_type) {
+	public List<Shipment> search(String field, String value, ConditionType condition_type) {
 		String uri = baseUri() + "/" + relativePath4Shipments + "s?"
 				+ "searchCriteria[filterGroups][0][filters][0][field]=" + field + "&"
 				+ "searchCriteria[filterGroups][0][filters][0][value]=" + value + "&"

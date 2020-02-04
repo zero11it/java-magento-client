@@ -9,12 +9,12 @@ import java.util.stream.Collectors;
 
 import org.junit.Test;
 
-import com.github.chen0040.magento.enums.ConditionTypes;
 import com.github.chen0040.magento.models.category.Category;
 import com.github.chen0040.magento.models.product.Product;
 import com.github.chen0040.magento.models.product.ProductAttribute;
 import com.github.chen0040.magento.models.product.ProductAttributeSet;
 import com.github.chen0040.magento.models.product.media.ProductImage;
+import com.github.chen0040.magento.models.search.ConditionType;
 import com.github.chen0040.magento.models.search.SearchCriteria;
 import com.github.chen0040.magento.models.shipment.Shipment;
 import com.github.chen0040.magento.models.store.StoreConfig;
@@ -183,7 +183,7 @@ public class MagentoTest {
 		client.loginAsAdmin("a.trucco", "zero11zero11");
 		
 		assertNotNull(client.shipment().search(0, 10000));
-		List<Shipment> shipments = client.shipment().search("order_id", "2", ConditionTypes.GTEQ);
+		List<Shipment> shipments = client.shipment().search("order_id", "2", ConditionType.GREATER_THAN_OR_EQUAL);
 		assertNotNull(shipments);
 		assertNotNull(client.shipment().saveShipment(shipments.get(0)));
 		assertNotNull(client.shipment().saveTrack(shipments.get(0).getTracks().get(0)));
@@ -195,7 +195,7 @@ public class MagentoTest {
 		client.loginAsAdmin("a.trucco", "zero11zero11");
 		
 		assertNotNull(client.order().searchItems(0, 100));
-		assertNotNull(client.order().searchItems("Name", "test", ConditionTypes.EQ));
+		assertNotNull(client.order().searchItems("Name", "test", ConditionType.EQUAL));
 	}
 	
 	@Test

@@ -17,6 +17,7 @@ import com.github.chen0040.magento.models.order.OrderItem;
 import com.github.chen0040.magento.models.order.OrderRefund;
 import com.github.chen0040.magento.models.order.SalesDataShipment;
 import com.github.chen0040.magento.models.order.StatusHistory;
+import com.github.chen0040.magento.models.search.ConditionType;
 import com.github.chen0040.magento.utils.RESTUtils;
 import com.github.mgiorda.oauth.OAuthConfig;
 
@@ -105,7 +106,7 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 		return JSON.parseArray(resp.get("items"), OrderItem.class);
 	}
 	
-	public List<OrderItem> searchItems(String field, String value, String condition_type) {
+	public List<OrderItem> searchItems(String field, String value, ConditionType condition_type) {
 		String uri = baseUri() + "/" + relativePath4Orders + "s?"
 				+ "searchCriteria[filterGroups][0][filters][0][field]=" + field + "&"
 				+ "searchCriteria[filterGroups][0][filters][0][value]=" + value + "&"
