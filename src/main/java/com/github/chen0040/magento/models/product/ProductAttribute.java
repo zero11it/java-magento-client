@@ -13,7 +13,6 @@ import java.util.List;
  */
 @Getter
 @Setter
-@RequiredArgsConstructor
 @NoArgsConstructor
 public class ProductAttribute {
 	private Boolean is_wysiwyg_enabled;
@@ -35,13 +34,13 @@ public class ProductAttribute {
 	private Boolean is_visible;
 	private String scope;
 	private Integer attribute_id;
-	@NonNull private String attribute_code;
-	@NonNull private String frontend_input;
-	@NonNull private String entity_type_id;
-	@NonNull private Boolean is_required;
+	private String attribute_code;
+	private String frontend_input;
+	private String entity_type_id;
+	private Boolean is_required;
 	private List<ProductAttributeOption> options;
 	private Boolean is_user_defined;
-	@NonNull private String default_frontend_label;
+	private String default_frontend_label;
 	private List<FrontendLabel> frontend_labels;
 	private String backend_type;
 	private String is_unique;
