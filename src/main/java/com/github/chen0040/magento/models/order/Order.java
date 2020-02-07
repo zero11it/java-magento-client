@@ -151,5 +151,5 @@ public class Order {
 	List<StatusHistory> status_histories;
 	
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
-	List<MagentoAttribute> extension_attributes;
+	List<MagentoAttribute<?>> extension_attributes;
 }

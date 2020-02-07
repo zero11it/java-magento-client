@@ -57,8 +57,7 @@ public class Product {
 	private List<String> product_links;
 	private List<TierPrices> tier_prices;
 
-	@SuppressWarnings("rawtypes")
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
-	private List<MagentoAttribute> custom_attributes;
+	private List<MagentoAttribute<?>> custom_attributes;
 
 }

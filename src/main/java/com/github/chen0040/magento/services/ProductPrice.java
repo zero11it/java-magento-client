@@ -19,5 +19,5 @@ public class ProductPrice {
 	private String sku;
 	
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
-	private List<MagentoAttribute> extension_attributes = new ArrayList<>();
+	private List<MagentoAttribute<?>> extension_attributes = new ArrayList<>();
 }

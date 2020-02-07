@@ -25,7 +25,7 @@ public class ShipmentItem {
 	private double weight;
 	
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
-	List<MagentoAttribute> extension_attributes;
+	List<MagentoAttribute<?>> extension_attributes;
 	
 	private long order_item_id;
 	private long qty;

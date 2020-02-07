@@ -22,7 +22,7 @@ public class ShipmentTrack {
 	private String description;
 	
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
-	List<MagentoAttribute> extension_attributes;
+	List<MagentoAttribute<?>> extension_attributes;
 	
 	private String track_number;
 	private String title;

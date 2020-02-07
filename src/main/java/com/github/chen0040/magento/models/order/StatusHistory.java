@@ -22,5 +22,5 @@ public class StatusHistory {
 	private String status;
 	
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
-	List<MagentoAttribute> extension_attributes;
+	List<MagentoAttribute<?>> extension_attributes;
 }

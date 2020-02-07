@@ -8,5 +8,5 @@ import com.github.chen0040.magento.models.serialization.AttributeValueDeserializ
 
 public class ProductOption {
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
-	List<MagentoAttribute> extension_attributes;
+	List<MagentoAttribute<?>> extension_attributes;
 }

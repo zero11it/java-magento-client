@@ -24,5 +24,5 @@ public class StoreGroup {
 	    private String code;
 	    
 	    @JSONField(deserializeUsing = AttributeValueDeserializer.class)
-	    private List<MagentoAttribute> extension_attributes;
+	    private List<MagentoAttribute<?>> extension_attributes;
 }

@@ -109,5 +109,5 @@ public class OrderItem {
 	ProductOption product_option;
 	
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
-	List<MagentoAttribute> extension_attributes;
+	List<MagentoAttribute<?>> extension_attributes;
 }

@@ -13,5 +13,5 @@ import lombok.Setter;
 @Setter
 public class InvoiceArguments {
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
-	List<MagentoAttribute> extension_attributes;
+	List<MagentoAttribute<?>> extension_attributes;
 }

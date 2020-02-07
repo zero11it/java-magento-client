@@ -33,7 +33,7 @@ public class Shipment {
 	List<ShipmentComment> comments;
 	
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
-	List<MagentoAttribute> extension_attributes;
+	List<MagentoAttribute<?>> extension_attributes;
 	
 	public boolean is_email_sent() {
 		return email_sent > 0;

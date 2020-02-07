@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 public class SalesDataTrack {
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
-	private List<MagentoAttribute> extension_attributes;
+	private List<MagentoAttribute<?>> extension_attributes;
 	
 	private String track_number;
 	private String title;

@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 public class SalesDataComment {
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
-	List<MagentoAttribute> extension_attributes;
+	List<MagentoAttribute<?>> extension_attributes;
 	
 	private String comment;
 	private long is_visible_on_front;

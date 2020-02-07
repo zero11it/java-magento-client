@@ -13,5 +13,5 @@ import lombok.Setter;
 @Setter
 public class ShipmentPackage {
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
-	private List<MagentoAttribute> extension_attributes;
+	private List<MagentoAttribute<?>> extension_attributes;
 }

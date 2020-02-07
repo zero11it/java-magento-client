@@ -24,5 +24,5 @@ public class StoreView {
 	    private Boolean is_active;
 	    
 	    @JSONField(deserializeUsing = AttributeValueDeserializer.class)
-	    private List<MagentoAttribute> extension_attributes;
+	    private List<MagentoAttribute<?>> extension_attributes;
 }

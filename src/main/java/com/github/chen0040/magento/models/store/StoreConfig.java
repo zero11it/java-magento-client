@@ -34,5 +34,5 @@ public class StoreConfig {
 	private String secure_base_media_url;
     
     @JSONField(deserializeUsing = AttributeValueDeserializer.class)
-    private List<MagentoAttribute> extension_attributes;
+    private List<MagentoAttribute<?>> extension_attributes;
 }

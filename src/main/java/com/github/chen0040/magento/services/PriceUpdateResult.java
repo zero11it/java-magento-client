@@ -17,5 +17,5 @@ public class PriceUpdateResult {
 	List<String> parameters;
 
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
-	private List<MagentoAttribute> extension_attributes = new ArrayList<>();
+	private List<MagentoAttribute<?>> extension_attributes = new ArrayList<>();
 }

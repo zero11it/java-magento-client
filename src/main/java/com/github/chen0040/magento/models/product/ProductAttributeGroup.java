@@ -21,5 +21,5 @@ public class ProductAttributeGroup {
 	 private Integer attribute_set_id;
 	 
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
-	private List<MagentoAttribute> extension_attributes;
+	private List<MagentoAttribute<?>> extension_attributes;
 }

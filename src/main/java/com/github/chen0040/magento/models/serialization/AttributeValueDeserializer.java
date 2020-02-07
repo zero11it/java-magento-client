@@ -19,7 +19,7 @@ public class AttributeValueDeserializer implements ObjectDeserializer {
 	public <T> T deserialze(DefaultJSONParser parser, Type type, Object o) {
 		Object obj = parser.parse();
 
-		List<MagentoAttribute> result = new ArrayList<>();
+		List<MagentoAttribute<?>> result = new ArrayList<>();
 
 		if (obj instanceof JSONArray) {
 			JSONArray ja = (JSONArray) obj;

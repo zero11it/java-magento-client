@@ -22,5 +22,5 @@ public class Website {
 	    private Integer default_group_id;
 	    
 	    @JSONField(deserializeUsing = AttributeValueDeserializer.class)
-	    private List<MagentoAttribute> extension_attributes;
+	    private List<MagentoAttribute<?>> extension_attributes;
 }
