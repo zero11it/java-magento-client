@@ -76,6 +76,30 @@ public class MagentoProductManager extends MagentoHttpComponent {
 
 		return JSON.parseObject(json, Product.class);
 	}
+	
+	public ProductAttribute getProductAttribute(Integer attributeId) {
+		String uri = baseUri() + relativePath4Products + "/attributes/" + attributeId;
+		String json = getSecure(uri, logger);
+
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+
+		return JSON.parseObject(json, ProductAttribute.class);
+	}
+	
+	public ProductAttribute getProductAttribute(String attributeCode) {
+		String uri = baseUri() + relativePath4Products + "/attributes/" + attributeCode;
+		String json = getSecure(uri, logger);
+
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+
+		return JSON.parseObject(json, ProductAttribute.class);
+	}
 
 	public List<ProductAttribute> getProductAttributes() {
 		String uri = baseUri() + relativePath4Products + "/attributes?searchCriteria[currentPage]=0";
@@ -87,17 +111,6 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		
 
 		return RESTUtils.getArrayByKey(json, "items", ProductAttribute.class);
-	}
-	
-	public ProductAttribute getProductAttributeByCode(String attributeCode) {
-		String uri = baseUri() + relativePath4Products + "/attributes/" + attributeCode;
-		String json = getSecure(uri, logger);
-
-		if (!validateJSON(json)) {
-			return null;
-		}
-
-		return JSON.parseObject(json, ProductAttribute.class);
 	}
 	
 	public List<ProductAttribute> getProductAttributesInSet(Integer attributeSetId) {
@@ -151,6 +164,20 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return JSON.parseArray(json, ProductAttributeType.class);
 	}
 	
+	public ProductAttributeGroup getProductAttributeGroup(Integer attributeGroupId) {
+		List<ProductAttributeGroup> groups = getProductAttributeGroups();
+		
+		if (groups == null) {
+			return null;
+		}
+		
+		Optional<ProductAttributeGroup> group = groups.stream()
+				.filter(_group -> _group.getAttribute_group_id().equals(attributeGroupId.toString()))
+				.findAny();
+		
+		return group.isPresent() ? group.get() : null;
+	}
+	
 	public List<ProductAttributeGroup> getProductAttributeGroups() {
 		String uri = baseUri() + relativePath4Products + "/attribute-sets/groups/list?searchCriteria[currentPage]=0";
 		String json = getSecure(uri, logger);
@@ -160,6 +187,20 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		}
 
 		return RESTUtils.getArrayByKey(json, "items", ProductAttributeGroup.class);
+	}
+	
+	public ProductAttributeSet getProductAttributeSet(Integer attributeSetId) {
+		List<ProductAttributeSet> sets = getProductAttributeSets();
+		
+		if (sets == null) {
+			return null;
+		}
+		
+		Optional<ProductAttributeSet> set = sets.stream()
+				.filter(_set -> _set.getAttribute_set_id().equals(attributeSetId.toString()))
+				.findAny();
+		
+		return set.isPresent() ? set.get() : null;
 	}
 
 	public List<ProductAttributeSet> getProductAttributeSets() {
