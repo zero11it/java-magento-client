@@ -40,6 +40,7 @@ public class ProductExtensionAttributes {
 	
 	@Getter
 	@Setter
+	@NoArgsConstructor
 	@AllArgsConstructor
 	private class CategoryLink {
 		Integer position;
@@ -48,6 +49,7 @@ public class ProductExtensionAttributes {
 	
 	@Getter
 	@Setter
+	@NoArgsConstructor
 	@AllArgsConstructor
 	private class StockItem {
 		Integer qty;
