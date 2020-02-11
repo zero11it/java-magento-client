@@ -52,11 +52,11 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, Category.class);
 	}
 
-	private boolean hasCategory(Category category) {
+	public boolean hasCategory(Category category) {
 		return getCategories().stream().anyMatch(cat -> cat.getName().equals(category.getName()));
 	}
 
-	private boolean categoryHasProduct(Integer categoryId, String productSku) {
+	public boolean categoryHasProduct(Integer categoryId, String productSku) {
 		return getProductsInCategory(categoryId).stream().anyMatch(product -> product.getCategory_id() == categoryId);
 	}
 

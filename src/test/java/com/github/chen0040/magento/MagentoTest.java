@@ -249,6 +249,12 @@ public class MagentoTest {
 				.setIs_active(true)
 		);
 		assertNotNull(category);
+		category = client.categories().addCategory(
+				new Category()
+				.setName("test")
+				.setIs_active(true)
+		);
+		assertNotNull(category);
 		assertTrue(client.categories().deleteCategory(category.getId()));
 	}
 }
