@@ -62,7 +62,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		String uri = baseUri() + "/" + relativePath4Categories + "/" + category.getId();
 		String body = RESTUtils.payloadWrapper("category", category);
 		
-		String json = postSecure(uri, body, logger);
+		String json = putSecure(uri, body, logger);
 		
 		if (!validateJSON(json)) {
 			return null;
