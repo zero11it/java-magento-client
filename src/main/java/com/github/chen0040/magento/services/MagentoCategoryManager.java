@@ -1,6 +1,7 @@
 package com.github.chen0040.magento.services;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -94,6 +95,19 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		}
 
 		return JSON.parseObject(json, Category.class);
+	}
+	
+	public Category getCategory(String categoryName) {
+		List<Category> categories = getCategories();
+		Optional<Category> category = categories.stream()
+				.filter(_category -> _category.getName().equals(categoryName))
+				.findAny();
+		
+		if (category.isPresent()) {
+			return category.get();
+		}
+		
+		return null;
 	}
 
 	public Category getCategoryWithChildren(Integer categoryId) {
