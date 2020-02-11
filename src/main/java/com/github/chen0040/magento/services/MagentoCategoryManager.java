@@ -36,16 +36,34 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		
 		String json;
 		if (hasCategory(category)) {
-			uri += "/" + getCategories().stream()
-					.filter(cat -> cat.getName().equals(category.getName()))
-					.collect(Collectors.toList())
-					.get(0).getId();
-			json = putSecure(uri, body, logger);
+			if (category.getId() == null) {
+				category.setId(
+						getCategories().stream()
+						.filter(_category -> _category.getName().equals(category.getName()))
+						.collect(Collectors.toList())
+						.get(0)
+						.getId()
+				);
+			}
+			return updateCategory(category);
 		}
 		else {
 			json = postSecure(uri, body, logger);
 		}
 
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+		return JSON.parseObject(json, Category.class);
+	}
+
+	public Category updateCategory(Category category) {
+		String uri = baseUri() + "/" + relativePath4Categories + "/" + category.getId();
+		String body = RESTUtils.payloadWrapper("category", category);
+		
+		String json = postSecure(uri, body, logger);
+		
 		if (!validateJSON(json)) {
 			return null;
 		}
