@@ -12,6 +12,7 @@ import com.github.chen0040.magento.models.product.ProductAttributeOption;
 import com.github.chen0040.magento.models.product.ProductAttributeSet;
 import com.github.chen0040.magento.models.product.ProductAttributeType;
 import com.github.chen0040.magento.models.product.ProductCost;
+import com.github.chen0040.magento.models.product.ProductExtensionAttributes;
 import com.github.chen0040.magento.models.product.ProductPrice;
 import com.github.chen0040.magento.models.product.ProductType;
 import com.github.chen0040.magento.models.search.SearchCriteria;
@@ -69,7 +70,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return RESTUtils.getArrayByKey(json, "items", Product.class);
 	}
 
-	public Product getProductBySku(String sku) {
+	public Product getProduct(String sku) {
 		String uri = baseUri() + relativePath4Products + "/" + escape(sku);
 		String json = getSecure(uri, logger);
 
@@ -273,7 +274,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 	}
 	
 	public boolean hasProduct(String sku) {
-		return getProductBySku(sku) != null;
+		return getProduct(sku) != null;
 	}
 	
 	public ProductAttributeSet saveProductAttributeSet(ProductAttributeSet attributeSet) {
@@ -571,6 +572,16 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		}
 		
 		return JSON.parseArray(json, PriceUpdateResult.class);
+	}
+	
+	public Product updateProductAvailability(String sku, Integer amount) {
+		Product product = getProduct(sku);
+		
+		product.setExtension_attributes(new ProductExtensionAttributes()
+				.setStock(amount)
+		);
+		
+		return saveProduct(product);
 	}
 	
 	public Boolean deleteProductAttributeGroup(Integer groupId) {
