@@ -10,12 +10,15 @@ import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSON;
 import com.github.chen0040.magento.MagentoClient;
+import com.github.chen0040.magento.models.MagentoAttribute;
+import com.github.chen0040.magento.models.MagentoError;
 import com.github.chen0040.magento.models.category.Category;
 import com.github.chen0040.magento.models.category.CategoryProduct;
 import com.github.chen0040.magento.models.category.ProductLink;
 import com.github.chen0040.magento.models.search.ConditionType;
 import com.github.chen0040.magento.models.search.SearchCriteria;
 import com.github.chen0040.magento.utils.RESTUtils;
+import com.github.mgiorda.oauth.HttpMethod;
 import com.github.mgiorda.oauth.OAuthConfig;
 
 /**
@@ -143,6 +146,31 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		}
 
 		return JSON.parseArray(json, CategoryProduct.class);
+	}
+	
+	public Category getCategoryByUrlKey(String urlKey) {
+		Optional<Category> category = getCategories().stream()
+				.filter(_category -> getCategoryCustomAttribute(_category, "url_key") != null)
+				.filter(_category -> getCategoryCustomAttribute(_category, "url_key").getValue().equals(urlKey))
+				.findFirst();
+		
+		if (category.isPresent()) {
+			return category.get();
+		}
+		
+		return null;
+	}
+
+	public MagentoAttribute<String> getCategoryCustomAttribute(Category category, String attribute_code) {
+		Optional<MagentoAttribute<String>> attribute = category.getCustom_attributes().stream()
+		.filter(_attribute -> _attribute.getAttribute_code().equals(attribute_code))
+		.findFirst();
+		
+		if (attribute.isPresent()) {
+			return attribute.get();
+		}
+		
+		return null;
 	}
 
 	public Boolean addProductToCategory(Integer categoryId, String productSku) {

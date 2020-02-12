@@ -113,7 +113,6 @@ public class MagentoProductManager extends MagentoHttpComponent {
 			return null;
 		}
 		
-
 		return RESTUtils.getArrayByKey(json, "items", ProductAttribute.class);
 	}
 	

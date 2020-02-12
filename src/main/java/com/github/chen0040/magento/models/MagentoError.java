@@ -12,6 +12,6 @@ import java.util.List;
 @Setter
 @Getter
 public class MagentoError {
-	private String message = "";
-	private List<MagentoParameter> parameters = new ArrayList<>();
+	private String message;
+	private List<String> parameters;
 }
