@@ -2,15 +2,11 @@ package com.github.chen0040.magento.models.search;
 
 import lombok.Getter;
 
-import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.http.client.utils.URLEncodedUtils;
 
 /**
  * Created by xschen on 12/6/2017.
@@ -97,10 +93,10 @@ public class SearchCriteria {
 						String.format("searchCriteria[filter_groups][%d][filters][%d][field]=%s", curField, curFilter, encode(field))
 				);
 				args.add(
-						String.format("searchCriteria[filter_groups][%d][filters][%d][value]=%s", curField, curFilter, encode(filter.toString()))
+						String.format("searchCriteria[filter_groups][%d][filters][%d][value]=%s", curField, curFilter, encode(filter.getValue()))
 				);
 				args.add(
-						String.format("searchCriteria[filter_groups][%d][filters][%d][condition_type]=%s", curField, curFilter, encode(filter.getCondition_type().name()))
+						String.format("searchCriteria[filter_groups][%d][filters][%d][condition_type]=%s", curField, curFilter, encode(filter.getCondition_type().toString()))
 				);
 			}
 		}
