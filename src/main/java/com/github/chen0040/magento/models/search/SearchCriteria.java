@@ -2,11 +2,15 @@ package com.github.chen0040.magento.models.search;
 
 import lombok.Getter;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.http.client.utils.URLEncodedUtils;
 
 /**
  * Created by xschen on 12/6/2017.
@@ -49,42 +53,36 @@ public class SearchCriteria {
 		
 		return this;
 	}
+
+	private String encode(String string) {
+		return string.replaceAll("[\\s]+", "+");
+	}
 	
 	@Override
 	public String toString() {
-		StringBuilder args = new StringBuilder();
+		List<String> args = new ArrayList<>();
 		
-		args.append(getFilterGroupArgs());
+		args.addAll(getFilterGroupArgs());
 		
 		if (current_page != null) {
-			args.append("searchCriteria[currentPage]=");
-			args.append(current_page);
-			args.append("&");
+			args.add("searchCriteria[currentPage]=" + encode(current_page.toString()));
 		}
 		
 		if (page_size != null) {
-			args.append("searchCriteria[pageSize]=");
-			args.append(page_size);
-			args.append("&");
+			args.add("searchCriteria[pageSize]=" + encode(page_size.toString()));
 		}
 		
-		args.append(getSortOrderArgs());
+		args.addAll(getSortOrderArgs());
 		
-		String ret = args.toString();
-		
-		if (ret.endsWith("&")) {
-			ret = ret.substring(0, ret.length()-1);
-		}
-		
-		return args.toString();
+		return String.join("&", args);
 	}
 
-	private String getFilterGroupArgs() {
+	private List<String> getFilterGroupArgs() {
 		if (filter_groups.size() == 0) {
-			return "";
+			return new ArrayList<>();
 		}
 		
-		StringBuilder args = new StringBuilder();
+		List<String> args = new ArrayList<>();
 		
 		Set<String> fields = filter_groups.keySet();
 		int curField = 0;
@@ -95,49 +93,39 @@ public class SearchCriteria {
 			for (int curFilter = 0; curFilter < filters.size(); curFilter++) {
 				Filter filter = filters.get(curFilter);
 				
-				args.append(
-						String.format("searchCriteria[filter_groups][%d][filters][%d][field]=", curField, curFilter)
+				args.add(
+						String.format("searchCriteria[filter_groups][%d][filters][%d][field]=%s", curField, curFilter, encode(field))
 				);
-				args.append(field);
-				args.append("&");
-				args.append(
-						String.format("searchCriteria[filter_groups][%d][filters][%d][value]=", curField, curFilter)
+				args.add(
+						String.format("searchCriteria[filter_groups][%d][filters][%d][value]=%s", curField, curFilter, encode(filter.toString()))
 				);
-				args.append(filter.getValue());
-				args.append("&");
-				args.append(
-						String.format("searchCriteria[filter_groups][%d][filters][%d][condition_type]=", curField, curFilter)
+				args.add(
+						String.format("searchCriteria[filter_groups][%d][filters][%d][condition_type]=%s", curField, curFilter, encode(filter.getCondition_type().name()))
 				);
-				args.append(filter.getCondition_type());
-				args.append("&");
 			}
 		}
 		
-		return args.toString();
+		return args;
 	}
 
-	private String getSortOrderArgs() {
+	private List<String> getSortOrderArgs() {
 		if (sort_orders.size() == 0) {
-			return "";
+			return new ArrayList<>();
 		}
 		
-		StringBuilder args = new StringBuilder();
+		List<String> args = new ArrayList<>();
 		
 		for (int curSortOrder = 0; curSortOrder < sort_orders.size(); curSortOrder++) {
 			SortOrder sort_order = sort_orders.get(curSortOrder);
 			
-			args.append(
-					String.format("searchCriteria[sortOrders][%d][field]=", curSortOrder)
+			args.add(
+					String.format("searchCriteria[sortOrders][%d][field]=%s", curSortOrder, encode(sort_order.getField()))
 			);
-			args.append(sort_order.getField());
-			args.append("&");
-			args.append(
-					String.format("searchCriteria[sortOrders][%d][direction]=", curSortOrder)
+			args.add(
+					String.format("searchCriteria[sortOrders][%d][direction]=%s", curSortOrder, encode(sort_order.getDirection().name()))
 			);
-			args.append(sort_order.getDirection());
-			args.append("&");
 		}
 		
-		return args.toString();
+		return args;
 	}
 }
