@@ -13,6 +13,7 @@ import com.github.chen0040.magento.MagentoClient;
 import com.github.chen0040.magento.models.category.Category;
 import com.github.chen0040.magento.models.category.CategoryProduct;
 import com.github.chen0040.magento.models.category.ProductLink;
+import com.github.chen0040.magento.models.search.ConditionType;
 import com.github.chen0040.magento.models.search.SearchCriteria;
 import com.github.chen0040.magento.utils.RESTUtils;
 import com.github.mgiorda.oauth.OAuthConfig;
@@ -119,10 +120,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 	}
 	
 	public Category getCategory(String categoryName) {
-		List<Category> categories = getCategories();
-		Optional<Category> category = categories.stream()
-				.filter(_category -> _category.getName().equals(categoryName))
-				.findAny();
+		Optional<Category> category = searchCategories(new SearchCriteria().addFilterGroup("name", categoryName, ConditionType.LIKE)).stream().findFirst();
 		
 		if (category.isPresent()) {
 			return category.get();
