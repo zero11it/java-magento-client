@@ -1,4 +1,4 @@
-package com.github.chen0040.magento.services;
+package com.github.chen0040.magento.models.product;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -9,12 +9,14 @@ import com.github.chen0040.magento.models.MagentoAttribute;
 import com.github.chen0040.magento.models.serialization.AttributeValueDeserializer;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ProductPrice {
-	private BigDecimal price = new BigDecimal(0);
+@NoArgsConstructor
+public class ProductCost {
+	private BigDecimal cost = new BigDecimal(0);
 	private long store_id;
 	private String sku;
 	

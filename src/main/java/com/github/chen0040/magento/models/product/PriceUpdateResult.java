@@ -1,6 +1,5 @@
-package com.github.chen0040.magento.services;
+package com.github.chen0040.magento.models.product;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,11 +12,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProductCost {
-	private BigDecimal cost = new BigDecimal(0);
-	private long store_id;
-	private String sku;
-	
+public class PriceUpdateResult {
+	private String message;
+	List<String> parameters;
+
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
 	private List<MagentoAttribute<?>> extension_attributes = new ArrayList<>();
 }
