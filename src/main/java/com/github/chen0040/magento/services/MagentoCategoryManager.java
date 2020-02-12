@@ -38,13 +38,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		String json;
 		if (hasCategory(category)) {
 			if (category.getId() == null) {
-				category.setId(
-						getCategories().stream()
-						.filter(_category -> _category.getName().equals(category.getName()))
-						.collect(Collectors.toList())
-						.get(0)
-						.getId()
-				);
+				category.setId(getCategory(category.getName()).getId());
 			}
 			return updateCategory(category);
 		}

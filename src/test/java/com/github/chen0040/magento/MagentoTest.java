@@ -249,12 +249,25 @@ public class MagentoTest {
 				.setIs_active(true)
 		);
 		assertNotNull(category);
+		
 		category = client.categories().addCategory(
 				new Category()
 				.setName("test")
 				.setIs_active(true)
 		);
 		assertNotNull(category);
+		
+		client.switchStoreView("it");
+		category = client.categories().addCategory(
+				new Category()
+				.setName("test-it")
+				.setIs_active(true)
+		);
+		assertNotNull(category);
+		assertTrue(client.categories().deleteCategory(category.getId()));
+		
+		client.switchStoreViewToDefault();
+		category = client.categories().getCategory("test");
 		assertTrue(client.categories().deleteCategory(category.getId()));
 	}
 }
