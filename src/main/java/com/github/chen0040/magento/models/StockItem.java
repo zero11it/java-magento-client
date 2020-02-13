@@ -10,7 +10,7 @@ import java.util.Date;
  */
 @Setter
 @Getter
-public class StockItems {
+public class StockItem {
 	private long item_id = 0;
 	private long product_id = 0;
 	private long stock_id = 0;

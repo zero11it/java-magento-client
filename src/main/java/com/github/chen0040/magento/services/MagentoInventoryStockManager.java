@@ -3,7 +3,7 @@ package com.github.chen0040.magento.services;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.chen0040.magento.MagentoClient;
-import com.github.chen0040.magento.models.StockItems;
+import com.github.chen0040.magento.models.StockItem;
 import com.github.mgiorda.oauth.OAuthConfig;
 
 import org.slf4j.Logger;
@@ -36,7 +36,7 @@ public class MagentoInventoryStockManager extends MagentoHttpComponent {
 		return client.baseUri();
 	}
 
-	public StockItems getStockItems(String productSku) {
+	public StockItem getStockItems(String productSku) {
 		String uri = baseUri() + "/" + relativePath + "/" + productSku;
 		String json = getSecure(uri, logger);
 		
@@ -44,12 +44,12 @@ public class MagentoInventoryStockManager extends MagentoHttpComponent {
 			return null;
 		}
 		
-		StockItems result = JSON.parseObject(json, StockItems.class);
+		StockItem result = JSON.parseObject(json, StockItem.class);
 		
 		return result;
 	}
 
-	public String saveStockItems(String productSku, StockItems si) {
+	public String saveStockItems(String productSku, StockItem si) {
 		String uri = baseUri() + "/rest/V1/products/" + escape(productSku) + "/stockItems/" + si.getItem_id();
 		Map<String, Object> req = new HashMap<>();
 		Map<String, Object> obj = new HashMap<>();
