@@ -14,6 +14,7 @@ import com.github.chen0040.magento.models.search.ConditionType;
 import com.github.chen0040.magento.models.shipment.Shipment;
 import com.github.chen0040.magento.models.shipment.ShipmentComment;
 import com.github.chen0040.magento.models.shipment.ShipmentTrack;
+import com.github.chen0040.magento.utils.StringUtils;
 import com.github.mgiorda.oauth.OAuthConfig;
 
 public class MagentoShipmentManager extends MagentoHttpComponent {
@@ -139,7 +140,7 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 		
 		String body = JSON.toJSONString(req);
 		
-		String json = postSecure(uri, body, logger);
+		String json = postSecure(uri, StringUtils.utf8(body), logger);
 		
 		if (!validateJSON(json)) {
 			return null;
@@ -156,7 +157,7 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 		
 		String body = JSON.toJSONString(req);
 		
-		String json = postSecure(uri, body, logger);
+		String json = postSecure(uri, StringUtils.utf8(body), logger);
 		
 		if (!validateJSON(json)) {
 			return null;

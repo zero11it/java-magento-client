@@ -17,6 +17,7 @@ import com.github.chen0040.magento.models.product.ProductPrice;
 import com.github.chen0040.magento.models.product.ProductType;
 import com.github.chen0040.magento.models.search.SearchCriteria;
 import com.github.chen0040.magento.utils.RESTUtils;
+import com.github.chen0040.magento.utils.StringUtils;
 import com.github.mgiorda.oauth.OAuthConfig;
 
 import org.slf4j.Logger;
@@ -295,10 +296,10 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		String json;
 		
 		if (attributeSet.getAttribute_set_id() != null && hasProductAttributeSet(attributeSet.getAttribute_set_id())) {
-			json = putSecure(uri, body, logger);
+			json = putSecure(uri, StringUtils.utf8(body), logger);
 		}
 		else {
-			json = postSecure(uri, body, logger);
+			json = postSecure(uri, StringUtils.utf8(body), logger);
 		}
 		
 		if (!validateJSON(json)) {
@@ -314,7 +315,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 				+ "\"group\" : " + JSON.toJSONString(attributeGroup)
 				+ "}";
 		
-		String json = postSecure(uri, body, logger);
+		String json = postSecure(uri, StringUtils.utf8(body), logger);
 		
 		if (!validateJSON(json)) {
 			return null;
@@ -329,7 +330,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 				+ "\"group\" : " + JSON.toJSONString(attributeGroup)
 				+ "}";
 		
-		String json = putSecure(uri, body, logger);
+		String json = putSecure(uri, StringUtils.utf8(body), logger);
 		
 		if (!validateJSON(json)) {
 			return null;
@@ -349,7 +350,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		
 		String body = JSON.toJSONString(req);
 		
-		String json = postSecure(uri, body, logger);
+		String json = postSecure(uri, StringUtils.utf8(body), logger);
 		Integer resp;
 		
 		try {
@@ -366,7 +367,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		String uri = baseUri() + relativePath4Products + "/attributes";
 		String body = RESTUtils.payloadWrapper("attribute", attribute);
 		
-		String json = postSecure(uri, body, logger);
+		String json = postSecure(uri, StringUtils.utf8(body), logger);
 		
 		if (!validateJSON(json)) {
 			return null;
@@ -379,7 +380,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		String uri = baseUri() + relativePath4Products + "/attribute-sets/attributes/" + attributeCode;
 		String body = RESTUtils.payloadWrapper("attribute", attribute);
 		
-		String json = putSecure(uri, body, logger);
+		String json = putSecure(uri, StringUtils.utf8(body), logger);
 		
 		if (!validateJSON(json)) {
 			return null;
@@ -392,7 +393,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		String uri = baseUri() + relativePath4Products + "/attributes/" + attributeCode + "/options";
 		String body = RESTUtils.payloadWrapper("option", option);
 		
-		String json = postSecure(uri, body, logger);
+		String json = postSecure(uri, StringUtils.utf8(body), logger);
 		
 		if (!validateJSON(json)) {
 			return null;
@@ -424,9 +425,9 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		
 		if (hasProduct(sku)) {
 			uri = uri + "/" + escape(sku);
-			json = putSecure(uri, body, logger);
+			json = putSecure(uri, StringUtils.utf8(body), logger);
 		} else {
-			json = postSecure(uri, body, logger);
+			json = postSecure(uri, StringUtils.utf8(body), logger);
 		}
 		
 		if (!validateJSON(json)) {
@@ -452,7 +453,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		String uri = baseUri() + relativePath4ConfigurableProducts + "/" + parentSku + "/child";
 		String body = String.format("{ \"childSku\" : \"%s\" }", childSku);
 		
-		String json = postSecure(uri, body, logger);
+		String json = postSecure(uri, StringUtils.utf8(body), logger);
 		
 		if (!validateJSON(json)) {
 			return null;
@@ -501,7 +502,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		String uri = baseUri() + relativePath4ConfigurableProducts + "/" + sku + "/options";
 		String body = RESTUtils.payloadWrapper("option", option);
 		
-		String json = postSecure(uri, body, logger);
+		String json = postSecure(uri, StringUtils.utf8(body), logger);
 		
 		if (!validateJSON(json)) {
 			return null;
@@ -514,7 +515,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		String uri = baseUri() + relativePath4ConfigurableProducts + "/" + sku + "/options/" + optionId;
 		String body = RESTUtils.payloadWrapper("option", option);
 		
-		String json = putSecure(uri, body, logger);
+		String json = putSecure(uri, StringUtils.utf8(body), logger);
 		
 		if (!validateJSON(json)) {
 			return null;
@@ -551,7 +552,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		String uri = baseUri() + relativePath4Products + "/base-prices";
 		String body = RESTUtils.payloadWrapper("prices", prices);
 		
-		String json = postSecure(uri, body, logger);
+		String json = postSecure(uri, StringUtils.utf8(body), logger);
 		
 		if (!validateJSON(json)) {
 			return null;
@@ -564,7 +565,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		String uri = baseUri() + relativePath4Products + "/base-prices";
 		String body = RESTUtils.payloadWrapper("prices", costs);
 		
-		String json = postSecure(uri, body, logger);
+		String json = postSecure(uri, StringUtils.utf8(body), logger);
 		
 		if (!validateJSON(json)) {
 			return null;
@@ -627,7 +628,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		String uri = baseUri() + relativePath4Products + "/cost-delete";
 		String body = RESTUtils.payloadWrapper("skus", skus);
 		
-		String json = postSecure(uri, body, logger);
+		String json = postSecure(uri, StringUtils.utf8(body), logger);
 		
 		return Boolean.parseBoolean(json);
 	}

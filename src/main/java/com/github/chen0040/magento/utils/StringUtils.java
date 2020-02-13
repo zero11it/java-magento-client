@@ -1,5 +1,7 @@
 package com.github.chen0040.magento.utils;
 
+import java.nio.charset.StandardCharsets;
+
 /**
  * Created by xschen on 12/6/2017.
  */
@@ -36,5 +38,10 @@ public class StringUtils {
 			}
 		}
 		return true;
+	}
+	
+	public static String utf8(String text) {
+		byte[] bytes = text.getBytes(StandardCharsets.ISO_8859_1);
+		return new String(bytes, StandardCharsets.UTF_8);
 	}
 }

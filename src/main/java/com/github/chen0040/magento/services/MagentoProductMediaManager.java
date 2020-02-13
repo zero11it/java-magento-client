@@ -8,6 +8,7 @@ import com.github.chen0040.magento.models.product.media.ProductImageContent;
 import com.github.chen0040.magento.models.product.media.ProductImageType;
 import com.github.chen0040.magento.models.product.media.ProductVideoContent;
 import com.github.chen0040.magento.utils.RESTUtils;
+import com.github.chen0040.magento.utils.StringUtils;
 import com.github.mgiorda.oauth.OAuthConfig;
 
 import java.io.File;
@@ -48,7 +49,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 		String uri = baseUri() + "/rest/V1/products/" + sku + "/media";
 		String body = RESTUtils.payloadWrapper("entry", image);
 		
-		String json = postSecure(uri, body, logger);
+		String json = postSecure(uri, StringUtils.utf8(body), logger);
 		
 		if (!validateJSON(json)) {
 			return null;
@@ -110,7 +111,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 		String uri = baseUri() + "/rest/V1/products/" + sku + "/media/" + entryId;
 		String body = RESTUtils.payloadWrapper("entry", image);
 		
-		String json = putSecure(uri, body, logger);
+		String json = putSecure(uri, StringUtils.utf8(body), logger);
 		
 		if (!validateJSON(json)) {
 			return null;

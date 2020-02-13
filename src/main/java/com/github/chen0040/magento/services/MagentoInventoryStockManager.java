@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.chen0040.magento.MagentoClient;
 import com.github.chen0040.magento.models.StockItem;
+import com.github.chen0040.magento.utils.StringUtils;
 import com.github.mgiorda.oauth.OAuthConfig;
 
 import org.slf4j.Logger;
@@ -88,7 +89,7 @@ public class MagentoInventoryStockManager extends MagentoHttpComponent {
 		req.put("stockItem", obj);
 		
 		String body = JSON.toJSONString(req, SerializerFeature.BrowserCompatible);
-		String stockId = putSecure(uri, body, logger);
+		String stockId = putSecure(uri, StringUtils.utf8(body), logger);
 
 		if (!validateJSON(stockId)) {
 			return null;

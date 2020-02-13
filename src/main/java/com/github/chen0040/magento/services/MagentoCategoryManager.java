@@ -11,14 +11,13 @@ import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSON;
 import com.github.chen0040.magento.MagentoClient;
 import com.github.chen0040.magento.models.MagentoAttribute;
-import com.github.chen0040.magento.models.MagentoError;
 import com.github.chen0040.magento.models.category.Category;
 import com.github.chen0040.magento.models.category.CategoryProduct;
 import com.github.chen0040.magento.models.category.ProductLink;
 import com.github.chen0040.magento.models.search.ConditionType;
 import com.github.chen0040.magento.models.search.SearchCriteria;
 import com.github.chen0040.magento.utils.RESTUtils;
-import com.github.mgiorda.oauth.HttpMethod;
+import com.github.chen0040.magento.utils.StringUtils;
 import com.github.mgiorda.oauth.OAuthConfig;
 
 /**
@@ -46,7 +45,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 			return updateCategory(category);
 		}
 		else {
-			json = postSecure(uri, body, logger);
+			json = postSecure(uri, StringUtils.utf8(body), logger);
 		}
 
 		if (!validateJSON(json)) {
@@ -60,7 +59,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		String uri = baseUri() + "/" + relativePath4Categories + "/" + category.getId();
 		String body = RESTUtils.payloadWrapper("category", category);
 		
-		String json = putSecure(uri, body, logger);
+		String json = putSecure(uri, StringUtils.utf8(body), logger);
 		
 		if (!validateJSON(json)) {
 			return null;
@@ -182,10 +181,10 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		
 		String json;
 		if (categoryHasProduct(categoryId, productSku)) {
-			json = putSecure(uri, body, logger);
+			json = putSecure(uri, StringUtils.utf8(body), logger);
 		}
 		else {
-			json = postSecure(uri, body, logger);
+			json = postSecure(uri, StringUtils.utf8(body), logger);
 		}
 		
 		if (!validateJSON(json)) {
@@ -222,7 +221,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 			{"afterId", toId}
 		}).collect(Collectors.toMap(data -> (String) data[0], data -> (Integer) data[1])));
 		
-		String json = putSecure(uri, body, logger);
+		String json = putSecure(uri, StringUtils.utf8(body), logger);
 		
 		if (!validateJSON(json)) {
 			return null;
