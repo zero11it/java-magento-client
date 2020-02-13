@@ -140,7 +140,7 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 		
 		String body = JSON.toJSONString(req);
 		
-		String json = postSecure(uri, StringUtils.utf8(body), logger);
+		String json = postSecure(uri, StringUtils.toUTF8(body), logger);
 		
 		if (!validateJSON(json)) {
 			return null;
@@ -157,7 +157,7 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 		
 		String body = JSON.toJSONString(req);
 		
-		String json = postSecure(uri, StringUtils.utf8(body), logger);
+		String json = postSecure(uri, StringUtils.toUTF8(body), logger);
 		
 		if (!validateJSON(json)) {
 			return null;

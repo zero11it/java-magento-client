@@ -49,7 +49,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 		String uri = baseUri() + "/rest/V1/products/" + sku + "/media";
 		String body = RESTUtils.payloadWrapper("entry", image);
 		
-		String json = postSecure(uri, StringUtils.utf8(body), logger);
+		String json = postSecure(uri, StringUtils.toUTF8(body), logger);
 		
 		if (!validateJSON(json)) {
 			return null;
@@ -111,7 +111,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 		String uri = baseUri() + "/rest/V1/products/" + sku + "/media/" + entryId;
 		String body = RESTUtils.payloadWrapper("entry", image);
 		
-		String json = putSecure(uri, StringUtils.utf8(body), logger);
+		String json = putSecure(uri, StringUtils.toUTF8(body), logger);
 		
 		if (!validateJSON(json)) {
 			return null;

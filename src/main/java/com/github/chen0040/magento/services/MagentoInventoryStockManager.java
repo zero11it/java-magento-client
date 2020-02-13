@@ -89,7 +89,7 @@ public class MagentoInventoryStockManager extends MagentoHttpComponent {
 		req.put("stockItem", obj);
 		
 		String body = JSON.toJSONString(req, SerializerFeature.BrowserCompatible);
-		String stockId = putSecure(uri, StringUtils.utf8(body), logger);
+		String stockId = putSecure(uri, StringUtils.toUTF8(body), logger);
 
 		if (!validateJSON(stockId)) {
 			return null;

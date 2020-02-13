@@ -40,7 +40,7 @@ public class StringUtils {
 		return true;
 	}
 	
-	public static String utf8(String text) {
+	public static String toUTF8(String text) {
 		byte[] bytes = text.getBytes(StandardCharsets.ISO_8859_1);
 		return new String(bytes, StandardCharsets.UTF_8);
 	}

@@ -45,7 +45,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 			return updateCategory(category);
 		}
 		else {
-			json = postSecure(uri, StringUtils.utf8(body), logger);
+			json = postSecure(uri, StringUtils.toUTF8(body), logger);
 		}
 
 		if (!validateJSON(json)) {
@@ -59,7 +59,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		String uri = baseUri() + "/" + relativePath4Categories + "/" + category.getId();
 		String body = RESTUtils.payloadWrapper("category", category);
 		
-		String json = putSecure(uri, StringUtils.utf8(body), logger);
+		String json = putSecure(uri, StringUtils.toUTF8(body), logger);
 		
 		if (!validateJSON(json)) {
 			return null;
@@ -181,10 +181,10 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		
 		String json;
 		if (categoryHasProduct(categoryId, productSku)) {
-			json = putSecure(uri, StringUtils.utf8(body), logger);
+			json = putSecure(uri, StringUtils.toUTF8(body), logger);
 		}
 		else {
-			json = postSecure(uri, StringUtils.utf8(body), logger);
+			json = postSecure(uri, StringUtils.toUTF8(body), logger);
 		}
 		
 		if (!validateJSON(json)) {
@@ -221,7 +221,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 			{"afterId", toId}
 		}).collect(Collectors.toMap(data -> (String) data[0], data -> (Integer) data[1])));
 		
-		String json = putSecure(uri, StringUtils.utf8(body), logger);
+		String json = putSecure(uri, StringUtils.toUTF8(body), logger);
 		
 		if (!validateJSON(json)) {
 			return null;
