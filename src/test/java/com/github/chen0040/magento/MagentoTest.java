@@ -187,8 +187,8 @@ public class MagentoTest {
 		MagentoClient client = new MagentoClient("https://bsmagento2.web07.zero11.net/");
 		client.loginAsAdmin("a.trucco", "zero11zero11");
 		
-		assertNotNull(client.shipment().search(0, 10000));
-		List<Shipment> shipments = client.shipment().search("order_id", "2", ConditionType.GREATER_THAN_OR_EQUAL);
+		assertNotNull(client.shipment().search(new SearchCriteria().setPage(0, 1000)));
+		List<Shipment> shipments = client.shipment().search(new SearchCriteria().addFilterGroup("order_id", "2", ConditionType.GREATER_THAN_OR_EQUAL));
 		assertNotNull(shipments);
 		assertNotNull(client.shipment().saveShipment(shipments.get(0)));
 		assertNotNull(client.shipment().saveTrack(shipments.get(0).getTracks().get(0)));
@@ -198,9 +198,12 @@ public class MagentoTest {
 	public void testOrder() {
 		MagentoClient client = new MagentoClient("https://bsmagento2.web07.zero11.net");
 		client.loginAsAdmin("a.trucco", "zero11zero11");
-		
-		assertNotNull(client.order().searchItems(0, 100));
-		assertNotNull(client.order().searchItems("Name", "test", ConditionType.EQUAL));
+
+		assertNotNull(client.order().getOrder(1));
+		assertNotNull(client.order().searchItems(new SearchCriteria().setPage(0, 1000)));
+		assertNotNull(client.order().searchItems(new SearchCriteria().addFilterGroup("name", "ESTER", ConditionType.LIKE)));
+		assertNotNull(client.order().searchOrders(new SearchCriteria().setPage(0, 1000)));
+		assertNotNull(client.order().searchOrders(new SearchCriteria().addFilterGroup("name", "ESTER", ConditionType.LIKE)));
 	}
 	
 	@Test

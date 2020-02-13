@@ -1,14 +1,10 @@
 package com.github.chen0040.magento.services;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import com.github.chen0040.magento.MagentoClient;
 import com.github.chen0040.magento.models.Address;
 import com.github.chen0040.magento.models.order.Order;
@@ -17,7 +13,7 @@ import com.github.chen0040.magento.models.order.OrderItem;
 import com.github.chen0040.magento.models.order.OrderRefund;
 import com.github.chen0040.magento.models.order.SalesDataShipment;
 import com.github.chen0040.magento.models.order.StatusHistory;
-import com.github.chen0040.magento.models.search.ConditionType;
+import com.github.chen0040.magento.models.search.SearchCriteria;
 import com.github.chen0040.magento.utils.RESTUtils;
 import com.github.mgiorda.oauth.OAuthConfig;
 
@@ -41,7 +37,19 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 		return client.baseUri();
 	}
 
-	public Order getOrder(long id) {
+	public List<Order> getOrders() {
+		String uri = baseUri() + "/" + relativePath4Orders + "s?searchCriteria[currentPage]=0";
+		
+		String json = getSecure(uri, logger);
+		
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+		return RESTUtils.getArrayByKey(json, "items", Order.class);
+	}
+	
+	public Order getOrder(Integer id) {
 		String uri = baseUri() + "/" + relativePath4Orders + "s/" + id;
 		
 		String json = getSecure(uri, logger);
@@ -53,7 +61,19 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, Order.class);
 	}
 	
-	public List<OrderItem> getItems(long id) {
+	public List<Order> searchOrders(SearchCriteria criteria) {
+		String uri = baseUri() + "/" + relativePath4Orders + "s?" + criteria;
+		
+		String json = getSecure(uri, logger);
+		
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+		return RESTUtils.getArrayByKey(json, "items", Order.class);
+	}
+	
+	public List<OrderItem> getItems(Integer id) {
 		String uri = baseUri() + "/" + relativePath4Orders + "s/items/" + id;
 		
 		String json = getSecure(uri, logger);
@@ -65,7 +85,7 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 		return JSON.parseArray(json, OrderItem.class);
 	}
 	
-	public String getStatuses(long id) {
+	public String getStatuses(Integer id) {
 		String uri = baseUri() + "/" + relativePath4Orders + "s/statuses/" + id;
 		
 		String json = getSecure(uri, logger);
@@ -77,7 +97,7 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 		return json;
 	}
 	
-	public List<StatusHistory> getComments(long id) {
+	public List<StatusHistory> getComments(Integer id) {
 		String uri = baseUri() + "/" + relativePath4Orders + "s/comments/" + id;
 		
 		String json = getSecure(uri, logger);
@@ -89,41 +109,19 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 		return JSON.parseArray(json, StatusHistory.class);
 	}
 	
-	public List<OrderItem> searchItems(long currentPage, long pageSize) {
-		String uri = baseUri() + "/" + relativePath4Orders + "s/items?"
-				+ "searchCriteria[currentPage]=" + currentPage + "&"
-				+ "searchCriteria[pageSize]=" + pageSize;
+	public List<OrderItem> searchItems(SearchCriteria criteria) {
+		String uri = baseUri() + "/" + relativePath4Orders + "s/items?" + criteria;
 		
 		String json = getSecure(uri, logger);
 		
 		if (!validateJSON(json)) {
 			return null;
 		}
-		json = json.replace("\"[",  "[").replace("]\"",  "]");
 		
-		Map<String, String> resp = JSON.parseObject(json, new TypeReference<HashMap<String, String>>() {});
-		
-		return JSON.parseArray(resp.get("items"), OrderItem.class);
+		return RESTUtils.getArrayByKey(json, "items", OrderItem.class);
 	}
 	
-	public List<OrderItem> searchItems(String field, String value, ConditionType condition_type) {
-		String uri = baseUri() + "/" + relativePath4Orders + "s?"
-				+ "searchCriteria[filterGroups][0][filters][0][field]=" + field + "&"
-				+ "searchCriteria[filterGroups][0][filters][0][value]=" + value + "&"
-				+ "searchCriteria[filterGroups][0][filters][0][condition_type]=" + condition_type;
-		String json = getSecure(uri, logger);
-
-		if (!validateJSON(json)) {
-			return null;
-		}
-		json = json.replace("\"[",  "[").replace("]\"",  "]");
-		
-		Map<String, String> resp = JSON.parseObject(json, new TypeReference<HashMap<String, String>>() {});
-		
-		return JSON.parseArray(resp.get("items"), OrderItem.class);
-	}
-	
-	public boolean cancelOrder(long id) {
+	public Boolean cancelOrder(Integer id) {
 		String uri = baseUri() + "/" + relativePath4Orders + "s/" + id + "/cancel";
 		String json = postSecure(uri, "", logger);
 		
@@ -134,7 +132,7 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, Boolean.class).booleanValue();
 	}
 	
-	public boolean addComment(long id, StatusHistory comment) {
+	public Boolean addComment(Integer id, StatusHistory comment) {
 		String uri = baseUri() + "/" + relativePath4Orders + "s/" + id + "/comments";
 		
 		String json = putSecure(uri, RESTUtils.payloadWrapper("statusHistory", comment), logger);
@@ -146,7 +144,7 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, Boolean.class).booleanValue();
 	}
 	
-	public boolean emailOrder(long id) {
+	public Boolean emailOrder(Integer id) {
 		String uri = baseUri() + "/" + relativePath4Orders + "s/" + id + "/emails";
 		String json = postSecure(uri, "", logger);
 		
@@ -157,7 +155,7 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, Boolean.class).booleanValue();
 	}
 	
-	public boolean holdOrder(long id) {
+	public Boolean holdOrder(Integer id) {
 		String uri = baseUri() + "/" + relativePath4Orders + "s/" + id + "/hold";
 		String json = postSecure(uri, "", logger);
 		
@@ -168,7 +166,7 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, Boolean.class).booleanValue();
 	}
 	
-	public boolean unholdOrder(long id) {
+	public Boolean unholdOrder(Integer id) {
 		String uri = baseUri() + "/" + relativePath4Orders + "s/" + id + "/unhold";
 		String json = postSecure(uri, "", logger);
 		
@@ -215,7 +213,7 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, Address.class);
 	}
 	
-	public long createOrderInvoice(long orderId, OrderInvoice invoice) {
+	public Integer createOrderInvoice(Integer orderId, OrderInvoice invoice) {
 		String uri = baseUri() + "/" + relativePath4Orders + "/" + orderId + "/invoice";
 		
 		String json = postSecure(uri, JSON.toJSONString(invoice), logger);
@@ -224,10 +222,10 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 			return -1;
 		}
 		
-		return JSON.parseObject(json, Long.class).longValue();
+		return JSON.parseObject(json, Integer.class);
 	}
 	
-	public long createOrderRefund(long orderId, OrderRefund refund) {
+	public Integer createOrderRefund(Integer orderId, OrderRefund refund) {
 		String uri = baseUri() + "/" + relativePath4Orders + "/" + orderId + "/refund";
 		
 		String json = postSecure(uri, JSON.toJSONString(refund), logger);
@@ -236,10 +234,10 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 			return -1;
 		}
 		
-		return JSON.parseObject(json, Long.class).longValue();
+		return JSON.parseObject(json, Integer.class);
 	}
 	
-	public long shipOrder(long orderId, SalesDataShipment shipment) {
+	public Integer shipOrder(Integer orderId, SalesDataShipment shipment) {
 		String uri = baseUri() + "/" + relativePath4Orders + "/" + orderId + "/ship";
 		
 		String json = postSecure(uri, JSON.toJSONString(shipment), logger);
@@ -248,7 +246,7 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 			return -1;
 		}
 		
-		return JSON.parseObject(json, Long.class).longValue();
+		return JSON.parseObject(json, Integer.class);
 	}
 
 	@Override
