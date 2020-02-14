@@ -11,5 +11,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class FrontendLabel {
 	String label;
-	Long store_id;
+	Integer store_id;
 }
