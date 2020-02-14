@@ -577,6 +577,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 	public Product updateProductAvailability(String sku, Integer amount) {
 		Product product = getProduct(sku);
 		
+		product.setCustom_attributes(null); // Prevent change in attributes due to parsing failures
 		product.setExtension_attributes(new ProductExtensionAttributes()
 				.setStock(amount)
 		);
