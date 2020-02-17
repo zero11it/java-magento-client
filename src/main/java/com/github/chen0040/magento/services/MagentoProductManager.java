@@ -407,7 +407,9 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		
 		ProductAttributeOption ourOption = getProductAttributeOption(attributeCode, option.getLabel());
 		if (ourOption != null) {
-			deleteProductAttributeOption(attributeCode, ourOption.getValue());
+			String msg = ourOption.getLabel() + " is already present.";
+			logger.error(msg);
+			return msg;
 		}
 		
 		String json = postSecure(uri, StringUtils.toUTF8(body), logger);
