@@ -9,6 +9,7 @@ import com.github.chen0040.magento.models.product.Product;
 import com.github.chen0040.magento.models.product.ProductAttribute;
 import com.github.chen0040.magento.models.product.ProductAttributeGroup;
 import com.github.chen0040.magento.models.product.ProductAttributeOption;
+import com.github.chen0040.magento.models.product.ProductAttributeOptionStoreLabel;
 import com.github.chen0040.magento.models.product.ProductAttributeSet;
 import com.github.chen0040.magento.models.product.ProductAttributeType;
 import com.github.chen0040.magento.models.product.ProductCost;
@@ -420,6 +421,13 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		if (ourOption != null) {
 			if (overwrite_flag == OverwriteAttributeOption.TRUE) {
 				option.setValue(ourOption.getValue());
+				
+				if (option.getStore_labels() != null && ourOption.getStore_labels() != null) {
+					List<ProductAttributeOptionStoreLabel> storeLabels = ourOption.getStore_labels();
+					
+					storeLabels.addAll(option.getStore_labels());
+					option.setStore_labels(storeLabels);
+				}
 			}
 			else {
 				String msg = ourOption.getLabel() + " is already present.";
