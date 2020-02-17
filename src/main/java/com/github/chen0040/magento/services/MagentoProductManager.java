@@ -389,7 +389,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, ProductAttribute.class);
 	}
 	
-	public String saveAttributeOption(ProductAttributeOption option, String attributeCode) {
+	public String addOptionToAttribute(String attributeCode, ProductAttributeOption option) {
 		String uri = baseUri() + relativePath4Products + "/attributes/" + attributeCode + "/options";
 		String body = RESTUtils.payloadWrapper("option", option);
 		
@@ -413,7 +413,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 			return label + " already present.";
 		}
 		
-		return saveAttributeOption(new ProductAttributeOption().setLabel(label), attributeCode);
+		return addOptionToAttribute(attributeCode, new ProductAttributeOption().setLabel(label));
 	}
 	
 	public Product saveProduct(Product product) {
