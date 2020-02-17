@@ -140,7 +140,13 @@ public class MagentoProductManager extends MagentoHttpComponent {
 	}
 	
 	private ProductAttributeOption getProductAttributeOption(String attributeCode, String label) {
-		Optional<ProductAttributeOption> ourOption = getProductAttributeOptions(attributeCode).stream()
+		List<ProductAttributeOption> options = getProductAttributeOptions(attributeCode);
+		
+		if (options == null) {
+			return null;
+		}
+		
+		Optional<ProductAttributeOption> ourOption = options.stream()
 				.filter(option -> option.getLabel().equals(label))
 				.findAny();
 		
