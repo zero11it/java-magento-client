@@ -139,6 +139,18 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return JSON.parseArray(json, ProductAttributeOption.class);
 	}
 	
+	private ProductAttributeOption getProductAttributeOption(String attributeCode, String label) {
+		Optional<ProductAttributeOption> ourOption = getProductAttributeOptions(attributeCode).stream()
+				.filter(option -> option.getLabel().equals(label))
+				.findAny();
+		
+		if (ourOption.isPresent()) {
+			return ourOption.get();
+		}
+		
+		return null;
+	}
+	
 	public String getProductAttributeOptionValue(String attributeCode, String label) {
 		List<ProductAttributeOption> options = getProductAttributeOptions(attributeCode);
 		
@@ -393,6 +405,11 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		String uri = baseUri() + relativePath4Products + "/attributes/" + attributeCode + "/options";
 		String body = RESTUtils.payloadWrapper("option", option);
 		
+		ProductAttributeOption ourOption = getProductAttributeOption(attributeCode, option.getLabel());
+		if (ourOption != null) {
+			deleteProductAttributeOption(attributeCode, ourOption.getValue());
+		}
+		
 		String json = postSecure(uri, StringUtils.toUTF8(body), logger);
 		
 		if (!validateJSON(json)) {
@@ -401,18 +418,8 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		
 		return JSON.parseObject(json, String.class);
 	}
-	
+
 	public String addOptionToAttribute(String attributeCode, String label) {
-		List<ProductAttributeOption> options = getProductAttributeOptions(attributeCode);
-		Optional<ProductAttributeOption> ourOption = options.stream()
-				.filter(option -> option.getLabel().equals(label))
-				.findAny();
-		
-		if (ourOption.isPresent()) {
-			logger.info(label + " already present.");
-			return label + " already present.";
-		}
-		
 		return addOptionToAttribute(attributeCode, new ProductAttributeOption().setLabel(label));
 	}
 	
