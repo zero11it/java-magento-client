@@ -3,6 +3,7 @@ package com.github.chen0040.magento.services;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.chen0040.magento.MagentoClient;
+import com.github.chen0040.magento.models.order.ProductOption;
 import com.github.chen0040.magento.models.product.ConfigurableProductOption;
 import com.github.chen0040.magento.models.product.PriceUpdateResult;
 import com.github.chen0040.magento.models.product.Product;
@@ -140,7 +141,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return JSON.parseArray(json, ProductAttributeOption.class);
 	}
 	
-	private ProductAttributeOption getProductAttributeOption(String attributeCode, String label) {
+	private ProductAttributeOption getProductAttributeOption(String attributeCode, ProductAttributeOption option) {
 		List<ProductAttributeOption> options = getProductAttributeOptions(attributeCode);
 		
 		if (options == null) {
@@ -148,32 +149,36 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		}
 		
 		Optional<ProductAttributeOption> ourOption = options.stream()
-				.filter(option -> option.getLabel().equals(label))
+				.filter(_option -> _option.getLabel().equals(option.getLabel()))
 				.findAny();
 		
 		if (ourOption.isPresent()) {
 			return ourOption.get();
 		}
 		
+		if (option.getStore_labels() != null) {
+			for (ProductAttributeOptionStoreLabel storeLabel : option.getStore_labels()) {
+				ourOption = options.stream()
+						.filter(_option -> _option.getLabel().equals(storeLabel.getLabel()))
+						.findAny();
+				
+				if (ourOption.isPresent()) {
+					return ourOption.get();
+				}
+			}
+		}
+		
 		return null;
 	}
 	
 	public String getProductAttributeOptionValue(String attributeCode, String label) {
-		List<ProductAttributeOption> options = getProductAttributeOptions(attributeCode);
+		ProductAttributeOption option = getProductAttributeOption(attributeCode, new ProductAttributeOption().setLabel(label));
 		
-		if (options == null) {
+		if (option == null) {
 			return null;
 		}
 		
-		List<ProductAttributeOption> labelOptions = options.stream()
-			.filter(option -> option.getLabel().equals(label))
-			.collect(Collectors.toList());
-		
-		if (labelOptions.size() == 0) {
-			return null;
-		}
-		
-		return labelOptions.get(0).getValue();
+		return option.getValue();
 	}
 
 	public List<ProductAttributeType> getProductAttributeTypes() {
@@ -418,7 +423,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		String body = RESTUtils.payloadWrapper("option", option);
 		
 		if (mode == AttributeOptionPOSTMode.NO_DUPLICATE_LABELS) {
-			ProductAttributeOption ourOption = getProductAttributeOption(attributeCode, option.getLabel());
+			ProductAttributeOption ourOption = getProductAttributeOption(attributeCode, option);
 			if (ourOption != null) {
 					String msg = ourOption.getLabel() + " is already present.";
 					logger.error(msg);
