@@ -22,7 +22,7 @@ import com.github.chen0040.magento.models.store.StoreConfig;
 import com.github.chen0040.magento.models.store.StoreGroup;
 import com.github.chen0040.magento.models.store.StoreView;
 import com.github.chen0040.magento.models.store.Website;
-import com.github.chen0040.magento.services.MagentoProductManager.OverwriteAttributeOption;
+import com.github.chen0040.magento.services.MagentoProductManager.AttributeOptionPOSTMode;
 
 public class MagentoTest {
 
@@ -103,7 +103,7 @@ public class MagentoTest {
 				.setIs_required(false)
 				.setIs_user_defined(true)
 		));
-		client.products().addOptionToAttribute("test", OverwriteAttributeOption.TRUE, "brown");
+		client.products().addOptionToAttribute("test", AttributeOptionPOSTMode.NO_DUPLICATE_LABELS, "brown");
 		System.out.println(client.products().getProductAttributeOptions("test"));
 		assertTrue(client.products().deleteProductAttribute("test"));
 		
