@@ -46,7 +46,10 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 
 	private String token = null;
 	private String baseUri = "";
+	@Setter(AccessLevel.NONE)
 	private String defaultUri = "";
+	@Getter(AccessLevel.NONE)
+	private String currentView = "";
 	
 	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
 	private Map<String, StoreView> storeViewCache;
@@ -148,12 +151,14 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 		}
 		else {
 			baseUri = defaultUri + "/" + code;
+			currentView = code;
 			logger.info("Client switched to view '" + code + "'");
 		}
 	}
 
 	public void switchStoreViewToDefault() {
 		baseUri = defaultUri;
+		currentView = "";
 		logger.info("Client switched to default view");
 	}
 
