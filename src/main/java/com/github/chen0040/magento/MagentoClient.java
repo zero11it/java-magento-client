@@ -29,7 +29,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -48,7 +47,13 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 	private String token = null;
 	private String baseUri = "";
 	private String defaultUri = "";
-	private Map<String, StoreView> storeViews;
+	
+	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
+	private Map<String, StoreView> storeViewCache;
+	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
+	private int storeViewCacheAccessCount;
+	@Getter(AccessLevel.NONE)
+	private static final int MAX_CACHE_ACCESS_COUNT = 100;
 
 	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
 	private OAuthConfig oauth = null;
@@ -85,7 +90,6 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 		this.store = new MagentoStoreManager(this);
 		this.order = new MagentoOrderManager(this);
 		this.shipment = new MagentoShipmentManager(this);
-		setStoreViews(this.store.getStoreViews());
 	}
 
 	public MagentoClient(String baseUri) {
@@ -115,24 +119,31 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 		this.baseUri = baseUri;
 		this.defaultUri = baseUri;
 	}
-
-	private void setStoreViews(List<StoreView> views) {
-		storeViews = new HashMap<>();
-		
-		for (StoreView view : views) {
-			storeViews.put(view.getCode(), view);
-		}
-	}
 	
-	public void refreshViews() {
-		setStoreViews(this.store.getStoreViews());
+	private void updateStoreViewCache() {
+		if (storeViewCache == null) {
+			storeViewCache = new HashMap<>();
+			storeViewCacheAccessCount = 0;
+		}
+		else {
+			storeViewCacheAccessCount += 1;
+			storeViewCacheAccessCount %= MAX_CACHE_ACCESS_COUNT;
+		}
+		
+		if (storeViewCacheAccessCount == 0) {
+			for (StoreView view : store.getStoreViews()) {
+				storeViewCache.put(view.getCode(), view);
+			}
+		}
 	}
 	
 	public void switchStoreView(String code) {
+		updateStoreViewCache();
+		
 		if (code.toLowerCase().equals("default")) {
 			switchStoreViewToDefault();
 		}
-		else if (!storeViews.containsKey(code)) {
+		else if (!storeViewCache.containsKey(code)) {
 			logger.error(code + ": No such view");
 		}
 		else {
@@ -140,7 +151,7 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 			logger.info("Client switched to view '" + code + "'");
 		}
 	}
-	
+
 	public void switchStoreViewToDefault() {
 		baseUri = defaultUri;
 		logger.info("Client switched to default view");
