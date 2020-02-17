@@ -141,7 +141,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return JSON.parseArray(json, ProductAttributeOption.class);
 	}
 	
-	private ProductAttributeOption getProductAttributeOption(String attributeCode, ProductAttributeOption option) {
+	public ProductAttributeOption getProductAttributeOption(String attributeCode, ProductAttributeOption option) {
 		List<ProductAttributeOption> options = getProductAttributeOptions(attributeCode);
 		
 		if (options == null) {
