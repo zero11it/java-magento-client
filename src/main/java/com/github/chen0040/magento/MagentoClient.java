@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.github.chen0040.magento.interfaces.HttpComponent;
 import com.github.chen0040.magento.models.Account;
+import com.github.chen0040.magento.models.store.StoreView;
 import com.github.chen0040.magento.services.BasicHttpComponent;
 import com.github.chen0040.magento.services.MagentoCategoryManager;
 import com.github.chen0040.magento.services.MagentoGuestCartManager;
@@ -28,6 +29,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,6 +48,7 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 	private String token = null;
 	private String baseUri = "";
 	private String defaultUri = "";
+	private Map<String, StoreView> storeViews;
 
 	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
 	private OAuthConfig oauth = null;
@@ -82,6 +85,7 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 		this.store = new MagentoStoreManager(this);
 		this.order = new MagentoOrderManager(this);
 		this.shipment = new MagentoShipmentManager(this);
+		setStoreViews(this.store.getStoreViews());
 	}
 
 	public MagentoClient(String baseUri) {
@@ -111,12 +115,24 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 		this.baseUri = baseUri;
 		this.defaultUri = baseUri;
 	}
+
+	private void setStoreViews(List<StoreView> views) {
+		storeViews = new HashMap<>();
+		
+		for (StoreView view : views) {
+			storeViews.put(view.getCode(), view);
+		}
+	}
+	
+	public void refreshViews() {
+		setStoreViews(this.store.getStoreViews());
+	}
 	
 	public void switchStoreView(String code) {
 		if (code.toLowerCase().equals("default")) {
 			switchStoreViewToDefault();
 		}
-		else if (!store().hasStoreView(code)) {
+		else if (!storeViews.containsKey(code)) {
 			logger.error(code + ": No such view");
 		}
 		else {

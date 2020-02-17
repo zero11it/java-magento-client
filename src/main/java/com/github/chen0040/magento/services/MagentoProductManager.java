@@ -401,15 +401,25 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, ProductAttribute.class);
 	}
 	
-	public String addOptionToAttribute(String attributeCode, ProductAttributeOption option) {
+	public enum OverwriteAttributeOption {
+		FALSE,
+		TRUE
+	}
+	
+	public String addOptionToAttribute(String attributeCode, OverwriteAttributeOption overwrite_flag, ProductAttributeOption option) {
 		String uri = baseUri() + relativePath4Products + "/attributes/" + attributeCode + "/options";
 		String body = RESTUtils.payloadWrapper("option", option);
 		
 		ProductAttributeOption ourOption = getProductAttributeOption(attributeCode, option.getLabel());
 		if (ourOption != null) {
-			String msg = ourOption.getLabel() + " is already present.";
-			logger.error(msg);
-			return msg;
+			if (overwrite_flag == OverwriteAttributeOption.TRUE) {
+				option.setValue(ourOption.getValue());
+			}
+			else {
+				String msg = ourOption.getLabel() + " is already present.";
+				logger.error(msg);
+				return msg;
+			}
 		}
 		
 		String json = postSecure(uri, StringUtils.toUTF8(body), logger);
@@ -421,8 +431,8 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, String.class);
 	}
 
-	public String addOptionToAttribute(String attributeCode, String label) {
-		return addOptionToAttribute(attributeCode, new ProductAttributeOption().setLabel(label));
+	public String addOptionToAttribute(String attributeCode, OverwriteAttributeOption overwrite_flag, String label) {
+		return addOptionToAttribute(attributeCode, overwrite_flag, new ProductAttributeOption().setLabel(label));
 	}
 	
 	public Product saveProduct(Product product) {
