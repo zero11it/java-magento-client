@@ -23,7 +23,6 @@ public class ProductAttributeSet {
 	@JSONField(serialize = false)
 	 private Integer entity_type_id;
 	 
-	@SuppressWarnings("rawtypes")
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
 	private List<MagentoAttribute<?>> extension_attributes;
 }

@@ -1,9 +1,9 @@
 package com.github.chen0040.magento.models.cart;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,7 +11,8 @@ import java.util.List;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 public class CartItemProductDownloadableOption {
-	private List<Integer> downloadable_links = new ArrayList<>();
+	private List<Integer> downloadable_links;
 
 }

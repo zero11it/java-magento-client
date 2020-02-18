@@ -2,24 +2,21 @@ package com.github.chen0040.magento.models.serialization;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.parser.DefaultJSONParser;
 import com.alibaba.fastjson.parser.deserializer.ObjectDeserializer;
-import com.alibaba.fastjson.serializer.JSONSerializer;
-import com.alibaba.fastjson.serializer.ObjectSerializer;
 import com.github.chen0040.magento.models.MagentoAttribute;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AttributeValueDeserializer implements ObjectDeserializer {
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T deserialze(DefaultJSONParser parser, Type type, Object o) {
 		Object obj = parser.parse();
 
-		List<MagentoAttribute<?>> result = new ArrayList<>();
+		List<MagentoAttribute<String>> result = new ArrayList<>();
 
 		if (obj instanceof JSONArray) {
 			JSONArray ja = (JSONArray) obj;
@@ -41,7 +38,7 @@ public class AttributeValueDeserializer implements ObjectDeserializer {
 					}
 					
 					if (key != null && value != null) {
-						MagentoAttribute ma = new MagentoAttribute();
+						MagentoAttribute<String> ma = new MagentoAttribute<String>();
 						
 						ma.setAttribute_code(key);
 						ma.setValue(value);
@@ -53,7 +50,7 @@ public class AttributeValueDeserializer implements ObjectDeserializer {
 			JSONObject jo = (JSONObject) obj;
 			
 			for (String key : jo.keySet()) {
-				MagentoAttribute ma = new MagentoAttribute();
+				MagentoAttribute<String> ma = new MagentoAttribute<String>();
 				
 				ma.setAttribute_code(key);
 				

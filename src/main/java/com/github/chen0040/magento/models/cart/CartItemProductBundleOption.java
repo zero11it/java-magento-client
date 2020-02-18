@@ -1,10 +1,9 @@
 package com.github.chen0040.magento.models.cart;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,9 +12,10 @@ import java.util.Map;
  */
 @Setter
 @Getter
+@NoArgsConstructor
 public class CartItemProductBundleOption {
-	private long option_id = 0;
-	private int option_qty = 0;
-	private List<Integer> option_selections = new ArrayList<>();
-	private Map<String, Object> extension_attributes = new HashMap<>();
+	private Integer option_id = 0;
+	private Integer option_qty = 0;
+	private List<Integer> option_selections;
+	private Map<String, Object> extension_attributes;
 }

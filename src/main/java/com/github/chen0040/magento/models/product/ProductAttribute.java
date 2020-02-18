@@ -2,8 +2,6 @@ package com.github.chen0040.magento.models.product;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;

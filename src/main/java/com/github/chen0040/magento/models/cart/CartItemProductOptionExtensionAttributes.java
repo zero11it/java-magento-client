@@ -1,13 +1,11 @@
 package com.github.chen0040.magento.models.cart;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import com.github.chen0040.magento.models.order.ConfigurableItemOption;
 
 /**
@@ -15,6 +13,7 @@ import com.github.chen0040.magento.models.order.ConfigurableItemOption;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 public class CartItemProductOptionExtensionAttributes {
 
 	private CartItemProductCustomOption custom_options = new CartItemProductCustomOption();

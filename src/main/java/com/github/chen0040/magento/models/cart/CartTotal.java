@@ -1,9 +1,9 @@
 package com.github.chen0040.magento.models.cart;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,33 +11,34 @@ import java.util.List;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 public class CartTotal {
-	private double grand_total = 0;
-	private double base_grand_total = 0;
-	private double subtotal = 0;
-	private double base_subtotal = 0;
-	private double discount_amount = 0;
-	private double base_discount_amount = 0;
-	private double subtotal_with_discount = 0;
-	private double base_subtotal_with_discount = 0;
-	private double shipping_amount = 0;
-	private double base_shipping_amount = 0;
-	private double shipping_discount_amount = 0;
-	private double base_shipping_discount_amount = 0;
-	private double tax_amount = 0;
-	private double base_tax_amount = 0;
-	private double weee_tax_applied_amount = 0;
-	private double shipping_tax_amount = 0;
-	private double base_shipping_tax_amount = 0;
-	private double subtotal_incl_tax = 0;
-	private double base_subtotal_incl_tax = 0;
-	private double shipping_incl_tax = 0;
-	private double base_shipping_incl_tax = 0;
-	private String base_currency_code = "";
-	private String quote_currency_code = "";
-	private String coupon_code = "";
-	private int items_qty = 0;
-	private List<CartTotalItem> items = new ArrayList<>();
-	private List<CartTotalSegment> total_segments = new ArrayList<>();
-	private CartTotalExtensionAttributes extension_attributes = new CartTotalExtensionAttributes();
+	private Double grand_total;
+	private Double base_grand_total;
+	private Double subtotal;
+	private Double base_subtotal;
+	private Double discount_amount;
+	private Double base_discount_amount;
+	private Double subtotal_with_discount;
+	private Double base_subtotal_with_discount;
+	private Double shipping_amount;
+	private Double base_shipping_amount;
+	private Double shipping_discount_amount;
+	private Double base_shipping_discount_amount;
+	private Double tax_amount;
+	private Double base_tax_amount;
+	private Double weee_tax_applied_amount;
+	private Double shipping_tax_amount;
+	private Double base_shipping_tax_amount;
+	private Double subtotal_incl_tax;
+	private Double base_subtotal_incl_tax;
+	private Double shipping_incl_tax;
+	private Double base_shipping_incl_tax;
+	private String base_currency_code;
+	private String quote_currency_code;
+	private String coupon_code;
+	private Integer items_qty;
+	private List<CartTotalItem> items;
+	private List<CartTotalSegment> total_segments;
+	private CartTotalExtensionAttributes extension_attributes;
 }

@@ -1,9 +1,9 @@
 package com.github.chen0040.magento.models.cart;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -11,15 +11,15 @@ import java.util.Map;
  */
 @Setter
 @Getter
+@NoArgsConstructor
 public class CartItem {
-	private int item_id;
+	private Integer item_id;
 	private String sku;
-	private int qty;
+	private Integer qty;
 	private String name;
-	private double price;
+	private Double price;
 	private String product_type;
 	private String quote_id;
-
-	private CartItemProductOption product_option = new CartItemProductOption();
-	private Map<String, Object> extension_attributes = new HashMap<>();
+	private CartItemProductOption product_option;
+	private Map<String, Object> extension_attributes;
 }

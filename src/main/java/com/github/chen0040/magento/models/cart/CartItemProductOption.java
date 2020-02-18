@@ -1,6 +1,7 @@
 package com.github.chen0040.magento.models.cart;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -8,6 +9,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 public class CartItemProductOption {
-	private CartItemProductOptionExtensionAttributes extension_attributes = new CartItemProductOptionExtensionAttributes();
+	private CartItemProductOptionExtensionAttributes extension_attributes;
 }
