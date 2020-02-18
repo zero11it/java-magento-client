@@ -1,6 +1,7 @@
 package com.github.chen0040.magento.services;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.chen0040.magento.MagentoClient;
 import com.github.chen0040.magento.models.product.ConfigurableProductOption;
@@ -307,13 +308,14 @@ public class MagentoProductManager extends MagentoHttpComponent {
 	
 	public ProductAttributeSet saveAttributeSet(ProductAttributeSet attributeSet, ProductAttributeSet baseAttributeSet) {
 		String uri = baseUri() + relativePath4Products + "/attribute-sets";
-		String body = "{"
-				+ "\"attributeSet\" : " + JSON.toJSONString(attributeSet) + ","
-				+ "\"skeletonId\" : " + baseAttributeSet.getAttribute_set_id()
-				+ "}";
+		
+		Map<String, JSONObject> req = new HashMap<>();
+		req.put("attributeSet", (JSONObject) JSON.toJSON(attributeSet));
+		req.put("skeletonId", (JSONObject) JSON.toJSON(baseAttributeSet.getAttribute_set_id()));
+		
+		String body = JSON.toJSONString(req, SerializerFeature.PrettyFormat);
 		
 		String json;
-		
 		if (attributeSet.getAttribute_set_id() != null && hasAttributeSet(attributeSet.getAttribute_set_id())) {
 			json = putSecure(uri, StringUtils.toUTF8(body), logger);
 		}
@@ -330,9 +332,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 	
 	public ProductAttributeGroup saveAttributeGroup(ProductAttributeGroup attributeGroup) {
 		String uri = baseUri() + relativePath4Products + "/attribute-sets/groups";
-		String body = "{"
-				+ "\"group\" : " + JSON.toJSONString(attributeGroup)
-				+ "}";
+		String body = RESTUtils.payloadWrapper("group", attributeGroup);
 		
 		String json = postSecure(uri, StringUtils.toUTF8(body), logger);
 		
@@ -345,9 +345,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 	
 	public ProductAttributeGroup saveAttributeGroup(ProductAttributeGroup attributeGroup, Integer attributeSetId) {
 		String uri = baseUri() + relativePath4Products + "/attribute-sets/" + attributeSetId + "/groups";
-		String body = "{"
-				+ "\"group\" : " + JSON.toJSONString(attributeGroup)
-				+ "}";
+		String body = RESTUtils.payloadWrapper("group", attributeGroup);
 		
 		String json = putSecure(uri, StringUtils.toUTF8(body), logger);
 		
@@ -388,8 +386,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		
 		String json;
 		if (hasAttribute(attribute)) {
-			uri = uri + "/" + attribute.getAttribute_code();
-			json = putSecure(uri, body, logger);
+			return saveAttribute(attribute, attribute.getAttribute_code());
 		}
 		else {
 			json = postSecure(uri, StringUtils.toUTF8(body), logger);
@@ -404,7 +401,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 
 	public ProductAttribute saveAttribute(ProductAttribute attribute, String attributeCode) {
 		String uri = baseUri() + relativePath4Products + "/attribute-sets/attributes/" + attributeCode;
-		String body = RESTUtils.payloadWrapper("attribute", attribute);
+		String body = RESTUtils.payloadWrapper("attribute", attribute.setAttribute_code(null));
 		
 		String json = putSecure(uri, StringUtils.toUTF8(body), logger);
 		

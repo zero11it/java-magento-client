@@ -43,11 +43,11 @@ public abstract class MagentoHttpComponent {
 		this.httpComponent = httpComponent;
 	}
 	
-	private Map<String, String> buildHeaders(HttpMethod method, String url) {
+	private Map<String, String> buildHeaders(HttpMethod method, String uri) {
 		Map<String, String> headers = new HashMap<>();
 		
 		if (oauthEnabled()) {
-			OAuthSignature signature = oAuth().buildSignature(method, url).create();
+			OAuthSignature signature = oAuth().buildSignature(method, uri).create();
 			headers.put("Authorization", signature.getAsHeader());
 		}
 		else {
@@ -61,41 +61,41 @@ public abstract class MagentoHttpComponent {
 		return headers;
 	}
 
-	public String postSecure(String url, String body, Logger logger) {
-		Map<String, String> headers = buildHeaders(HttpMethod.POST, url);
+	public String postSecure(String uri, String body, Logger logger) {
+		Map<String, String> headers = buildHeaders(HttpMethod.POST, uri);
 		
-		logger.info("POST-ing: {}", body);
-		String resp = httpComponent.post(url, body, headers);
+		logger.info("POST-ing @ {}: {}", uri, body);
+		String resp = httpComponent.post(uri, body, headers);
 		logger.info("Got: {}", resp);
 		
 		return resp;
 	}
 
-	public String putSecure(String url, String body, Logger logger) {
-		Map<String, String> headers = buildHeaders(HttpMethod.PUT, url);
+	public String putSecure(String uri, String body, Logger logger) {
+		Map<String, String> headers = buildHeaders(HttpMethod.PUT, uri);
 		
-		logger.info("PUT-ting: {}", body);
-		String resp = httpComponent.put(url, body, headers);
+		logger.info("PUT-ting @ {}: {}", uri, body);
+		String resp = httpComponent.put(uri, body, headers);
 		logger.info("Got: {}", resp);
 		
 		return resp;
 	}
 
-	public String deleteSecure(String url, Logger logger) {
-		Map<String, String> headers = buildHeaders(HttpMethod.DELETE, url);
+	public String deleteSecure(String uri, Logger logger) {
+		Map<String, String> headers = buildHeaders(HttpMethod.DELETE, uri);
 		
-		logger.info("DELETE-ing @ " + url);
-		String resp = httpComponent.delete(url, headers);
+		logger.info("DELETE-ing @ " + uri);
+		String resp = httpComponent.delete(uri, headers);
 		logger.info("Got: {}", resp);
 		
 		return resp;
 	}
 
-	public String getSecure(String url, Logger logger) {
-		Map<String, String> headers = buildHeaders(HttpMethod.GET, url);
+	public String getSecure(String uri, Logger logger) {
+		Map<String, String> headers = buildHeaders(HttpMethod.GET, uri);
 
-		logger.info("GET-ting @ " + url);
-		String resp = httpComponent.get(url, headers);
+		logger.info("GET-ting @ " + uri);
+		String resp = httpComponent.get(uri, headers);
 		logger.info("Got: {}", resp);
 		
 		return resp;
