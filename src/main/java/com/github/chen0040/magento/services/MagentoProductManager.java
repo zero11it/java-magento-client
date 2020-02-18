@@ -385,7 +385,11 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		String body = RESTUtils.payloadWrapper("attribute", attribute);
 		
 		String json;
-		if (hasAttribute(attribute)) {
+		ProductAttribute oldAttribute = getAttribute(attribute.getAttribute_code());
+		if (oldAttribute != null) {
+			attribute.setAttribute_id(oldAttribute.getAttribute_id());
+			attribute.setEntity_type_id(oldAttribute.getEntity_type_id());
+			attribute.setApply_to(oldAttribute.getApply_to());
 			return saveAttribute(attribute, attribute.getAttribute_code());
 		}
 		else {
@@ -401,7 +405,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 
 	public ProductAttribute saveAttribute(ProductAttribute attribute, String attributeCode) {
 		String uri = baseUri() + relativePath4Products + "/attributes/" + attributeCode;
-		String body = RESTUtils.payloadWrapper("attribute", attribute.setAttribute_code(null));
+		String body = RESTUtils.payloadWrapper("attribute", attribute);
 		
 		String json = putSecure(uri, StringUtils.toUTF8(body), logger);
 		
