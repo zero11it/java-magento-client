@@ -289,11 +289,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 	}
 	
 	public boolean hasAttribute(ProductAttribute attribute) {
-		List<ProductAttribute> attributes = getAttributes().stream()
-				.filter(attr -> attr.getAttribute_code().equals(attribute.getAttribute_code()))
-				.collect(Collectors.toList());
-		
-		return attributes.size() > 0;
+		return getAttribute(attribute.getAttribute_code()) != null;
 	}
 	
 	public boolean hasProduct(String sku) {
@@ -391,7 +387,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		String body = RESTUtils.payloadWrapper("attribute", attribute);
 		
 		String json;
-		if (getAttribute(attribute.getAttribute_code()) != null) {
+		if (hasAttribute(attribute)) {
 			uri = uri + "/" + attribute.getAttribute_code();
 			json = putSecure(uri, body, logger);
 		}
