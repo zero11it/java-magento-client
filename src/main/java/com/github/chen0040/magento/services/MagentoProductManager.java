@@ -390,7 +390,14 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		String uri = baseUri() + relativePath4Products + "/attributes";
 		String body = RESTUtils.payloadWrapper("attribute", attribute);
 		
-		String json = postSecure(uri, StringUtils.toUTF8(body), logger);
+		String json;
+		if (getProductAttribute(attribute.getAttribute_code()) != null) {
+			uri = uri + "/" + attribute.getAttribute_code();
+			json = putSecure(uri, body, logger);
+		}
+		else {
+			json = postSecure(uri, StringUtils.toUTF8(body), logger);
+		}
 		
 		if (!validateJSON(json)) {
 			return null;
