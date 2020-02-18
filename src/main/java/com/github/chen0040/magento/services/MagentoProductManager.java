@@ -400,7 +400,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 	}
 
 	public ProductAttribute saveAttribute(ProductAttribute attribute, String attributeCode) {
-		String uri = baseUri() + relativePath4Products + "/attribute-sets/attributes/" + attributeCode;
+		String uri = baseUri() + relativePath4Products + "/attributes/" + attributeCode;
 		String body = RESTUtils.payloadWrapper("attribute", attribute.setAttribute_code(null));
 		
 		String json = putSecure(uri, StringUtils.toUTF8(body), logger);
