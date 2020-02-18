@@ -8,10 +8,12 @@ import com.github.chen0040.magento.models.MagentoAttribute;
 import com.github.chen0040.magento.models.serialization.AttributeValueDeserializer;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class Order {
 	private BigDecimal adjustment_negative;
 	private BigDecimal adjustment_positive;

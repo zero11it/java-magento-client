@@ -8,14 +8,16 @@ import com.github.chen0040.magento.models.MagentoAttribute;
 import com.github.chen0040.magento.models.serialization.AttributeValueDeserializer;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class Payment {
 	private String account_status;
 	private String additional_data;
-	List<String> additional_information;;
+	private List<String> additional_information;;
 	private String address_status;
 	private BigDecimal amount_authorized;
 	private BigDecimal amount_canceled;
@@ -57,13 +59,13 @@ public class Payment {
 	private String echeck_bank_name;
 	private String echeck_routing_number;
 	private String echeck_type;
-	private long entity_id;
+	private Integer entity_id;
 	private String last_trans_id;
 	private String method;
-	private long parent_id;
+	private Integer parent_id;
 	private String po_number;
 	private String protection_eligibility;
-	private long quote_payment_id;
+	private Integer quote_payment_id;
 	private BigDecimal shipping_amount;
 	private BigDecimal shipping_captured;
 	private BigDecimal shipping_refunded;

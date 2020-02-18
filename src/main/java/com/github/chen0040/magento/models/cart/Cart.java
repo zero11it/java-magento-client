@@ -8,8 +8,6 @@ import lombok.Setter;
 import java.util.Date;
 import java.util.List;
 
-import com.github.chen0040.magento.models.Customer;
-
 /**
  * Created by xschen on 10/7/2017.
  */

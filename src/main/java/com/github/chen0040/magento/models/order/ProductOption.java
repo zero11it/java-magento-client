@@ -6,7 +6,14 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.github.chen0040.magento.models.MagentoAttribute;
 import com.github.chen0040.magento.models.serialization.AttributeValueDeserializer;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
 public class ProductOption {
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
-	List<MagentoAttribute<?>> extension_attributes;
+	private List<MagentoAttribute<?>> extension_attributes;
 }

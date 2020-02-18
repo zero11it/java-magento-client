@@ -7,20 +7,22 @@ import com.github.chen0040.magento.models.MagentoAttribute;
 import com.github.chen0040.magento.models.serialization.AttributeValueDeserializer;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class StatusHistory {
 	private String comment;
 	private String created_at;
-	private long entity_id;
+	private Integer entity_id;
 	private String entity_name;
-	private long is_customer_notified;
-	private long is_visible_on_front;
-	private long parent_id;
+	private Integer is_customer_notified;
+	private Integer is_visible_on_front;
+	private Integer parent_id;
 	private String status;
 	
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
-	List<MagentoAttribute<?>> extension_attributes;
+	private List<MagentoAttribute<?>> extension_attributes;
 }

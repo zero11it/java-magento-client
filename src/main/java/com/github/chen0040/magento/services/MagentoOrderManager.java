@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSON;
 import com.github.chen0040.magento.MagentoClient;
-import com.github.chen0040.magento.models.Address;
+import com.github.chen0040.magento.models.order.Address;
 import com.github.chen0040.magento.models.order.Order;
 import com.github.chen0040.magento.models.order.OrderInvoice;
 import com.github.chen0040.magento.models.order.OrderItem;

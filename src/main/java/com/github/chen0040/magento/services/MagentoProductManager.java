@@ -3,7 +3,6 @@ package com.github.chen0040.magento.services;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.chen0040.magento.MagentoClient;
-import com.github.chen0040.magento.models.order.ProductOption;
 import com.github.chen0040.magento.models.product.ConfigurableProductOption;
 import com.github.chen0040.magento.models.product.PriceUpdateResult;
 import com.github.chen0040.magento.models.product.Product;

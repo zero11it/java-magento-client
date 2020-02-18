@@ -1,10 +1,12 @@
 package com.github.chen0040.magento.models.order;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class ShipmentArgumentsAttributes {
 	private String source_code;
 	private String shipping_label;

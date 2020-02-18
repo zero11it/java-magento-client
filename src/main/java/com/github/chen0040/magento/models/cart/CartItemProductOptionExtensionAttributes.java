@@ -8,8 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.github.chen0040.magento.models.ConfigurableItemOption;
-import com.github.chen0040.magento.models.GiftCardItemOption;
+import com.github.chen0040.magento.models.order.ConfigurableItemOption;
 
 /**
  * Created by xschen on 11/7/2017.

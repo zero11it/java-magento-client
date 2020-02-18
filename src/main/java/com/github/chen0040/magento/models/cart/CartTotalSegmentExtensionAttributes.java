@@ -6,8 +6,6 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.github.chen0040.magento.models.TaxGrandTotalDetail;
-
 /**
  * Created by xschen on 11/7/2017.
  */

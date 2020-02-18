@@ -3,7 +3,7 @@ package com.github.chen0040.magento;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.github.chen0040.magento.interfaces.HttpComponent;
-import com.github.chen0040.magento.models.Account;
+import com.github.chen0040.magento.models.cart.Account;
 import com.github.chen0040.magento.models.store.StoreView;
 import com.github.chen0040.magento.services.BasicHttpComponent;
 import com.github.chen0040.magento.services.MagentoCategoryManager;
