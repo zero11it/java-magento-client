@@ -72,12 +72,12 @@ public class MagentoTest {
 		
 		assertNotNull(client.products().searchProduct(new SearchCriteria().setPage(0, null)));
 		
-		assertNotNull(client.products().getProductAttributeSets());
+		assertNotNull(client.products().getAttributeSets());
 		
 		ProductAttributeSet set = new ProductAttributeSet().setAttribute_set_name("aaa").setSort_order(1);
-		set = client.products().saveProductAttributeSet(set);
+		set = client.products().saveAttributeSet(set);
 		assertNotNull(set);
-		assertTrue(client.products().deleteProductAttributeSet(set.getAttribute_set_id()));
+		assertTrue(client.products().deleteAttributeSet(set.getAttribute_set_id()));
 		
 		ProductAttribute attr = new ProductAttribute()
 				.setAttribute_code("aaa")
@@ -88,7 +88,7 @@ public class MagentoTest {
 		attr = client.products().saveAttribute(attr);
 		assertNotNull(attr);
 		
-		assertTrue(client.products().deleteProductAttribute(attr.getAttribute_code()));
+		assertTrue(client.products().deleteAttribute(attr.getAttribute_code()));
 	}
 	@Test
 	public void testAttributes() {
@@ -104,8 +104,8 @@ public class MagentoTest {
 				.setIs_user_defined(true)
 		));
 		client.products().addOptionToAttribute("test", AttributeOptionPOSTMode.NO_DUPLICATE_LABELS, "brown");
-		System.out.println(client.products().getProductAttributeOptions("test"));
-		assertTrue(client.products().deleteProductAttribute("test"));
+		System.out.println(client.products().getAttributeOptions("test"));
+		assertTrue(client.products().deleteAttribute("test"));
 		
 		List<String> rewixAttributeNames = Arrays.asList(
 				//"availability", --> stock qty
@@ -129,8 +129,8 @@ public class MagentoTest {
 		);
 		
 		try {
-			client.products().deleteProductAttributeSet(
-					client.products().getProductAttributeSets().stream()
+			client.products().deleteAttributeSet(
+					client.products().getAttributeSets().stream()
 					.filter(set -> set.getAttribute_set_name().equals("Rewix (brandsdistribution)"))
 					.collect(Collectors.toList())
 					.get(0).getAttribute_set_id()
@@ -141,7 +141,7 @@ public class MagentoTest {
 		}
 		
 		for (String attr : rewixAttributeNames) {
-			client.products().deleteProductAttribute("rewix_" + attr);
+			client.products().deleteAttribute("rewix_" + attr);
 		}
 	}
 	

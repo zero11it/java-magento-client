@@ -83,7 +83,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, Product.class);
 	}
 	
-	public ProductAttribute getProductAttribute(Integer attributeId) {
+	public ProductAttribute getAttribute(Integer attributeId) {
 		String uri = baseUri() + relativePath4Products + "/attributes/" + attributeId;
 		String json = getSecure(uri, logger);
 
@@ -95,7 +95,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, ProductAttribute.class);
 	}
 	
-	public ProductAttribute getProductAttribute(String attributeCode) {
+	public ProductAttribute getAttribute(String attributeCode) {
 		String uri = baseUri() + relativePath4Products + "/attributes/" + attributeCode;
 		String json = getSecure(uri, logger);
 
@@ -107,7 +107,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, ProductAttribute.class);
 	}
 
-	public List<ProductAttribute> getProductAttributes() {
+	public List<ProductAttribute> getAttributes() {
 		String uri = baseUri() + relativePath4Products + "/attributes?searchCriteria[currentPage]=0";
 		String json = getSecure(uri, logger);
 
@@ -118,7 +118,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return RESTUtils.getArrayByKey(json, "items", ProductAttribute.class);
 	}
 	
-	public List<ProductAttribute> getProductAttributesInSet(Integer attributeSetId) {
+	public List<ProductAttribute> getAttributesInSet(Integer attributeSetId) {
 		String uri = baseUri() + relativePath4Products + "/attribute-sets/" + attributeSetId + "/attributes";
 		String json = getSecure(uri, logger);
 
@@ -129,7 +129,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return JSON.parseArray(json, ProductAttribute.class);
 	}
 	
-	public List<ProductAttributeOption> getProductAttributeOptions(String attributeCode) {
+	public List<ProductAttributeOption> getAttributeOptions(String attributeCode) {
 		String uri = baseUri() + relativePath4Products + "/attributes/" + attributeCode + "/options";
 		String json = getSecure(uri, logger);
 
@@ -140,8 +140,8 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return JSON.parseArray(json, ProductAttributeOption.class);
 	}
 	
-	public ProductAttributeOption getProductAttributeOption(String attributeCode, ProductAttributeOption option) {
-		List<ProductAttributeOption> options = getProductAttributeOptions(attributeCode);
+	public ProductAttributeOption getAttributeOption(String attributeCode, ProductAttributeOption option) {
+		List<ProductAttributeOption> options = getAttributeOptions(attributeCode);
 		
 		if (options == null) {
 			return null;
@@ -170,8 +170,8 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return null;
 	}
 	
-	public String getProductAttributeOptionValue(String attributeCode, String label) {
-		ProductAttributeOption option = getProductAttributeOption(attributeCode, new ProductAttributeOption().setLabel(label));
+	public String getAttributeOptionValue(String attributeCode, String label) {
+		ProductAttributeOption option = getAttributeOption(attributeCode, new ProductAttributeOption().setLabel(label));
 		
 		if (option == null) {
 			return null;
@@ -180,7 +180,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return option.getValue();
 	}
 
-	public List<ProductAttributeType> getProductAttributeTypes() {
+	public List<ProductAttributeType> getAttributeTypes() {
 		String uri = baseUri() + relativePath4Products + "/attributes/types";
 		String json = getSecure(uri, logger);
 
@@ -191,8 +191,8 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return JSON.parseArray(json, ProductAttributeType.class);
 	}
 	
-	public ProductAttributeGroup getProductAttributeGroup(Integer attributeGroupId) {
-		List<ProductAttributeGroup> groups = getProductAttributeGroups();
+	public ProductAttributeGroup getAttributeGroup(Integer attributeGroupId) {
+		List<ProductAttributeGroup> groups = getAttributeGroups();
 		
 		if (groups == null) {
 			return null;
@@ -205,7 +205,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return group.isPresent() ? group.get() : null;
 	}
 	
-	public List<ProductAttributeGroup> getProductAttributeGroups() {
+	public List<ProductAttributeGroup> getAttributeGroups() {
 		String uri = baseUri() + relativePath4Products + "/attribute-sets/groups/list?searchCriteria[currentPage]=0";
 		String json = getSecure(uri, logger);
 
@@ -216,8 +216,8 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return RESTUtils.getArrayByKey(json, "items", ProductAttributeGroup.class);
 	}
 	
-	public ProductAttributeSet getProductAttributeSet(Integer attributeSetId) {
-		List<ProductAttributeSet> sets = getProductAttributeSets();
+	public ProductAttributeSet getAttributeSet(Integer attributeSetId) {
+		List<ProductAttributeSet> sets = getAttributeSets();
 		
 		if (sets == null) {
 			return null;
@@ -230,7 +230,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return set.isPresent() ? set.get() : null;
 	}
 
-	public List<ProductAttributeSet> getProductAttributeSets() {
+	public List<ProductAttributeSet> getAttributeSets() {
 		String uri = baseUri() + relativePath4Products + "/attribute-sets/sets/list?searchCriteria[currentPage]=0";
 		String json = getSecure(uri, logger);
 
@@ -270,8 +270,8 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return JSON.parseArray(json, ProductCost.class);
 	}
 
-	public boolean hasProductAttributeSet(Integer attributeSetId) {
-		List<ProductAttributeSet> attributeSets = getProductAttributeSets();
+	public boolean hasAttributeSet(Integer attributeSetId) {
+		List<ProductAttributeSet> attributeSets = getAttributeSets();
 		
 		return attributeSets.stream()
 				.filter(set -> set.getAttribute_set_id() == attributeSetId)
@@ -279,8 +279,8 @@ public class MagentoProductManager extends MagentoHttpComponent {
 				.size() > 0;
 	}
 	
-	public boolean hasProductAttributeGroup(String attributeGroupId) {
-		List<ProductAttributeGroup> attributeGroups = getProductAttributeGroups();
+	public boolean hasAttributeGroup(String attributeGroupId) {
+		List<ProductAttributeGroup> attributeGroups = getAttributeGroups();
 		
 		return attributeGroups.stream()
 				.filter(set -> set.getAttribute_group_id().equals(attributeGroupId))
@@ -289,7 +289,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 	}
 	
 	public boolean hasAttribute(ProductAttribute attribute) {
-		List<ProductAttribute> attributes = getProductAttributes().stream()
+		List<ProductAttribute> attributes = getAttributes().stream()
 				.filter(attr -> attr.getAttribute_code().equals(attribute.getAttribute_code()))
 				.collect(Collectors.toList());
 		
@@ -300,16 +300,16 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return getProduct(sku) != null;
 	}
 	
-	public ProductAttributeSet saveProductAttributeSet(ProductAttributeSet attributeSet) {
-		ProductAttributeSet defaultSet = getProductAttributeSets().stream()
+	public ProductAttributeSet saveAttributeSet(ProductAttributeSet attributeSet) {
+		ProductAttributeSet defaultSet = getAttributeSets().stream()
 				.filter(set -> set.getAttribute_set_name().toLowerCase().equals("default"))
 				.collect(Collectors.toList())
 				.get(0);
 		
-		return saveProductAttributeSet(attributeSet, defaultSet);
+		return saveAttributeSet(attributeSet, defaultSet);
 	}
 	
-	public ProductAttributeSet saveProductAttributeSet(ProductAttributeSet attributeSet, ProductAttributeSet baseAttributeSet) {
+	public ProductAttributeSet saveAttributeSet(ProductAttributeSet attributeSet, ProductAttributeSet baseAttributeSet) {
 		String uri = baseUri() + relativePath4Products + "/attribute-sets";
 		String body = "{"
 				+ "\"attributeSet\" : " + JSON.toJSONString(attributeSet) + ","
@@ -318,7 +318,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		
 		String json;
 		
-		if (attributeSet.getAttribute_set_id() != null && hasProductAttributeSet(attributeSet.getAttribute_set_id())) {
+		if (attributeSet.getAttribute_set_id() != null && hasAttributeSet(attributeSet.getAttribute_set_id())) {
 			json = putSecure(uri, StringUtils.toUTF8(body), logger);
 		}
 		else {
@@ -332,7 +332,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, ProductAttributeSet.class);
 	}
 	
-	public ProductAttributeGroup saveProductAttributeGroup(ProductAttributeGroup attributeGroup) {
+	public ProductAttributeGroup saveAttributeGroup(ProductAttributeGroup attributeGroup) {
 		String uri = baseUri() + relativePath4Products + "/attribute-sets/groups";
 		String body = "{"
 				+ "\"group\" : " + JSON.toJSONString(attributeGroup)
@@ -347,7 +347,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, ProductAttributeGroup.class);
 	}
 	
-	public ProductAttributeGroup saveProductAttributeGroup(ProductAttributeGroup attributeGroup, Integer attributeSetId) {
+	public ProductAttributeGroup saveAttributeGroup(ProductAttributeGroup attributeGroup, Integer attributeSetId) {
 		String uri = baseUri() + relativePath4Products + "/attribute-sets/" + attributeSetId + "/groups";
 		String body = "{"
 				+ "\"group\" : " + JSON.toJSONString(attributeGroup)
@@ -391,7 +391,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		String body = RESTUtils.payloadWrapper("attribute", attribute);
 		
 		String json;
-		if (getProductAttribute(attribute.getAttribute_code()) != null) {
+		if (getAttribute(attribute.getAttribute_code()) != null) {
 			uri = uri + "/" + attribute.getAttribute_code();
 			json = putSecure(uri, body, logger);
 		}
@@ -429,7 +429,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		String body = RESTUtils.payloadWrapper("option", option);
 		
 		if (mode == AttributeOptionPOSTMode.NO_DUPLICATE_LABELS) {
-			ProductAttributeOption ourOption = getProductAttributeOption(attributeCode, option);
+			ProductAttributeOption ourOption = getAttributeOption(attributeCode, option);
 			if (ourOption != null) {
 					String msg = ourOption.getLabel() + " is already present.";
 					logger.error(msg);
@@ -619,7 +619,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return saveProduct(product);
 	}
 	
-	public Boolean deleteProductAttributeGroup(Integer groupId) {
+	public Boolean deleteAttributeGroup(Integer groupId) {
 		String uri = baseUri() + relativePath4Products + "/attribute-sets/groups/" + groupId;
 		
 		String json = deleteSecure(uri, logger);
@@ -627,7 +627,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return Boolean.parseBoolean(json);
 	}
 	
-	public Boolean deleteProductAttributeSet(Integer attributeSetId) {
+	public Boolean deleteAttributeSet(Integer attributeSetId) {
 		String uri = baseUri() + relativePath4Products + "/attribute-sets/" + attributeSetId;
 		
 		String json = deleteSecure(uri, logger);
@@ -635,7 +635,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return Boolean.parseBoolean(json);
 	}
 	
-	public Boolean deleteProductAttributeInSet(Integer attributeSetId, String attributeCode) {
+	public Boolean deleteAttributeInSet(Integer attributeSetId, String attributeCode) {
 		String uri = baseUri() + relativePath4Products + "/attribute-sets/" + attributeSetId + "/attributes/" + attributeCode;
 		
 		String json = deleteSecure(uri, logger);
@@ -643,7 +643,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return Boolean.parseBoolean(json);
 	}
 	
-	public Boolean deleteProductAttribute(String attributeCode) {
+	public Boolean deleteAttribute(String attributeCode) {
 		String uri = baseUri() + relativePath4Products + "/attributes/" + attributeCode;
 		
 		String json = deleteSecure(uri, logger);
@@ -651,7 +651,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return Boolean.parseBoolean(json);
 	}
 	
-	public Boolean deleteProductAttributeOption(String attributeCode, String optionId) {
+	public Boolean deleteAttributeOption(String attributeCode, String optionId) {
 		String uri = baseUri() + relativePath4Products + "/attributes/" + attributeCode + "/options/" + optionId;
 		
 		String json = deleteSecure(uri, logger);
