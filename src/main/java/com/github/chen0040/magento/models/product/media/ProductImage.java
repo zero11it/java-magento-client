@@ -2,8 +2,9 @@ package com.github.chen0040.magento.models.product.media;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +32,12 @@ public class ProductImage {
 	ProductImageContent content;
 	Map<String, ProductVideoContent> extension_attributes;
 	
-	public ProductImage(String filePath, ProductImageType[] types, String label) {
+	public enum ImageSourceType {
+		URL,
+		FILE
+	}
+	
+	public ProductImage(String path, ImageSourceType source, ProductImageType[] types, String label) {
 		this.media_type = "image";
 		this.label = label;
 		this.position = 1;
@@ -40,8 +46,14 @@ public class ProductImage {
 				.map(type -> type.toString())
 				.collect(Collectors.toList());
 		
-		String imageName = getImageName(filePath);
-		this.content = new ProductImageContent(encodeImage(filePath), getImageType(imageName), imageName);
+		String imageName = getImageName(path);
+		
+		if (source == ImageSourceType.FILE) {
+			this.content = new ProductImageContent(encodeImageFile(path), getImageType(imageName), imageName);
+		}
+		else {
+			this.content = new ProductImageContent(encodeImageFromUrl(path), getImageType(imageName), imageName);
+		}
 		
 		this.extension_attributes = null;
 	}
@@ -93,16 +105,32 @@ public class ProductImage {
 		}
 	}
 
-	private String encodeImage(String filePath) {
+	private String encodeImageFile(String filePath) {
 		byte[] imageBytes;
+		
 		try {
 			imageBytes = IOUtils.toByteArray(new FileInputStream(new File(filePath)));
-		} catch (FileNotFoundException e) {
-			return "";
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			return "";
 		}
 		
+		return Base64.encodeBase64String(imageBytes);
+	}
+	
+	private String encodeImageFromUrl(String url) {
+		InputStream input = null;
+		byte[] imageBytes;
+		
+		try {
+			input = new URL(url).openStream();
+			imageBytes = IOUtils.toByteArray(input);
+			input.close();
+		}
+		catch (IOException e) {
+			return "";
+		}
+
 		return Base64.encodeBase64String(imageBytes);
 	}
 	

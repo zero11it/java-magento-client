@@ -233,17 +233,19 @@ public class MagentoTest {
 		MagentoClient client = new MagentoClient("https://bsmagento2.web07.zero11.net/");
 		client.loginAsAdmin("a.trucco", "zero11zero11");
 		
-		Integer id = client.products().media().uploadImage("BYRON_BROWN", "/Users/arseniotrucco/byron.jpg", "byron");
-		assertNotNull(id);
-		client.products().media().deleteProductImage("BYRON_BROWN", id);
+		client.products().saveProduct(new Product().setSku("test").setName("test").setAttribute_set_id(4));
 		
-		id = client.products().media().uploadImageFromURL("BYRON_BROWN", "https://www.fashionclothes.it/wp-content/uploads/2018/11/stock_product_image_83682_319861228.jpg", "byron");
+		Integer id = client.products().media().uploadImage("test", "/Users/arseniotrucco/byron.jpg", "byron");
 		assertNotNull(id);
-		client.products().media().deleteProductImage("BYRON_BROWN", id);
+		client.products().media().deleteProductImage("test", id);
 		
-		List<ProductImage> images = client.products().media().getProductImages("BYRON_BROWN");
+		id = client.products().media().uploadImageFromURL("test", "https://www.fashionclothes.it/wp-content/uploads/2018/11/stock_product_image_83682_319861228.jpg", "byron");
+		assertNotNull(id);
+		client.products().media().deleteProductImage("test", id);
+		
+		List<ProductImage> images = client.products().media().getProductImages("test");
 		for (ProductImage image : images) {
-			client.products().media().deleteProductImage("BYRON_BROWN", image.getId());
+			client.products().media().deleteProductImage("test", image.getId());
 		}
 	}
 	

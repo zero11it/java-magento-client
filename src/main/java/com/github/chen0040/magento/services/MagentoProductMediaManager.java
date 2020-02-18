@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.github.chen0040.magento.MagentoClient;
 import com.github.chen0040.magento.models.product.media.ImageMIMEType;
 import com.github.chen0040.magento.models.product.media.ProductImage;
+import com.github.chen0040.magento.models.product.media.ProductImage.ImageSourceType;
 import com.github.chen0040.magento.models.product.media.ProductImageContent;
 import com.github.chen0040.magento.models.product.media.ProductImageType;
 import com.github.chen0040.magento.models.product.media.ProductVideoContent;
@@ -11,14 +12,9 @@ import com.github.chen0040.magento.utils.RESTUtils;
 import com.github.chen0040.magento.utils.StringUtils;
 import com.github.mgiorda.oauth.OAuthConfig;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,6 +57,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 	public Integer uploadImage(String sku, String imageFilePath, String label) {
 		ProductImage image = new ProductImage(
 				imageFilePath,
+				ImageSourceType.FILE,
 				ProductImageType.all(),
 				label
 		);
@@ -81,28 +78,12 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 	}
 	
 	public Integer uploadImageFromURL(String sku, String url, String label) {
-		File tmp = null;
-		try {
-			tmp = File.createTempFile(label, "." + FilenameUtils.getExtension(url));
-		}
-		catch (IOException exception) {
-			logger.error(exception.getMessage());
-		}
-		
-		try {
-			FileUtils.copyURLToFile(new URL(url), tmp);
-		}
-		catch (IOException exception) {
-			logger.error(exception.getMessage());
-		}
-		
 		ProductImage image = new ProductImage(
-				tmp.getAbsolutePath(),
+				url,
+				ImageSourceType.URL,
 				ProductImageType.all(),
 				label
 		);
-		
-		tmp.delete();
 		
 		return uploadImage(sku, image);
 	}
@@ -123,6 +104,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 	public Integer updateImage(String sku, String entryId, String imageFilePath, String label) {
 		ProductImage image = new ProductImage(
 				imageFilePath,
+				ImageSourceType.FILE,
 				ProductImageType.all(),
 				label
 		);
@@ -143,28 +125,12 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 	}
 	
 	public Integer updateImageFromURL(String sku, String entryId, String url, String label) {
-		File tmp = null;
-		try {
-			tmp = File.createTempFile(label, "." + FilenameUtils.getExtension(url));
-		}
-		catch (IOException exception) {
-			logger.error(exception.getMessage());
-		}
-		
-		try {
-			FileUtils.copyURLToFile(new URL(url), tmp);
-		}
-		catch (IOException exception) {
-			logger.error(exception.getMessage());
-		}
-		
 		ProductImage image = new ProductImage(
-				tmp.getAbsolutePath(),
+				url,
+				ImageSourceType.URL,
 				ProductImageType.all(),
 				label
 		);
-		
-		tmp.delete();
 		
 		return updateImage(sku, entryId, image);
 	}
