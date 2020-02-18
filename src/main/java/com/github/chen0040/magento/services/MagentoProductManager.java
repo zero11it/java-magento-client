@@ -224,7 +224,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		}
 		
 		Optional<ProductAttributeSet> set = sets.stream()
-				.filter(_set -> _set.getAttribute_set_id().equals(attributeSetId.toString()))
+				.filter(_set -> _set.getAttribute_set_id().equals(attributeSetId))
 				.findAny();
 		
 		return set.isPresent() ? set.get() : null;
