@@ -4,7 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Arrays;
 import java.util.List;
+import com.github.chen0040.magento.models.UpdateableModel;
 
 /**
  * Created by xschen on 12/6/2017.
@@ -12,7 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ProductAttribute {
+public class ProductAttribute extends UpdateableModel<ProductAttribute> {
 	private Boolean is_wysiwyg_enabled;
 	private Boolean is_html_allowed_on_front;
 	private Boolean used_for_sort_by;
@@ -44,4 +46,10 @@ public class ProductAttribute {
 	private String is_unique;
 	private String frontend_class;
 	private List<String> validation_rules;
+	
+	@Override
+	protected List<String> propertyBlackList() {
+		final String[] blacklist = {};
+		return Arrays.asList(blacklist);
+	}
 }

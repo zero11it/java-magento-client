@@ -387,9 +387,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		String json;
 		ProductAttribute oldAttribute = getAttribute(attribute.getAttribute_code());
 		if (oldAttribute != null) {
-			attribute.setAttribute_id(oldAttribute.getAttribute_id());
-			attribute.setEntity_type_id(oldAttribute.getEntity_type_id());
-			attribute.setApply_to(oldAttribute.getApply_to());
+			attribute.inherit(oldAttribute);
 			return saveAttribute(attribute, attribute.getAttribute_code());
 		}
 		else {
