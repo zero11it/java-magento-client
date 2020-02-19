@@ -387,7 +387,8 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		String json;
 		ProductAttribute oldAttribute = getAttribute(attribute.getAttribute_code());
 		if (oldAttribute != null) {
-			attribute.inherit(oldAttribute);
+			oldAttribute.setDefault_frontend_label(attribute.getDefault_frontend_label() == null ? oldAttribute.getDefault_frontend_label() : attribute.getDefault_frontend_label());
+			oldAttribute.setFrontend_labels(attribute.getFrontend_labels() == null ? oldAttribute.getFrontend_labels() : attribute.getFrontend_labels());
 			return saveAttribute(attribute, attribute.getAttribute_code());
 		}
 		else {

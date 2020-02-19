@@ -282,23 +282,4 @@ public class MagentoTest {
 		category = client.categories().getCategory("test");
 		assertTrue(client.categories().deleteCategory(category.getId()));
 	}
-	
-	@Test
-	public void testUpdateableModel() {
-		ProductAttribute parent = new ProductAttribute()
-				.setAttribute_code("test")
-				.setAttribute_id(15)
-				.setDefault_frontend_label("Test")
-				.setApply_to(Arrays.asList(
-						TYPE.BUNDLE,
-						TYPE.CONFIGURABLE,
-						TYPE.DOWNLOADABLE,
-						TYPE.SIMPLE,
-						TYPE.VIRTUAL
-				));
-		
-		ProductAttribute child = new ProductAttribute().setDefault_frontend_label("New Test").inherit(parent);
-		
-		assertNotNull(child);
-	}
 }
