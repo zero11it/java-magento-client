@@ -48,8 +48,12 @@ public class ProductAttribute extends UpdateableModel<ProductAttribute> {
 	private List<String> validation_rules;
 	
 	@Override
-	protected List<String> propertyBlackList() {
-		final String[] blacklist = {};
+	protected List<String> propertyUpdateBlackList() {
+		final String[] blacklist = {
+				"attribute_id",
+				"attribute_code"
+		};
+		
 		return Arrays.asList(blacklist);
 	}
 }

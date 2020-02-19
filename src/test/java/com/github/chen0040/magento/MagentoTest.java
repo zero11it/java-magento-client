@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import com.github.chen0040.magento.models.category.Category;
 import com.github.chen0040.magento.models.product.Product;
+import com.github.chen0040.magento.models.product.Product.TYPE;
 import com.github.chen0040.magento.models.product.ProductAttribute;
 import com.github.chen0040.magento.models.product.ProductAttributeSet;
 import com.github.chen0040.magento.models.product.ProductExtensionAttributes;
@@ -280,5 +281,24 @@ public class MagentoTest {
 		client.switchStoreViewToDefault();
 		category = client.categories().getCategory("test");
 		assertTrue(client.categories().deleteCategory(category.getId()));
+	}
+	
+	@Test
+	public void testUpdateableModel() {
+		ProductAttribute parent = new ProductAttribute()
+				.setAttribute_code("test")
+				.setAttribute_id(15)
+				.setDefault_frontend_label("Test")
+				.setApply_to(Arrays.asList(
+						TYPE.BUNDLE,
+						TYPE.CONFIGURABLE,
+						TYPE.DOWNLOADABLE,
+						TYPE.SIMPLE,
+						TYPE.VIRTUAL
+				));
+		
+		ProductAttribute child = new ProductAttribute().setDefault_frontend_label("New Test").inherit(parent);
+		
+		assertNotNull(child);
 	}
 }

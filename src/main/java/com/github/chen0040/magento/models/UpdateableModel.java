@@ -16,35 +16,40 @@ public abstract class UpdateableModel<T> {
 	        .collect(Collectors.toMap(_entry -> _entry.getKey(), _entry -> _entry.getValue()));
 	}
 	
-	protected void setProperty(UpdateableModel<T> object, String property, Object value) {
+	@SuppressWarnings("unchecked")
+	protected T setProperty(UpdateableModel<T> object, String property, Object value) {
 		try {
 			PropertyUtils.setProperty(object, property, value);
+			return (T) this;
 		} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-			return;
+			return (T) this;
 		}
 	}
 	
-	public UpdateableModel<T> inherit(UpdateableModel<T> parent) {
+	@SuppressWarnings("unchecked")
+	public T inherit(UpdateableModel<T> parent) {
 		try {
 			Map<String, Object> childProperties = getProperties(this);
 			Map<String, Object> parentProperties = getProperties(parent);
 			
 			childProperties.forEach((property, value) -> {
-					if (canCopyProperty(property) && value == null && parentProperties.get(property) != null) {
+					if (canCopyProperty(property) && value != null && parentProperties.get(property) != null) {
 						setProperty(this, property, value);
 					}
 			});
 		}
 		catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-			return this;
+			return (T) this;
 		}
 		
-		return this;
+		return (T) this;
 	}
 	
 	protected boolean canCopyProperty(String property) {
-		return !propertyBlackList().contains(property);
+		final List<String> blacklist = propertyUpdateBlackList();
+		
+		return blacklist == null || !blacklist.contains(property);
 	}
 
-	protected abstract List<String> propertyBlackList();
+	protected abstract List<String> propertyUpdateBlackList();
 }
