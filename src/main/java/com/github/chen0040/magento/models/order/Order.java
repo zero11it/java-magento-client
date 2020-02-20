@@ -1,6 +1,7 @@
 package com.github.chen0040.magento.models.order;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import com.alibaba.fastjson.annotation.JSONField;
@@ -62,7 +63,7 @@ public class Order {
 	private Integer can_ship_partially;
 	private Integer can_ship_partially_item;
 	private String coupon_code;
-	private String created_at;
+	private Date created_at;
 	private String customer_dob;
 	private String customer_email;
 	private String customer_firstname;

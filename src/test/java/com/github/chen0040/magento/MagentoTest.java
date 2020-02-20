@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.junit.Test;
 
 import com.github.chen0040.magento.models.category.Category;
+import com.github.chen0040.magento.models.order.Order;
 import com.github.chen0040.magento.models.product.Product;
 import com.github.chen0040.magento.models.product.Product.TYPE;
 import com.github.chen0040.magento.models.product.ProductAttribute;
@@ -202,10 +203,8 @@ public class MagentoTest {
 		client.loginAsAdmin("a.trucco", "zero11zero11");
 
 		assertNotNull(client.order().getOrder(1));
+		assertNotNull(client.order().searchOrders(new SearchCriteria().addFilterGroup("status", Order.STATUS.PENDING, ConditionType.LIKE)));
 		assertNotNull(client.order().searchItems(new SearchCriteria().setPage(0, 1000)));
-		assertNotNull(client.order().searchItems(new SearchCriteria().addFilterGroup("name", "ESTER", ConditionType.LIKE)));
-		assertNotNull(client.order().searchOrders(new SearchCriteria().setPage(0, 1000)));
-		assertNotNull(client.order().searchOrders(new SearchCriteria().addFilterGroup("name", "ESTER", ConditionType.LIKE)));
 	}
 	
 	@Test
