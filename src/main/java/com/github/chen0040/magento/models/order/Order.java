@@ -154,4 +154,20 @@ public class Order {
 	
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
 	List<MagentoAttribute<?>> extension_attributes;
+	
+	public static class STATUS {
+		public static final String PROCESSING = "processing";
+		public static final String SUSPECTED_FRAUD = "fraud";
+		public static final String PENDING_PAYMENT = "pending_payment";
+		public static final String PAYMENT_REVIEW = "payment_review";
+		public static final String PENDING = "pending";
+		public static final String ON_HOLD = "holded";
+		public static final String OPEN = "STATE_OPEN";
+		public static final String COMPLETE = "complete";
+		public static final String CLOSED = "closed";
+		public static final String CANCELED = "canceled";
+		public static final String PAYPAL_CANCELED_REVERSAL = "processing";
+		public static final String PENDING_PAYPAL = "pending_paypal";
+		public static final String PAYPAL_REVERSED = "paypal_reversed";
+	}
 }

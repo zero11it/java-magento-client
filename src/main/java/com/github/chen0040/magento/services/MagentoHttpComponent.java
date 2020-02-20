@@ -64,7 +64,7 @@ public abstract class MagentoHttpComponent {
 	public String postSecure(String uri, String body, Logger logger) {
 		Map<String, String> headers = buildHeaders(HttpMethod.POST, uri);
 		
-		logger.info("POST-ing @ {}:\n {}", uri, body);
+		logger.info("POST-ing @ {}:\n{}", uri, body);
 		String resp = httpComponent.post(uri, body, headers);
 		logger.info("Got: {}", resp);
 		
@@ -74,7 +74,7 @@ public abstract class MagentoHttpComponent {
 	public String putSecure(String uri, String body, Logger logger) {
 		Map<String, String> headers = buildHeaders(HttpMethod.PUT, uri);
 		
-		logger.info("PUT-ting @ {}:\n {}", uri, body);
+		logger.info("PUT-ting @ {}:\n{}", uri, body);
 		String resp = httpComponent.put(uri, body, headers);
 		logger.info("Got: {}", resp);
 		
