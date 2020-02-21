@@ -43,4 +43,22 @@ public class BillingAdress {
 	
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
 	List<MagentoAttribute<?>> extension_attributes;
+	
+	public String getFullStreetName() {
+		return String.join("\n", street);
+	}
+	
+	public String getFullAddress() {
+		StringBuilder address = new StringBuilder();
+		
+		address
+			.append(firstname).append(" ").append(lastname).append("\n")
+			.append(getFullStreetName()).append("\n")
+			.append(region).append(", ").append(region_code).append("\n")
+			.append(postcode).append(" ").append(city).append("\n")
+			.append(region).append(" ").append(region_code).append("\n")
+			.append(country_id);
+		
+		return address.toString();
+	}
 }
