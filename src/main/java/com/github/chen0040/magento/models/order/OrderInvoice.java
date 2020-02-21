@@ -14,6 +14,12 @@ public class OrderInvoice {
 	private List<SalesDataItem> items;
 	private Boolean notify;
 	private Boolean appendComment;
-	private SalesDataComment comment;
+	private List<SalesDataComment> comment;
 	private InvoiceArguments arguments;
+	
+	public static OrderInvoice createInvoicePayload() {
+		return new OrderInvoice()
+				.setCapture(true)
+				.setNotify(true);
+	}
 }
