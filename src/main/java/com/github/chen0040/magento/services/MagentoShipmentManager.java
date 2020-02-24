@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSON;
 import com.github.chen0040.magento.MagentoClient;
+import com.github.chen0040.magento.models.order.SalesDataComment;
 import com.github.chen0040.magento.models.search.SearchCriteria;
 import com.github.chen0040.magento.models.shipment.Shipment;
 import com.github.chen0040.magento.models.shipment.ShipmentComment;
@@ -102,6 +103,19 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 		}
 		
 		return JSON.parseObject(json, Shipment.class);
+	}
+	
+	public SalesDataComment saveShipmentComment(Integer shipmentId, SalesDataComment comment) {
+		String uri = baseUri() + "/" + relativePath4Shipments + "/" + shipmentId + "/comments";
+		String body = RESTUtils.payloadWrapper("entity", comment);
+		
+		String json = postSecure(uri, StringUtils.toUTF8(body), logger);
+		
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+		return JSON.parseObject(json, SalesDataComment.class);
 	}
 	
 	public ShipmentTrack saveTrack(ShipmentTrack track) {
