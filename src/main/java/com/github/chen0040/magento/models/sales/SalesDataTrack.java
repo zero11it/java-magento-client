@@ -1,4 +1,4 @@
-package com.github.chen0040.magento.models.order;
+package com.github.chen0040.magento.models.sales;
 
 import java.util.List;
 
@@ -13,7 +13,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class InvoiceArguments {
+public class SalesDataTrack {
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
 	private List<MagentoAttribute<?>> extension_attributes;
+	
+	private String track_number;
+	private String title;
+	private String carrier_code;
 }

@@ -3,9 +3,14 @@ package com.github.chen0040.magento.models.order;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.github.chen0040.magento.models.MagentoAttribute;
+import com.github.chen0040.magento.models.sales.BillingAdress;
+import com.github.chen0040.magento.models.sales.Payment;
+import com.github.chen0040.magento.models.sales.SalesDataItem;
+import com.github.chen0040.magento.models.sales.StatusHistory;
 import com.github.chen0040.magento.models.serialization.AttributeValueDeserializer;
 
 import lombok.Getter;
@@ -170,5 +175,15 @@ public class Order {
 		public static final String PAYPAL_CANCELED_REVERSAL = "processing";
 		public static final String PENDING_PAYPAL = "pending_paypal";
 		public static final String PAYPAL_REVERSED = "paypal_reversed";
+	}
+	
+	public List<SalesDataItem> getSalesDataItems() {
+		if (items == null || items.size() == 0) {
+			return null;
+		}
+		
+		return items.stream()
+				.map(_item -> new SalesDataItem(_item.getItem_id(), _item.getQty_ordered()))
+				.collect(Collectors.toList());
 	}
 }

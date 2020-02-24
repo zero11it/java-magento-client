@@ -1,4 +1,4 @@
-package com.github.chen0040.magento.models.order;
+package com.github.chen0040.magento.models.shipment;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

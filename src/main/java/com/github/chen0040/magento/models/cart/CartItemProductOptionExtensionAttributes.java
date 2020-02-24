@@ -6,7 +6,8 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.github.chen0040.magento.models.order.ConfigurableItemOption;
+
+import com.github.chen0040.magento.models.sales.ConfigurableItemOption;
 
 /**
  * Created by xschen on 11/7/2017.

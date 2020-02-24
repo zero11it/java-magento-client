@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSON;
 import com.github.chen0040.magento.MagentoClient;
-import com.github.chen0040.magento.models.order.SalesDataComment;
+import com.github.chen0040.magento.models.sales.SalesDataComment;
 import com.github.chen0040.magento.models.search.SearchCriteria;
 import com.github.chen0040.magento.models.shipment.Shipment;
 import com.github.chen0040.magento.models.shipment.ShipmentComment;

@@ -1,4 +1,4 @@
-package com.github.chen0040.magento.models.order;
+package com.github.chen0040.magento.models.sales;
 
 import java.util.List;
 import com.alibaba.fastjson.annotation.JSONField;
@@ -18,4 +18,9 @@ public class SalesDataItem {
 	
 	private Integer order_item_id;
 	private Integer qty;
+	
+	public SalesDataItem(Integer order_item_id, Integer qty) {
+		this.order_item_id = order_item_id;
+		this.qty = qty;
+	}
 }

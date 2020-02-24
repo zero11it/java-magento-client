@@ -7,7 +7,7 @@ import lombok.Setter;
 import java.util.Date;
 import java.util.List;
 
-import com.github.chen0040.magento.models.order.Address;
+import com.github.chen0040.magento.models.sales.Address;
 
 /**
  * Created by xschen on 12/6/2017.

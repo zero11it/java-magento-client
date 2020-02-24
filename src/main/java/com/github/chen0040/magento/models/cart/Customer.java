@@ -6,7 +6,7 @@ import lombok.Setter;
 
 import java.util.Map;
 
-import com.github.chen0040.magento.models.order.Address;
+import com.github.chen0040.magento.models.sales.Address;
 
 /**
  * Created by xschen on 10/7/2017.

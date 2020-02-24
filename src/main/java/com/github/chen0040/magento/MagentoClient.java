@@ -10,6 +10,7 @@ import com.github.chen0040.magento.services.MagentoCategoryManager;
 import com.github.chen0040.magento.services.MagentoGuestCartManager;
 import com.github.chen0040.magento.services.MagentoHttpComponent;
 import com.github.chen0040.magento.services.MagentoInventoryStockManager;
+import com.github.chen0040.magento.services.MagentoInvoiceManager;
 import com.github.chen0040.magento.services.MagentoMyCartManager;
 import com.github.chen0040.magento.services.MagentoOrderManager;
 import com.github.chen0040.magento.services.MagentoProductManager;
@@ -56,7 +57,7 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
 	private int storeViewCacheAccessCount;
 	@Getter(AccessLevel.NONE)
-	private static final int MAX_CACHE_ACCESS_COUNT = 100;
+	private static final int MAX_STORE_VIEW_CACHE_ACCESS_COUNT = 100;
 
 	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
 	private OAuthConfig oauth = null;
@@ -79,6 +80,8 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
 	private MagentoOrderManager order;
 	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
+	private MagentoInvoiceManager invoice;
+	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
 	private MagentoShipmentManager shipment;
 
 	public MagentoClient(String baseUri, HttpComponent httpComponent) {
@@ -92,6 +95,7 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 		this.myCart = new MagentoMyCartManager(this);
 		this.store = new MagentoStoreManager(this);
 		this.order = new MagentoOrderManager(this);
+		this.invoice = new MagentoInvoiceManager(this);
 		this.shipment = new MagentoShipmentManager(this);
 	}
 
@@ -130,7 +134,7 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 		}
 		else {
 			storeViewCacheAccessCount += 1;
-			storeViewCacheAccessCount %= MAX_CACHE_ACCESS_COUNT;
+			storeViewCacheAccessCount %= MAX_STORE_VIEW_CACHE_ACCESS_COUNT;
 		}
 		
 		if (storeViewCacheAccessCount == 0) {
