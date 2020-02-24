@@ -36,8 +36,8 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 		return client.baseUri();
 	}
 	
-	public boolean email(Integer id) {
-		String uri = baseUri() + "/" + relativePath4Shipments + "/" + id + "/emails";
+	public boolean emailShipment(Integer shipmentId) {
+		String uri = baseUri() + "/" + relativePath4Shipments + "/" + shipmentId + "/emails";
 		
 		String json = postSecure(uri, "", logger);
 		
@@ -48,8 +48,8 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, Boolean.class).booleanValue();
 	}
 	
-	public Shipment getShipment(Integer id) {
-		String uri = baseUri() + "/" + relativePath4Shipments + "/" + id;
+	public Shipment getShipment(Integer shipmentId) {
+		String uri = baseUri() + "/" + relativePath4Shipments + "/" + shipmentId;
 		String json = getSecure(uri, logger);
 		
 		if (!validateJSON(json)) {
@@ -59,8 +59,8 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, Shipment.class);
 	}
 	
-	public List<ShipmentComment> getShipmentComments(Integer id) {
-		String uri = baseUri() + "/" + relativePath4Shipments + "/" + id + "/comments";
+	public List<ShipmentComment> getShipmentComments(Integer shipmentId) {
+		String uri = baseUri() + "/" + relativePath4Shipments + "/" + shipmentId + "/comments";
 		String json = getSecure(uri, logger);
 		
 		if (!validateJSON(json)) {
@@ -70,8 +70,8 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 		return JSON.parseArray(json, ShipmentComment.class);
 	}
 	
-	public String getLabel(Integer id) {
-		String uri = baseUri() + "/" + relativePath4Shipments + "/" + id + "/comments";
+	public String getLabel(Integer shipmentId) {
+		String uri = baseUri() + "/" + relativePath4Shipments + "/" + shipmentId + "/comments";
 		String json = getSecure(uri, logger);
 		
 		if (!validateJSON(json)) {
@@ -82,7 +82,7 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 	}
 	
 	public List<Shipment> search(SearchCriteria criteria) {
-		String uri = baseUri() + "/" + relativePath4Shipments + "s?" + criteria.toString();
+		String uri = baseUri() + "/" + relativePath4Shipments + "s?" + criteria;
 		String json = getSecure(uri, logger);
 
 		if (!validateJSON(json)) {
@@ -131,8 +131,8 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, ShipmentTrack.class);
 	}
 	
-	public Boolean deleteTrack(Integer id) {
-		String uri = baseUri() + "/" + relativePath4Shipments + "/track/" + id;
+	public Boolean deleteTrack(Integer shipmentId) {
+		String uri = baseUri() + "/" + relativePath4Shipments + "/track/" + shipmentId;
 		
 		String json = deleteSecure(uri, logger);
 		
