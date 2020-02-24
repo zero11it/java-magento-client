@@ -146,7 +146,7 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, Boolean.class).booleanValue();
 	}
 	
-	public Boolean emailOrderUser(Integer id) {
+	public Boolean emailOrder(Integer id) {
 		String uri = baseUri() + "/" + relativePath4Orders + "s/" + id + "/emails";
 		String json = postSecure(uri, "", logger);
 		
@@ -350,7 +350,7 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, String.class);
 	}
 	
-	public Boolean emailInvoiceUser(Integer invoiceId) {
+	public Boolean emailInvoice(Integer invoiceId) {
 		String uri = baseUri() + "/" + relativePath4Invoices + "/" + invoiceId + "/emails";
 
 		String json = postSecure(uri, "", logger);
