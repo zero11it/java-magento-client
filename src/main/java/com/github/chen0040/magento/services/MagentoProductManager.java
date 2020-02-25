@@ -469,7 +469,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		String uri = baseUri() + relativePath4Products + "/" + sku;
 		String body = RESTUtils.payloadWrapper("product", product);
 		
-		String json = postSecure(uri, StringUtils.toUTF8(body), logger);
+		String json = putSecure(uri, StringUtils.toUTF8(body), logger);
 		
 		if (!validateJSON(json)) {
 			return null;
