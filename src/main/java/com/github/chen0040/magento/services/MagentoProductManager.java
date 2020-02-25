@@ -22,6 +22,7 @@ import com.github.mgiorda.oauth.OAuthConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -446,7 +447,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 	public Product saveProduct(Product product) {
 		String sku = product.getSku();
 		String uri = baseUri() + relativePath4Products;
-		String body = "{\n\"product\" : " + JSON.toJSONString(product, SerializerFeature.PrettyFormat) + "\n}";
+		String body = RESTUtils.payloadWrapper("product", product);
 		
 		String json;
 		
@@ -456,6 +457,19 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		} else {
 			json = postSecure(uri, StringUtils.toUTF8(body), logger);
 		}
+		
+		if (!validateJSON(json)) {
+			return null;
+		}
+
+		return JSON.parseObject(json, Product.class);
+	}
+	
+	public Product saveProduct(String sku, Product product) {
+		String uri = baseUri() + relativePath4Products + "/" + sku;
+		String body = RESTUtils.payloadWrapper("product", product);
+		
+		String json = postSecure(uri, StringUtils.toUTF8(body), logger);
 		
 		if (!validateJSON(json)) {
 			return null;
@@ -602,14 +616,29 @@ public class MagentoProductManager extends MagentoHttpComponent {
 	}
 	
 	public Product updateProductAvailability(String sku, Integer amount) {
-		Product product = getProduct(sku);
+		Product product = new Product()
+				.setExtension_attributes(new Product.ExtensionAttributes()
+						.setStock(amount)
+				);
 		
-		product.setCustom_attributes(null); // Prevent change in attributes due to parsing failures
-		product.setExtension_attributes(new Product.ExtensionAttributes()
-				.setStock(amount)
-		);
+		return saveProduct(sku, product);
+	}
+	
+	public Product updateProductPrice(String sku, BigDecimal price) {
+		Product product = new Product()
+				.setPrice(price);
 		
-		return saveProduct(product);
+		return saveProduct(sku, product);
+	}
+	
+	public Product updateProductPriceAndAvailability(String sku, BigDecimal price, Integer amount) {
+		Product product = new Product()
+				.setPrice(price)
+				.setExtension_attributes(new Product.ExtensionAttributes()
+						.setStock(amount)
+				);
+		
+		return saveProduct(sku, product);
 	}
 	
 	public Boolean deleteAttributeGroup(Integer groupId) {
