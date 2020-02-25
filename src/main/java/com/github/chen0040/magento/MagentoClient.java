@@ -310,6 +310,10 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 		return order;
 	}
 	
+	public MagentoInvoiceManager invoice() {
+		return invoice;
+	}
+	
 	public MagentoShipmentManager shipment() {
 		return shipment;
 	}
