@@ -3,10 +3,7 @@ package com.github.chen0040.magento.models.order;
 import java.math.BigDecimal;
 import java.util.List;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import com.github.chen0040.magento.models.MagentoAttribute;
-import com.github.chen0040.magento.models.serialization.AttributeValueDeserializer;
-
+import com.github.chen0040.magento.models.sales.GiftMessage;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -107,9 +104,32 @@ public class OrderItem {
 	private BigDecimal weee_tax_disposition;
 	private BigDecimal weee_tax_row_disposition;
 	private Double weight;
-	OrderItem parent_item;
-	ProductOption product_option;
+	private OrderItem parent_item;
+	private ProductOption product_option;
+	private ExtensionAttributes extension_attributes;
 	
-	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
-	List<MagentoAttribute<?>> extension_attributes;
+	@Getter
+	@Setter
+	@NoArgsConstructor
+	public static class ExtensionAttributes {
+		 private GiftMessage gift_message;
+		 private String gw_id;
+		 private String gw_base_price;
+		 private String gw_price;
+		 private String gw_base_tax_amount;
+		 private String gw_tax_amount;
+		 private String gw_base_price_invoiced;
+		 private String gw_price_invoiced;
+		 private String gw_base_tax_amount_invoiced;
+		 private String gw_tax_amount_invoiced;
+		 private String gw_base_price_refunded;
+		 private String gw_price_refunded;
+		 private String gw_base_tax_amount_refunded;
+		 private String gw_tax_amount_refunded;
+		 private List<String> vertex_tax_codes;
+		 private List<String> invoice_text_codes;
+		 private List<String> tax_codes;
+	}
+	
+	
 }

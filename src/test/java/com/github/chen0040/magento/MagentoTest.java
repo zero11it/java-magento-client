@@ -15,7 +15,6 @@ import com.github.chen0040.magento.models.product.Product;
 import com.github.chen0040.magento.models.product.Product.TYPE;
 import com.github.chen0040.magento.models.product.ProductAttribute;
 import com.github.chen0040.magento.models.product.ProductAttributeSet;
-import com.github.chen0040.magento.models.product.ProductExtensionAttributes;
 import com.github.chen0040.magento.models.product.media.ProductImage;
 import com.github.chen0040.magento.models.search.ConditionType;
 import com.github.chen0040.magento.models.search.SearchCriteria;
@@ -60,7 +59,7 @@ public class MagentoTest {
 		test.setSku("new-test");
 		test.setName("new-test");
 		test.setAttribute_set_id(4);
-		test.setExtension_attributes(new ProductExtensionAttributes()
+		test.setExtension_attributes(new Product.ExtensionAttributes()
 				.setStock(10)
 		);
 		test = client.products().saveProduct(test);

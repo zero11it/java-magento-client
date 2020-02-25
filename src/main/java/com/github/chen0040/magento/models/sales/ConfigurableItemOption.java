@@ -1,6 +1,7 @@
 package com.github.chen0040.magento.models.sales;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Map;
@@ -10,6 +11,7 @@ import java.util.Map;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 public class ConfigurableItemOption {
 	private String option_id;
 	private Double option_value;

@@ -6,7 +6,7 @@ import lombok.Setter;
 
 import java.util.Map;
 
-import com.github.chen0040.magento.models.sales.Address;
+import com.github.chen0040.magento.models.sales.CustomerAddress;
 
 /**
  * Created by xschen on 10/7/2017.
@@ -18,7 +18,7 @@ public class Customer {
 	private String email;
 	private String firstname;
 	private String lastname;
-	private Address billing_address;
+	private CustomerAddress billing_address;
 	private Integer orig_order_id;
 	private Currency currency;
 	private Boolean customer_is_guest;

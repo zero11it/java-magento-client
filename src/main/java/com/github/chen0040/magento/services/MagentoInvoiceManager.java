@@ -112,7 +112,7 @@ public class MagentoInvoiceManager extends MagentoHttpComponent {
 	}
 	
 	public String setCapture(Integer invoiceId) {
-		String uri = baseUri() + "/" + relativePath4Invoices + "/" + invoiceId + "/capture";
+		String uri = baseUri() + "/" + relativePath4Invoices + "s/" + invoiceId + "/capture";
 
 		String json = postSecure(uri, "", logger);
 		
@@ -124,7 +124,7 @@ public class MagentoInvoiceManager extends MagentoHttpComponent {
 	}
 	
 	public Boolean emailToCustomer(Integer invoiceId) {
-		String uri = baseUri() + "/" + relativePath4Invoices + "/" + invoiceId + "/emails";
+		String uri = baseUri() + "/" + relativePath4Invoices + "s/" + invoiceId + "/emails";
 
 		String json = postSecure(uri, "", logger);
 		
@@ -136,7 +136,7 @@ public class MagentoInvoiceManager extends MagentoHttpComponent {
 	}
 	
 	public Boolean makeVoid(Integer invoiceId) {
-		String uri = baseUri() + "/" + relativePath4Invoices + "/" + invoiceId + "/void";
+		String uri = baseUri() + "/" + relativePath4Invoices + "s/" + invoiceId + "/void";
 
 		String json = postSecure(uri, "", logger);
 		

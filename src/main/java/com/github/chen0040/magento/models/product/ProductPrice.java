@@ -16,10 +16,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ProductPrice {
-	private BigDecimal price = new BigDecimal(0);
+	private BigDecimal price;
 	private long store_id;
 	private String sku;
-	
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
-	private List<MagentoAttribute<?>> extension_attributes = new ArrayList<>();
+	private List<MagentoAttribute<?>> extension_attributes;
 }

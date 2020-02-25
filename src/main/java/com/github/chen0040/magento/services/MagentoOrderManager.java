@@ -6,13 +6,13 @@ import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSON;
 import com.github.chen0040.magento.MagentoClient;
-import com.github.chen0040.magento.models.invoice.Invoice;
 import com.github.chen0040.magento.models.order.Order;
 import com.github.chen0040.magento.models.order.OrderItem;
-import com.github.chen0040.magento.models.sales.Address;
+import com.github.chen0040.magento.models.sales.SalesDataAddress;
+import com.github.chen0040.magento.models.sales.SalesDataComment;
+import com.github.chen0040.magento.models.sales.SalesDataInvoice;
 import com.github.chen0040.magento.models.sales.SalesDataRefund;
 import com.github.chen0040.magento.models.sales.SalesDataShipment;
-import com.github.chen0040.magento.models.sales.StatusHistory;
 import com.github.chen0040.magento.models.search.SearchCriteria;
 import com.github.chen0040.magento.utils.RESTUtils;
 import com.github.mgiorda.oauth.OAuthConfig;
@@ -97,7 +97,7 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 		return json;
 	}
 	
-	public List<StatusHistory> getComments(Integer orderId) {
+	public List<SalesDataComment> getComments(Integer orderId) {
 		String uri = baseUri() + "/" + relativePath4Orders + "s/comments/" + orderId;
 		
 		String json = getSecure(uri, logger);
@@ -106,7 +106,7 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 			return null;
 		}
 		
-		return JSON.parseArray(json, StatusHistory.class);
+		return JSON.parseArray(json, SalesDataComment.class);
 	}
 	
 	public List<OrderItem> searchItems(SearchCriteria criteria) {
@@ -132,7 +132,7 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, Boolean.class).booleanValue();
 	}
 	
-	public Boolean addComment(Integer orderId, StatusHistory comment) {
+	public Boolean addComment(Integer orderId, SalesDataComment comment) {
 		String uri = baseUri() + "/" + relativePath4Orders + "s/" + orderId + "/comments";
 		
 		String json = putSecure(uri, RESTUtils.payloadWrapper("statusHistory", comment), logger);
@@ -201,7 +201,7 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, Order.class);
 	}
 	
-	public Address assignAddress(String parent_id, Address address) {
+	public SalesDataAddress assignAddress(String parent_id, SalesDataAddress address) {
 		String uri = baseUri() + "/" + relativePath4Orders + "s/" + parent_id;
 		
 		String json = putSecure(uri, RESTUtils.payloadWrapper("entity", address), logger);
@@ -210,10 +210,10 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 			return null;
 		}
 		
-		return JSON.parseObject(json, Address.class);
+		return JSON.parseObject(json, SalesDataAddress.class);
 	}
 	
-	public Integer createInvoice(Integer orderId, Invoice invoice) {
+	public Integer createInvoice(Integer orderId, SalesDataInvoice invoice) {
 		String uri = baseUri() + "/" + relativePath4Orders + "/" + orderId + "/invoice";
 		
 		String json = postSecure(uri, JSON.toJSONString(invoice), logger);

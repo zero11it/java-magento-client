@@ -7,10 +7,15 @@ import java.util.stream.Collectors;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.github.chen0040.magento.models.MagentoAttribute;
-import com.github.chen0040.magento.models.sales.BillingAdress;
-import com.github.chen0040.magento.models.sales.Payment;
+import com.github.chen0040.magento.models.sales.AmazonOrderLink;
+import com.github.chen0040.magento.models.sales.GiftCard;
+import com.github.chen0040.magento.models.sales.GiftMessage;
+import com.github.chen0040.magento.models.sales.SalesDataAddress;
+import com.github.chen0040.magento.models.sales.SalesDataAppliedTax;
+import com.github.chen0040.magento.models.sales.SalesDataPayment;
+import com.github.chen0040.magento.models.sales.SalesDataShippingAssignment;
 import com.github.chen0040.magento.models.sales.SalesDataItem;
-import com.github.chen0040.magento.models.sales.StatusHistory;
+import com.github.chen0040.magento.models.sales.SalesDataItemAppliedTax;
 import com.github.chen0040.magento.models.serialization.AttributeValueDeserializer;
 
 import lombok.Getter;
@@ -153,14 +158,12 @@ public class Order {
 	private String updated_at;
 	private Double weight;
 	private String x_forwarded_for;
-	List<OrderItem> items;
-	BillingAdress billing_address;
-	Payment payment;
-	List<StatusHistory> status_histories;
-	
-	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
-	List<MagentoAttribute<?>> extension_attributes;
-	
+	private List<OrderItem> items;
+	private SalesDataAddress billing_address;
+	private SalesDataPayment payment;
+	private List<StatusHistory> status_histories;
+	private ExtensionAttributes extension_attributes;
+
 	public static class STATUS {
 		public static final String PROCESSING = "processing";
 		public static final String SUSPECTED_FRAUD = "fraud";
@@ -176,12 +179,135 @@ public class Order {
 		public static final String PENDING_PAYPAL = "pending_paypal";
 		public static final String PAYPAL_REVERSED = "paypal_reversed";
 	}
-	
+
+	@Getter
+	@Setter
+	@NoArgsConstructor
+	public static class StatusHistory {
+		private String comment;
+		private String created_at;
+		private Integer entity_id;
+		private String entity_name;
+		private Integer is_customer_notified;
+		private Integer is_visible_on_front;
+		private Integer parent_id;
+		private String status;
+		@JSONField(deserializeUsing = AttributeValueDeserializer.class)
+		private List<MagentoAttribute<?>> extension_attributes;
+	}
+
+	@Getter
+	@Setter
+	@NoArgsConstructor
+	public static class ExtensionAttributes {
+		private List<ShippingAssignment> shipping_assignments;
+		private List<PaymentAdditionalInfo> payment_additional_info;
+		private List<SalesDataAppliedTax> applied_taxes;
+		private List<SalesDataItemAppliedTax> item_applied_taxes;
+		private Boolean converting_from_quote;
+		private CompanyOrderAttributes company_order_attributes;
+		private BigDecimal base_customer_balance_amount;
+		private BigDecimal customer_balance_amount;
+		private BigDecimal base_customer_balance_invoiced;
+		private BigDecimal customer_balance_invoiced;
+		private BigDecimal base_customer_balance_refunded;
+		private BigDecimal customer_balance_refunded;
+		private BigDecimal base_customer_balance_total_refunded;
+		private BigDecimal customer_balance_total_refunded;
+		private List<GiftCard> gift_cards;
+		private BigDecimal base_gift_cards_amount;
+		private BigDecimal gift_cards_amount;
+		private BigDecimal base_gift_cards_invoiced;
+		private BigDecimal gift_cards_invoiced;
+		private BigDecimal base_gift_cards_refunded;
+		private BigDecimal gift_cards_refunded;
+		private GiftMessage gift_message;
+		private String gw_id;
+		private String gw_allow_gift_receipt;
+		private String gw_add_card;
+		private String gw_base_price;
+		private String gw_price;
+		private String gw_items_base_price;
+		private String gw_items_price;
+		private String gw_card_base_price;
+		private String gw_card_price;
+		private String gw_base_tax_amount;
+		private String gw_tax_amount;
+		private String gw_items_base_tax_amount;
+		private String gw_items_tax_amount;
+		private String gw_card_base_tax_amount;
+		private String gw_card_tax_amount;
+		private String gw_base_price_incl_tax;
+		private String gw_price_incl_tax;
+		private String gw_items_base_price_incl_tax;
+		private String gw_items_price_incl_tax;
+		private String gw_card_base_price_incl_tax;
+		private String gw_card_price_incl_tax;
+		private String gw_base_price_invoiced;
+		private String gw_price_invoiced;
+		private String gw_items_base_price_invoiced;
+		private String gw_items_price_invoiced;
+		private String gw_card_base_price_invoiced;
+		private String gw_card_price_invoiced;
+		private String gw_base_tax_amount_invoiced;
+		private String gw_tax_amount_invoiced;
+		private String gw_items_base_tax_invoiced;
+		private String gw_items_tax_invoiced;
+		private String gw_card_base_tax_invoiced;
+		private String gw_card_tax_invoiced;
+		private String gw_base_price_refunded;
+		private String gw_price_refunded;
+		private String gw_items_base_price_refunded;
+		private String gw_items_price_refunded;
+		private String gw_card_base_price_refunded;
+		private String gw_card_price_refunded;
+		private String gw_base_tax_amount_refunded;
+		private String gw_tax_amount_refunded;
+		private String gw_items_base_tax_refunded;
+		private String gw_items_tax_refunded;
+		private String gw_card_base_tax_refunded;
+		private String gw_card_tax_refunded;
+		private BigDecimal reward_points_balance;
+		private BigDecimal reward_currency_amount;
+		private BigDecimal base_reward_currency_amount;
+		private AmazonOrderLink amazon_order_reference_id;
+
+		@Getter
+		@Setter
+		@NoArgsConstructor
+		public static class ShippingAssignment {
+			private SalesDataShippingAssignment shipping;
+			private List<OrderItem> items;
+			private Integer stock_id;
+			@JSONField(deserializeUsing = AttributeValueDeserializer.class)
+			private List<MagentoAttribute<?>> extension_attributes;
+		}
+
+		@Getter
+		@Setter
+		@NoArgsConstructor
+		public static class PaymentAdditionalInfo {
+			private String key;
+			private String value;
+		}
+
+		@Getter
+		@Setter
+		@NoArgsConstructor
+		public static class CompanyOrderAttributes {
+			private Integer order_id;
+			private Integer company_id;
+			private String company_name;
+			@JSONField(deserializeUsing = AttributeValueDeserializer.class)
+			private List<MagentoAttribute<?>> extension_attributes;
+		}
+	}
+
 	public List<SalesDataItem> getSalesDataItems() {
 		if (items == null || items.size() == 0) {
 			return null;
 		}
-		
+
 		return items.stream()
 				.map(_item -> new SalesDataItem(_item.getItem_id(), _item.getQty_ordered()))
 				.collect(Collectors.toList());

@@ -1,6 +1,5 @@
 package com.github.chen0040.magento.models.category;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,7 +7,9 @@ import lombok.Setter;
 import java.util.Date;
 import java.util.List;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.github.chen0040.magento.models.MagentoAttribute;
+import com.github.chen0040.magento.models.serialization.AttributeValueDeserializer;
 
 /**
  * Created by xschen on 12/6/2017.
@@ -16,7 +17,6 @@ import com.github.chen0040.magento.models.MagentoAttribute;
 @Setter
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Category {
 	private Integer id;
 	private Integer parent_id;
@@ -28,9 +28,11 @@ public class Category {
 	private Date created_at;
 	private Date updated_at;
 	private String path;
-	List<String> available_sort_by;
+	private List<String> available_sort_by;
 	private Boolean include_in_menu;
-	List<MagentoAttribute<String>> custom_attributes;
+	private List<MagentoAttribute<String>> custom_attributes;
+	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
+	private List<MagentoAttribute<?>> extension_attributes;
 	
 	public Category addChild(String categoryId) {
 		if (children == null) {

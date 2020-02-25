@@ -4,10 +4,8 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.github.chen0040.magento.models.MagentoAttribute;
 import com.github.chen0040.magento.models.serialization.AttributeValueDeserializer;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,7 +16,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class ProductOption {
 	private String product_sku;
 	private Integer option_id;
@@ -33,8 +30,26 @@ public class ProductOption {
 	private Integer max_characters;
 	private Integer image_size_x;
 	private Integer image_size_y;
-	List<ProductOptionValue> values;
-	
+	private List<ProductOptionValue> values;
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
-	private List<MagentoAttribute<?>> extension_attributes;
+	private ExtensionAttributes extension_attributes;
+
+	@Getter
+	@Setter
+	@NoArgsConstructor
+	public static class ProductOptionValue {
+		private String title;
+		private Integer sort_order;
+		private BigDecimal price;
+		private String price_type;
+		private String sku;
+		private Integer option_type_id;
+	}
+
+	@Getter
+	@Setter
+	@NoArgsConstructor
+	public static class ExtensionAttributes {
+		private String vertex_flex_field;
+	}
 }

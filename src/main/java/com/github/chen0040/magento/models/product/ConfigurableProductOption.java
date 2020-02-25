@@ -18,16 +18,24 @@ public class ConfigurableProductOption {
 	 private String label;
 	 private Integer position;
 	 private Boolean is_use_default;
-	 List<Value> values;
-	 //extension_attributes
+	 private List<Value> values;
 	 private Integer product_id;
+	 private ExtensionAttributes extension_attributes;
 	 
 	 @Getter
 	 @Setter
 	 @NoArgsConstructor
 	 @AllArgsConstructor
-	 private class Value {
-		 Integer value_index;
+	 private static class Value {
+		 private Integer value_index;
+	 }
+	 
+	 @Getter
+	 @Setter
+	 @NoArgsConstructor
+	 @AllArgsConstructor
+	 private static class ExtensionAttributes {
+		 private String vertex_flex_field;
 	 }
 	 
 	 public ConfigurableProductOption addValue(Integer value_index) {

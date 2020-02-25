@@ -9,11 +9,9 @@ import com.github.chen0040.magento.models.product.Product;
 import com.github.chen0040.magento.models.product.ProductAttribute;
 import com.github.chen0040.magento.models.product.ProductAttributeGroup;
 import com.github.chen0040.magento.models.product.ProductAttributeOption;
-import com.github.chen0040.magento.models.product.ProductAttributeOptionStoreLabel;
 import com.github.chen0040.magento.models.product.ProductAttributeSet;
 import com.github.chen0040.magento.models.product.ProductAttributeType;
 import com.github.chen0040.magento.models.product.ProductCost;
-import com.github.chen0040.magento.models.product.ProductExtensionAttributes;
 import com.github.chen0040.magento.models.product.ProductPrice;
 import com.github.chen0040.magento.models.product.ProductType;
 import com.github.chen0040.magento.models.search.SearchCriteria;
@@ -156,7 +154,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		}
 		
 		if (option.getStore_labels() != null) {
-			for (ProductAttributeOptionStoreLabel storeLabel : option.getStore_labels()) {
+			for (ProductAttributeOption.StoreLabel storeLabel : option.getStore_labels()) {
 				ourOption = options.stream()
 						.filter(_option -> _option.getLabel().equals(storeLabel.getLabel()))
 						.findAny();
@@ -607,7 +605,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		Product product = getProduct(sku);
 		
 		product.setCustom_attributes(null); // Prevent change in attributes due to parsing failures
-		product.setExtension_attributes(new ProductExtensionAttributes()
+		product.setExtension_attributes(new Product.ExtensionAttributes()
 				.setStock(amount)
 		);
 		

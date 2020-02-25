@@ -1,7 +1,5 @@
 package com.github.chen0040.magento.models.sales;
 
-import java.util.List;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CreditMemoAttributes {
-	List<Integer> return_to_stock_items;
+public class AmazonOrderLink {
+	 private String amazon_order_reference_id;
+	 private Integer order_id;
 }

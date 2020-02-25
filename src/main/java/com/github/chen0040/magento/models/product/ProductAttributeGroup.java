@@ -14,12 +14,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class ProductAttributeGroup {
 	 private String attribute_group_id;
 	 private String attribute_group_name;
 	 private Integer attribute_set_id;
-	 
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
 	private List<MagentoAttribute<?>> extension_attributes;
 }

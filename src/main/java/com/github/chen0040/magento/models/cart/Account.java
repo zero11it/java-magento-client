@@ -7,7 +7,7 @@ import lombok.Setter;
 import java.util.Date;
 import java.util.List;
 
-import com.github.chen0040.magento.models.sales.Address;
+import com.github.chen0040.magento.models.sales.CustomerAddress;
 
 /**
  * Created by xschen on 12/6/2017.
@@ -26,6 +26,6 @@ public class Account {
 	private String lastname;
 	private Integer store_id;
 	private Integer website_id;
-	private List<Address> addresses;
+	private List<CustomerAddress> addresses;
 	private Integer disable_auto_group_change;
 }

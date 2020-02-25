@@ -10,11 +10,19 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class ProductAttributeOption {
 	private String label;
 	private String value;
 	private Integer sort_order;
 	private Boolean is_default;
-	List<ProductAttributeOptionStoreLabel> store_labels;
+	private List<StoreLabel> store_labels;
+	
+	@Getter
+	@Setter
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class StoreLabel {
+		 private Integer store_id;
+		 private String label;
+	}
 }

@@ -1,5 +1,6 @@
 package com.github.chen0040.magento.models.product;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -44,4 +45,13 @@ public class ProductAttribute {
 	private String is_unique;
 	private String frontend_class;
 	private List<String> validation_rules;
+	
+	@Getter
+	@Setter
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class FrontendLabel {
+		String label;
+		Integer store_id;
+	}
 }

@@ -27,10 +27,10 @@ public class ProductImage {
 	private String label;
 	private Integer position;
 	private Boolean disabled;
-	List<String> types;
+	private List<String> types;
 	private String file;
-	ProductImageContent content;
-	Map<String, ProductVideoContent> extension_attributes;
+	private ProductImageContent content;
+	private Map<String, ProductVideoContent> extension_attributes;
 	
 	public enum ImageSourceType {
 		URL,

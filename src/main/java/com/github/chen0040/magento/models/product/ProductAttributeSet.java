@@ -16,13 +16,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductAttributeSet {
-	@JSONField(serialize = false)
 	 private Integer attribute_set_id;
 	 private String attribute_set_name;
 	 private Integer sort_order;
-	@JSONField(serialize = false)
 	 private Integer entity_type_id;
-	 
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
 	private List<MagentoAttribute<?>> extension_attributes;
 }

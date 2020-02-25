@@ -12,14 +12,13 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Address {
+public class CustomerAddress {
 	private Integer id;
 	private String region;
 	private String region_id;
 	private String region_code;
 	private String country_id;
 	private List<String> street;
-
 	private String telephone;
 	private String postcode;
 	private String city;

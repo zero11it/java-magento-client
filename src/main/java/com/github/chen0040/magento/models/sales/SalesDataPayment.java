@@ -14,7 +14,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Payment {
+public class SalesDataPayment {
 	private String account_status;
 	private String additional_data;
 	private List<String> additional_information;;
@@ -71,5 +71,5 @@ public class Payment {
 	private BigDecimal shipping_refunded;
 	
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
-	List<MagentoAttribute<?>> extension_attributes;
+	private List<MagentoAttribute<?>> extension_attributes;
 }

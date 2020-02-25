@@ -13,7 +13,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class BillingAdress {
+public class SalesDataAddress {
 	private String address_type;
 	private String city;
 	private String company;
@@ -32,7 +32,7 @@ public class BillingAdress {
 	private String region;
 	private String region_code;
 	private Integer region_id;
-	List<String> street;
+	private List<String> street;
 	private String suffix;
 	private String telephone;
 	private String vat_id;
@@ -40,9 +40,8 @@ public class BillingAdress {
 	private String vat_request_date;
 	private String vat_request_id;
 	private Integer vat_request_success;
-	
 	@JSONField(deserializeUsing = AttributeValueDeserializer.class)
-	List<MagentoAttribute<?>> extension_attributes;
+	private List<MagentoAttribute<?>> extension_attributes;
 	
 	public String getFullStreetName() {
 		return String.join("\n", street);
