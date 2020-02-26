@@ -155,7 +155,7 @@ public class Order {
 	private BigDecimal total_paid;
 	private BigDecimal total_qty_ordered;
 	private BigDecimal total_refunded;
-	private String updated_at;
+	private Date updated_at;
 	private Double weight;
 	private String x_forwarded_for;
 	private List<OrderItem> items;

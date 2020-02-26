@@ -1,6 +1,7 @@
 package com.github.chen0040.magento.models.order;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import com.github.chen0040.magento.models.sales.GiftMessage;
@@ -37,7 +38,7 @@ public class OrderItem {
 	private BigDecimal base_weee_tax_applied_row_amnt;
 	private BigDecimal base_weee_tax_disposition;
 	private BigDecimal base_weee_tax_row_disposition;
-	private String created_at;
+	private Date created_at;
 	private String description;
 	private BigDecimal discount_amount;
 	private BigDecimal discount_invoiced;
@@ -97,7 +98,7 @@ public class OrderItem {
 	private BigDecimal tax_invoiced;
 	private BigDecimal tax_percent;
 	private BigDecimal tax_refunded;
-	private String updated_at;
+	private Date updated_at;
 	private String weee_tax_applied;
 	private BigDecimal weee_tax_applied_amount;
 	private BigDecimal weee_tax_applied_row_amount;
@@ -130,6 +131,4 @@ public class OrderItem {
 		 private List<String> invoice_text_codes;
 		 private List<String> tax_codes;
 	}
-	
-	
 }

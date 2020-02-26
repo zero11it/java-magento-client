@@ -1,5 +1,6 @@
 package com.github.chen0040.magento.models.shipment;
 
+import java.util.Date;
 import java.util.List;
 
 import com.alibaba.fastjson.annotation.JSONField;
@@ -15,7 +16,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Shipment {
 	private Integer billing_address_id;
-	private String created_at;
+	private Date created_at;
 	private Integer customer_id;
 	private Integer email_sent;
 	private Integer entity_id;
@@ -28,7 +29,7 @@ public class Shipment {
 	private Integer store_id;
 	private Integer total_qty;
 	private Double total_weight;
-	private String updated_at;
+	private Date updated_at;
 	List<ShipmentItem> items;
 	List<ShipmentTrack> tracks;
 	List<ShipmentComment> comments;

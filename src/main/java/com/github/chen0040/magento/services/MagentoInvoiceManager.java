@@ -135,6 +135,7 @@ public class MagentoInvoiceManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, Boolean.class);
 	}
 	
+	@Deprecated
 	public Boolean makeVoid(Integer invoiceId) {
 		String uri = baseUri() + "/" + relativePath4Invoices + "s/" + invoiceId + "/void";
 

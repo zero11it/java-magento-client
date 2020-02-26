@@ -2,6 +2,7 @@ package com.github.chen0040.magento.models.product;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.alibaba.fastjson.annotation.JSONField;
@@ -29,8 +30,8 @@ public class Product {
 	private Integer status;
 	private Integer visibility;
 	private String type_id;
-	private String created_at;
-	private String updated_at;
+	private Date created_at;
+	private Date updated_at;
 	private Double weight;
 	private ExtensionAttributes extension_attributes;
 	private List<String> product_links;

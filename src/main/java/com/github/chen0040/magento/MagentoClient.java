@@ -7,6 +7,7 @@ import com.github.chen0040.magento.models.cart.Account;
 import com.github.chen0040.magento.models.store.StoreView;
 import com.github.chen0040.magento.services.BasicHttpComponent;
 import com.github.chen0040.magento.services.MagentoCategoryManager;
+import com.github.chen0040.magento.services.MagentoCreditMemoManager;
 import com.github.chen0040.magento.services.MagentoGuestCartManager;
 import com.github.chen0040.magento.services.MagentoHttpComponent;
 import com.github.chen0040.magento.services.MagentoInventoryStockManager;
@@ -82,6 +83,8 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
 	private MagentoInvoiceManager invoice;
 	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
+	private MagentoCreditMemoManager creditmemo;
+	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
 	private MagentoShipmentManager shipment;
 
 	public MagentoClient(String baseUri, HttpComponent httpComponent) {
@@ -96,6 +99,7 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 		this.store = new MagentoStoreManager(this);
 		this.order = new MagentoOrderManager(this);
 		this.invoice = new MagentoInvoiceManager(this);
+		this.creditmemo = new MagentoCreditMemoManager(this);
 		this.shipment = new MagentoShipmentManager(this);
 	}
 
@@ -312,6 +316,10 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 	
 	public MagentoInvoiceManager invoice() {
 		return invoice;
+	}
+	
+	public MagentoCreditMemoManager creditmemo() {
+		return creditmemo;
 	}
 	
 	public MagentoShipmentManager shipment() {

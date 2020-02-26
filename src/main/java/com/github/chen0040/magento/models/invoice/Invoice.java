@@ -3,6 +3,7 @@ package com.github.chen0040.magento.models.invoice;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import com.github.chen0040.magento.models.order.Order;
@@ -33,7 +34,7 @@ public class Invoice {
 	 private BigDecimal base_to_order_rate;
 	 private BigDecimal billing_address_id;
 	 private Integer can_void_flag;
-	 private String created_at;
+	 private Date created_at;
 	 private BigDecimal discount_amount;
 	 private String discount_description;
 	 private Integer email_sent;
@@ -60,7 +61,7 @@ public class Invoice {
 	 private BigDecimal tax_amount;
 	 private Integer total_qty;
 	 private String transaction_id;
-	 private String updated_at;
+	 private Date updated_at;
 	 private List<SalesDataItem> items;
 	 private List<SalesDataComment> comments;
 	 private InvoiceExtensionAttributes extension_attributes;

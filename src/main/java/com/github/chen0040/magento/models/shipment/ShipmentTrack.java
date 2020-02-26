@@ -1,5 +1,6 @@
 package com.github.chen0040.magento.models.shipment;
 
+import java.util.Date;
 import java.util.List;
 
 import com.alibaba.fastjson.annotation.JSONField;
@@ -13,10 +14,10 @@ import lombok.Setter;
 @Setter
 public class ShipmentTrack {
 	private Integer order_id;
-	private String created_at;
+	private Date created_at;
 	private Integer entity_id;
 	private Integer parent_id;
-	private String updated_at;
+	private Date updated_at;
 	private Double weight;
 	private Integer qty;
 	private String description;

@@ -306,12 +306,9 @@ public class MagentoProductManager extends MagentoHttpComponent {
 	
 	public ProductAttributeSet saveAttributeSet(ProductAttributeSet attributeSet, ProductAttributeSet baseAttributeSet) {
 		String uri = baseUri() + relativePath4Products + "/attribute-sets";
-		
-		Map<String, Object> req = new HashMap<>();
-		req.put("attributeSet", attributeSet);
-		req.put("skeletonId", baseAttributeSet.getAttribute_set_id());
-		
-		String body = JSON.toJSONString(req, SerializerFeature.PrettyFormat);
+		String body = RESTUtils.payloadWrapper(
+						new String[] {"attributeSet",  "skeletonId"},
+						new Object[] {attributeSet, attributeSet.getAttribute_set_id()});
 		
 		String json;
 		if (attributeSet.getAttribute_set_id() != null && hasAttributeSet(attributeSet.getAttribute_set_id())) {

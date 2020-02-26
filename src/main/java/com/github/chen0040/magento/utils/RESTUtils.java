@@ -31,6 +31,30 @@ public class RESTUtils {
 	}
 	
 	/**
+	 * Wraps the objects 'objects' to be serialized to JSON into a larger wrapper object with their respective key in 'keys', as required by
+	 * certain REST APIs.
+	 * e.g.
+	 * 		object --> {"attribute1" : "value1", ...}
+	 * 
+	 * becomes
+	 * 		object --> {"key" : {"attribute1" : "value1", ...}}
+	 * 
+	 * @param keys     List of keys of the wrapper JSON object.
+	 * @param objects  List of objects to be serialized.
+	 * @return         The JSON string of the wrapper object.
+	 */
+	public static <T> String payloadWrapper(String[] keys, T[] objects) {
+		Map<String, T> req = new HashMap<String, T>();
+		
+		for (int i = 0; i < keys.length; i++) {
+			String key = keys[i];
+			T object = objects[i];
+			req.put(key, object);
+		}
+		return JSON.toJSONString(req, SerializerFeature.PrettyFormat);
+	}
+	
+	/**
 	 * Extracts an array of objects of the given type from a JSON object of the type:
 	 * {
 	 *    "key" : [...],
