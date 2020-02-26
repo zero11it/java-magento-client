@@ -26,44 +26,44 @@ public class SalesDataShipment {
 	// Items
 	//
 	public SalesDataShipment addItem(SalesDataItem item) {
-		return BeanUtils.addItemToCollection(this, this.items, item);
+		return BeanUtils.addItemToCollection(this, this::getItems, this::setItems, item);
 	}
 	
 	public SalesDataShipment addItems(SalesDataItem... items) {
-		return BeanUtils.addItemsToCollection(this, this.items, items);
+		return BeanUtils.addItemsToCollection(this, this::getItems, this::setItems, items);
 	}
 	
 	public SalesDataShipment addItems(Collection<SalesDataItem> items) {
-		return BeanUtils.addItemsToCollection(this, this.items, items);
+		return BeanUtils.addItemsToCollection(this, this::getItems, this::setItems, items);
 	}
 	
 	//
 	// Tracks
 	//
 	public SalesDataShipment addTrack(SalesDataTrack track) {
-		return BeanUtils.addItemToCollection(this, this.tracks, track);
+		return BeanUtils.addItemToCollection(this, this::getTracks, this::setTracks, track);
 	}
 	
 	public SalesDataShipment addTracks(SalesDataTrack... tracks) {
-		return BeanUtils.addItemsToCollection(this, this.tracks, tracks);
+		return BeanUtils.addItemsToCollection(this, this::getTracks, this::setTracks, tracks);
 	}
 	
 	public SalesDataShipment addTracks(Collection<SalesDataTrack> tracks) {
-		return BeanUtils.addItemsToCollection(this, this.tracks, tracks);
+		return BeanUtils.addItemsToCollection(this, this::getTracks, this::setTracks, tracks);
 	}
 	
 	//
 	// Packages
 	//
 	public SalesDataShipment addPackage(SalesDataPackage _package) {
-		return BeanUtils.addItemToCollection(this, this.packages, _package);
+		return BeanUtils.addItemToCollection(this, this::getPackages, this::setPackages, _package);
 	}
 	
 	public SalesDataShipment addPackages(SalesDataPackage... packages) {
-		return BeanUtils.addItemsToCollection(this, this.packages, packages);
+		return BeanUtils.addItemsToCollection(this, this::getPackages, this::setPackages, packages);
 	}
 	
 	public SalesDataShipment addPackages(Collection<SalesDataPackage> packages) {
-		return BeanUtils.addItemsToCollection(this, this.packages, packages);
+		return BeanUtils.addItemsToCollection(this, this::getPackages, this::setPackages, packages);
 	}
 }

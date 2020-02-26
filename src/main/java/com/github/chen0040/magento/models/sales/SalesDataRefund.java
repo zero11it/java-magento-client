@@ -40,18 +40,18 @@ public class SalesDataRefund {
 	}
 	
 	public SalesDataRefund addItem(SalesDataItem item) {
-		return BeanUtils.addItemToCollection(this, this.items, item);
+		return BeanUtils.addItemToCollection(this, this::getItems, this::setItems, item);
 	}
 	
 	public SalesDataRefund addItems(SalesDataItem... items) {
-		return BeanUtils.addItemsToCollection(this, this.items, items);
+		return BeanUtils.addItemsToCollection(this, this::getItems, this::setItems, items);
 	}
 	
 	public SalesDataRefund addItems(Collection<SalesDataItem> items) {
-		return BeanUtils.addItemsToCollection(this, this.items, items);
+		return BeanUtils.addItemsToCollection(this, this::getItems, this::setItems, items);
 	}
 	
 	public SalesDataRefund addItems(Order order) {
-		return BeanUtils.addItemsToCollection(this, this.items, order.getSalesDataItems());
+		return BeanUtils.addItemsToCollection(this, this::getItems, this::setItems, order.getSalesDataItems());
 	}
 }
