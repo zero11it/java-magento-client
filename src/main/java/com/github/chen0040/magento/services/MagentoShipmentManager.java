@@ -81,7 +81,7 @@ public class MagentoShipmentManager extends MagentoHttpComponent {
 		return json;
 	}
 	
-	public List<Shipment> search(SearchCriteria criteria) {
+	public List<Shipment> searchShipment(SearchCriteria criteria) {
 		String uri = baseUri() + "/" + relativePath4Shipments + "s?" + criteria;
 		String json = getSecure(uri, logger);
 

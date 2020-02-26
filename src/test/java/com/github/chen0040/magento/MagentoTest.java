@@ -153,8 +153,8 @@ public class MagentoTest {
 		MagentoClient client = new MagentoClient("https://bsmagento2.web07.zero11.net/");
 		client.loginAsAdmin("a.trucco", "zero11zero11");
 		
-		assertNotNull(client.shipment().search(new SearchCriteria().setPage(0, 1000)));
-		List<Shipment> shipments = client.shipment().search(new SearchCriteria().addFilterGroup("order_id", "2", ConditionType.GREATER_THAN_OR_EQUAL));
+		assertNotNull(client.shipment().searchShipment(new SearchCriteria().setPage(0, 1000)));
+		List<Shipment> shipments = client.shipment().searchShipment(new SearchCriteria().addFilterGroup("order_id", "2", ConditionType.GREATER_THAN_OR_EQUAL));
 		assertNotNull(shipments);
 		assertNotNull(client.shipment().saveShipment(shipments.get(0)));
 		assertNotNull(client.shipment().saveTrack(shipments.get(0).getTracks().get(0)));
