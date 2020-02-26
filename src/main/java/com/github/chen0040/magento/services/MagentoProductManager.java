@@ -1,7 +1,6 @@
 package com.github.chen0040.magento.services;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.chen0040.magento.MagentoClient;
 import com.github.chen0040.magento.models.product.ConfigurableProductOption;
 import com.github.chen0040.magento.models.product.PriceUpdateResult;
@@ -308,7 +307,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		String uri = baseUri() + relativePath4Products + "/attribute-sets";
 		String body = RESTUtils.payloadWrapper(
 						new String[] {"attributeSet",  "skeletonId"},
-						new Object[] {attributeSet, attributeSet.getAttribute_set_id()});
+						new Object[] {attributeSet, baseAttributeSet.getAttribute_set_id()});
 		
 		String json;
 		if (attributeSet.getAttribute_set_id() != null && hasAttributeSet(attributeSet.getAttribute_set_id())) {

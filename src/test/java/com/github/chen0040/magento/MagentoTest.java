@@ -3,16 +3,12 @@ package com.github.chen0040.magento;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import org.junit.Test;
 
 import com.github.chen0040.magento.models.category.Category;
 import com.github.chen0040.magento.models.order.Order;
 import com.github.chen0040.magento.models.product.Product;
-import com.github.chen0040.magento.models.product.Product.TYPE;
 import com.github.chen0040.magento.models.product.ProductAttribute;
 import com.github.chen0040.magento.models.product.ProductAttributeSet;
 import com.github.chen0040.magento.models.product.media.ProductImage;
@@ -108,42 +104,10 @@ public class MagentoTest {
 		System.out.println(client.products().getAttributeOptions("test"));
 		assertTrue(client.products().deleteAttribute("test"));
 		
-		List<String> rewixAttributeNames = Arrays.asList(
-				//"availability", --> stock qty
-				"brand",
-				//"code", --> sku
-				"country_selling_restrictions",
-				"currency",
-				"description", // descriptions handled by store views
-				"id",    // actually "id"
-				"intra",
-				// "models",  --> handled by Magento configurable product
-				//"pictures", --> handled by Magento media
-				"tags",
-				"taxable",
-				//"street_price", --> price
-				"suggested_price",
-				// Model-specific attributes
-				"barcode",
-				"color", // actually "color"
-				"size"   // actually "size
-		);
-		
-		try {
-			client.products().deleteAttributeSet(
-					client.products().getAttributeSets().stream()
-					.filter(set -> set.getAttribute_set_name().equals("Rewix (brandsdistribution)"))
-					.collect(Collectors.toList())
-					.get(0).getAttribute_set_id()
-			);
-		}
-		catch (IndexOutOfBoundsException exception) {
-			;
-		}
-		
-		for (String attr : rewixAttributeNames) {
-			client.products().deleteAttribute("rewix_" + attr);
-		}
+		ProductAttributeSet set = client.products().saveAttributeSet(new ProductAttributeSet()
+				.setAttribute_set_name("test"));
+		assertNotNull(set);
+		assertNotNull(client.products().deleteAttributeSet(set.getAttribute_set_id()));
 	}
 	
 	@Test
