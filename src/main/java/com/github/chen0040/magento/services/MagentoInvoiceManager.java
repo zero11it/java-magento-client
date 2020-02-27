@@ -1,6 +1,9 @@
 package com.github.chen0040.magento.services;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,9 +11,12 @@ import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSON;
 import com.github.chen0040.magento.MagentoClient;
 import com.github.chen0040.magento.models.invoice.Invoice;
+import com.github.chen0040.magento.models.order.Order;
 import com.github.chen0040.magento.models.sales.SalesDataComment;
 import com.github.chen0040.magento.models.sales.SalesDataRefund;
+import com.github.chen0040.magento.models.search.ConditionType;
 import com.github.chen0040.magento.models.search.SearchCriteria;
+import com.github.chen0040.magento.models.shipment.Shipment;
 import com.github.chen0040.magento.utils.RESTUtils;
 import com.github.mgiorda.oauth.OAuthConfig;
 
@@ -58,6 +64,45 @@ public class MagentoInvoiceManager extends MagentoHttpComponent {
 		}
 		
 		return JSON.parseObject(json, Invoice.class);
+	}
+	
+	public Order getParentOrder(Invoice invoice) {
+		SearchCriteria criteria = new SearchCriteria()
+				.addFilter("entity_id", invoice.getOrder_id().toString(), ConditionType.EQUAL);
+		
+		Optional<Order> order = client.order().searchOrders(criteria).stream().findFirst();
+		
+		if (order.isPresent()) {
+			return order.get();
+		}
+		
+		return null;
+	}
+	
+	public Shipment getCorrespondingShipment(Invoice invoice) {
+		SearchCriteria criteria = new SearchCriteria()
+				.addFilter("order_id", invoice.getOrder_id().toString(), ConditionType.EQUAL);
+		
+		Set<Integer> invoiceItems = invoice.getItems().stream()
+				.map(_item -> _item.getOrder_item_id())
+				.collect(Collectors.toSet());
+		
+		Optional<Shipment> shipment = client.shipment().searchShipments(criteria)
+				.stream()
+				.filter(_shipment -> {
+					Set<Integer> shipmentItems = _shipment.getItems().stream()
+							.map(_item -> _item.getOrder_item_id())
+							.collect(Collectors.toSet());
+
+					return invoiceItems.containsAll(shipmentItems);
+				})
+				.findFirst();
+		
+		if (shipment.isPresent()) {
+			return shipment.get();
+		}
+		
+		return null;
 	}
 	
 	public Invoice saveInvoice(Invoice invoice) {

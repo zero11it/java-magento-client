@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSON;
 import com.github.chen0040.magento.MagentoClient;
+import com.github.chen0040.magento.models.invoice.Invoice;
 import com.github.chen0040.magento.models.order.Order;
 import com.github.chen0040.magento.models.order.OrderItem;
 import com.github.chen0040.magento.models.sales.SalesDataAddress;
@@ -13,7 +14,9 @@ import com.github.chen0040.magento.models.sales.SalesDataComment;
 import com.github.chen0040.magento.models.sales.SalesDataInvoice;
 import com.github.chen0040.magento.models.sales.SalesDataRefund;
 import com.github.chen0040.magento.models.sales.SalesDataShipment;
+import com.github.chen0040.magento.models.search.ConditionType;
 import com.github.chen0040.magento.models.search.SearchCriteria;
+import com.github.chen0040.magento.models.shipment.Shipment;
 import com.github.chen0040.magento.utils.RESTUtils;
 import com.github.mgiorda.oauth.OAuthConfig;
 
@@ -119,6 +122,46 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 		}
 		
 		return RESTUtils.getArrayByKey(json, "items", OrderItem.class);
+	}
+	
+	public List<Invoice> getInvoices(Order order) {
+		SearchCriteria criteria = new SearchCriteria()
+				.addFilter("order_id", order.getEntity_id().toString(), ConditionType.EQUAL);
+		
+		return client.invoice().searchInvoices(criteria);
+	}
+	
+	public int countInvoicedItems(Order order) {
+		List<Invoice> invoices = getInvoices(order);
+		
+		if (invoices == null) {
+			return 0;
+		}
+		
+		return invoices.stream()
+				.map(_invoice -> _invoice.getTotal_qty())
+				.reduce((x,y) -> x + y)
+				.orElse(0);
+	}
+	
+	public List<Shipment> getShipments(Order order) {
+		SearchCriteria criteria = new SearchCriteria()
+				.addFilter("order_id", order.getEntity_id().toString(), ConditionType.EQUAL);
+		
+		return client.shipment().searchShipments(criteria);
+	}
+	
+	public int countShippedItems(Order order) {
+		List<Shipment> shipments = getShipments(order);
+		
+		if (shipments == null) {
+			return 0;
+		}
+		
+		return shipments.stream()
+				.map(_shipment -> _shipment.getTotal_qty())
+				.reduce((x,y) -> x + y)
+				.orElse(0);
 	}
 	
 	public Boolean cancel(Integer orderId) {

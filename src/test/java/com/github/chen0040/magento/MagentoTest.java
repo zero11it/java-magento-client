@@ -7,6 +7,7 @@ import java.util.List;
 import org.junit.Test;
 
 import com.github.chen0040.magento.models.category.Category;
+import com.github.chen0040.magento.models.invoice.Invoice;
 import com.github.chen0040.magento.models.order.Order;
 import com.github.chen0040.magento.models.product.Product;
 import com.github.chen0040.magento.models.product.ProductAttribute;
@@ -153,11 +154,14 @@ public class MagentoTest {
 		MagentoClient client = new MagentoClient("https://bsmagento2.web07.zero11.net/");
 		client.loginAsAdmin("a.trucco", "zero11zero11");
 		
-		assertNotNull(client.shipment().searchShipment(new SearchCriteria().setPage(0, 1000)));
-		List<Shipment> shipments = client.shipment().searchShipment(new SearchCriteria().addFilter("order_id", "2", ConditionType.GREATER_THAN_OR_EQUAL));
+		assertNotNull(client.shipment().searchShipments(new SearchCriteria().setPage(0, 1000)));
+		List<Shipment> shipments = client.shipment().searchShipments(new SearchCriteria().addFilter("order_id", "2", ConditionType.GREATER_THAN_OR_EQUAL));
 		assertNotNull(shipments);
-		assertNotNull(client.shipment().saveShipment(shipments.get(0)));
-		assertNotNull(client.shipment().saveTrack(shipments.get(0).getTracks().get(0)));
+		Shipment shipment = shipments.get(0);
+		assertNotNull(client.shipment().getParentOrder(shipment));
+		Invoice invoice = client.shipment().getCorrespondingInvoice(shipment);
+		assertNotNull(invoice);
+		assertNotNull(client.invoice().getCorrespondingShipment(invoice));
 	}
 	
 	@Test
