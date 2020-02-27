@@ -114,7 +114,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 	}
 	
 	public Category getCategory(String categoryName) {
-		Optional<Category> category = searchCategories(new SearchCriteria().addFilterGroup("name", categoryName, ConditionType.LIKE)).stream().findFirst();
+		Optional<Category> category = searchCategories(new SearchCriteria().addFilter("name", categoryName, ConditionType.LIKE)).stream().findFirst();
 		
 		if (category.isPresent()) {
 			return category.get();

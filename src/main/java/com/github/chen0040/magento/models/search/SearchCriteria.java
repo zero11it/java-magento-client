@@ -3,38 +3,49 @@ package com.github.chen0040.magento.models.search;
 import lombok.Getter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by xschen on 12/6/2017.
  */
 @Getter
 public class SearchCriteria {
-	private Map<String, List<Filter>> filter_groups = new HashMap<>();
-	private Integer current_page = null;
-	private Integer page_size = null;
-	private List<SortOrder> sort_orders = new ArrayList<>();
+	private List<FilterGroup> filter_groups;
+	private Integer current_page;
+	private Integer page_size;
+	private List<SortOrder> sort_orders;
+	private int group_index;
 	
-	public SearchCriteria addFilterGroup(String field, String value, ConditionType condition_type) {
-		if (!filter_groups.containsKey(field)) {
-			filter_groups.put(field, new ArrayList<>());
+	public SearchCriteria() {
+		this.filter_groups = new ArrayList<>();
+		this.current_page = null;
+		this.page_size = null;
+		this.sort_orders = new ArrayList<>();
+		this.group_index = 0;
+	}
+	
+	public SearchCriteria addFilter(String field, String value, ConditionType condition_type) {
+		return addANDFilter(field, value, condition_type);
+	}
+	
+	public SearchCriteria addORFilter(String field, String value, ConditionType condition_type) {
+		if (filter_groups.size() == 0) {
+			return addANDFilter(field, value, condition_type);
 		}
 		
-		List<Filter> filter_group = filter_groups.get(field);
-		filter_group.add(new Filter(value, condition_type));
+		FilterGroup filter_group = filter_groups.get(group_index - 1);
+		filter_group.addFilter(field, value, condition_type);
 		
 		return this;
 	}
 	
-	public SearchCriteria add_OR_FilterGroup(String field, String value, ConditionType condition_type) {
-		return addFilterGroup(field, "%25" + value + "%25", condition_type);
-	}
-	
-	public SearchCriteria add_AND_FilterGroup(String field, String value, ConditionType condition_type) {
-		return addFilterGroup(field, value, condition_type);
+	public SearchCriteria addANDFilter(String field, String value, ConditionType condition_type) {
+		FilterGroup filter_group = new FilterGroup(group_index++);
+		filter_group.addFilter(field, value, condition_type);
+		filter_groups.add(filter_group);
+		
+		return this;
 	}
 	
 	public SearchCriteria setPage(Integer current_page, Integer page_size) {
@@ -51,77 +62,56 @@ public class SearchCriteria {
 	}
 
 	private String encode(String string) {
-		return string.replaceAll("[\\s]+", "+");
+		return string.replaceAll("[\\s]+", "+"); // whitespace -> '+'
 	}
 	
 	@Override
 	public String toString() {
-		List<String> args = new ArrayList<>();
+		List<String> args = new ArrayList<String>();
 		
-		args.addAll(getFilterGroupArgs());
-		
+		if (filter_groups.size() > 0) {
+			args.add(processFilterGroups());
+		}
 		if (current_page != null) {
-			args.add("searchCriteria[currentPage]=" + encode(current_page.toString()));
+			args.add(String.format("searchCriteria[current_page]=%d", current_page));
 		}
-		
 		if (page_size != null) {
-			args.add("searchCriteria[pageSize]=" + encode(page_size.toString()));
+			args.add(String.format("searchCriteria[page_size]=%d", page_size));
 		}
-		
-		args.addAll(getSortOrderArgs());
+		if (sort_orders.size() > 0) {
+			args.add(processSortOrders());
+		}
 		
 		return String.join("&", args);
 	}
 
-	private List<String> getFilterGroupArgs() {
-		if (filter_groups.size() == 0) {
-			return new ArrayList<>();
-		}
-		
+	private String processFilterGroups() {
 		List<String> args = new ArrayList<>();
 		
-		Set<String> fields = filter_groups.keySet();
-		int curField = 0;
-		
-		for (String field : fields) {
-			List<Filter> filters = filter_groups.get(field);
-			
-			for (int curFilter = 0; curFilter < filters.size(); curFilter++) {
-				Filter filter = filters.get(curFilter);
-				
-				args.add(
-						String.format("searchCriteria[filter_groups][%d][filters][%d][field]=%s", curField, curFilter, encode(field))
-				);
-				args.add(
-						String.format("searchCriteria[filter_groups][%d][filters][%d][value]=%s", curField, curFilter, encode(filter.getValue()))
-				);
-				args.add(
-						String.format("searchCriteria[filter_groups][%d][filters][%d][condition_type]=%s", curField, curFilter, encode(filter.getCondition_type().toString()))
-				);
+		for (FilterGroup filter_group : filter_groups) {
+			for (Filter filter : filter_group.getFilters()) {
+				args.addAll(Arrays.asList(
+						String.format("searchCriteria[filter_groups][%d][filters][%d][field]=%s", filter_group.getIndex(), filter.getIndex(), encode(filter.getField())),
+						String.format("searchCriteria[filter_groups][%d][filters][%d][value]=%s", filter_group.getIndex(), filter.getIndex(), encode(filter.getValue())),
+						String.format("searchCriteria[filter_groups][%d][filters][%d][condition_type]=%s", filter_group.getIndex(), filter.getIndex(), encode(filter.getCondition_type()))
+				));
 			}
 		}
 		
-		return args;
+		return String.join("&", args);
 	}
 
-	private List<String> getSortOrderArgs() {
-		if (sort_orders.size() == 0) {
-			return new ArrayList<>();
-		}
-		
+	private String processSortOrders() {
 		List<String> args = new ArrayList<>();
 		
 		for (int curSortOrder = 0; curSortOrder < sort_orders.size(); curSortOrder++) {
 			SortOrder sort_order = sort_orders.get(curSortOrder);
-			
-			args.add(
-					String.format("searchCriteria[sortOrders][%d][field]=%s", curSortOrder, encode(sort_order.getField()))
-			);
-			args.add(
+			args.addAll(Arrays.asList(
+					String.format("searchCriteria[sortOrders][%d][field]=%s", curSortOrder, encode(sort_order.getField())),
 					String.format("searchCriteria[sortOrders][%d][direction]=%s", curSortOrder, encode(sort_order.getDirection().name()))
-			);
+			));
 		}
 		
-		return args;
+		return String.join("&", args);
 	}
 }

@@ -154,7 +154,7 @@ public class MagentoTest {
 		client.loginAsAdmin("a.trucco", "zero11zero11");
 		
 		assertNotNull(client.shipment().searchShipment(new SearchCriteria().setPage(0, 1000)));
-		List<Shipment> shipments = client.shipment().searchShipment(new SearchCriteria().addFilterGroup("order_id", "2", ConditionType.GREATER_THAN_OR_EQUAL));
+		List<Shipment> shipments = client.shipment().searchShipment(new SearchCriteria().addFilter("order_id", "2", ConditionType.GREATER_THAN_OR_EQUAL));
 		assertNotNull(shipments);
 		assertNotNull(client.shipment().saveShipment(shipments.get(0)));
 		assertNotNull(client.shipment().saveTrack(shipments.get(0).getTracks().get(0)));
@@ -166,7 +166,11 @@ public class MagentoTest {
 		client.loginAsAdmin("a.trucco", "zero11zero11");
 
 		assertNotNull(client.order().getOrder(1));
-		assertNotNull(client.order().searchOrders(new SearchCriteria().addFilterGroup("status", Order.STATUS.PENDING, ConditionType.LIKE)));
+		SearchCriteria criteria = new SearchCriteria()
+				.addORFilter("status", Order.STATUS.PENDING, ConditionType.LIKE)
+				.addORFilter("status", Order.STATUS.COMPLETE, ConditionType.LIKE)
+				.addANDFilter("status", Order.STATUS.CLOSED, ConditionType.LIKE);
+		assertNotNull(client.order().searchOrders(criteria));
 		assertNotNull(client.order().searchItems(new SearchCriteria().setPage(0, 1000)));
 	}
 	
