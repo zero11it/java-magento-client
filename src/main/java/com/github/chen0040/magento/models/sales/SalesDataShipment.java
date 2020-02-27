@@ -3,6 +3,7 @@ package com.github.chen0040.magento.models.sales;
 import java.util.Collection;
 import java.util.List;
 
+import com.github.chen0040.magento.models.order.Order;
 import com.github.chen0040.magento.models.shipment.ShipmentArguments;
 import com.github.chen0040.magento.utils.BeanUtils;
 
@@ -35,6 +36,10 @@ public class SalesDataShipment {
 	
 	public SalesDataShipment addItems(Collection<SalesDataItem> items) {
 		return BeanUtils.addItemsToCollection(this, this::getItems, this::setItems, items);
+	}
+	
+	public SalesDataShipment addItems(Order order) {
+		return BeanUtils.addItemsToCollection(this, this::getItems, this::setItems, order.getSalesDataItems());
 	}
 	
 	//
