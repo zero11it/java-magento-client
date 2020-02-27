@@ -26,7 +26,7 @@ public class SalesDataRefund {
 	@Setter
 	@NoArgsConstructor
 	public static class Arguments {
-		private Integer shipping_amount;
+		private BigDecimal shipping_amount;
 		private BigDecimal adjustment_positive;
 		private BigDecimal adjustment_negative;
 		private ExtensionAttributes extension_attributes;
