@@ -1,6 +1,8 @@
 package com.github.chen0040.magento.services;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,14 +11,17 @@ import com.github.chen0040.magento.MagentoClient;
 import com.github.chen0040.magento.models.invoice.Invoice;
 import com.github.chen0040.magento.models.order.Order;
 import com.github.chen0040.magento.models.order.OrderItem;
+import com.github.chen0040.magento.models.product.Product;
 import com.github.chen0040.magento.models.sales.SalesDataAddress;
 import com.github.chen0040.magento.models.sales.SalesDataComment;
 import com.github.chen0040.magento.models.sales.SalesDataInvoice;
+import com.github.chen0040.magento.models.sales.SalesDataItem;
 import com.github.chen0040.magento.models.sales.SalesDataRefund;
 import com.github.chen0040.magento.models.sales.SalesDataShipment;
 import com.github.chen0040.magento.models.search.ConditionType;
 import com.github.chen0040.magento.models.search.SearchCriteria;
 import com.github.chen0040.magento.models.shipment.Shipment;
+import com.github.chen0040.magento.models.shipment.ShipmentItem;
 import com.github.chen0040.magento.utils.RESTUtils;
 import com.github.mgiorda.oauth.OAuthConfig;
 
@@ -139,7 +144,17 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 		}
 		
 		return invoices.stream()
-				.map(_invoice -> _invoice.getTotal_qty())
+				.map(_invoice -> {
+					List<SalesDataItem> items = _invoice.getItems();
+					
+					return items.stream()
+							.filter(_item -> {
+								Product product = client.products().getProduct(_item.getSku());
+								return product.getId() == _item.getProduct_id();
+							})
+							.collect(Collectors.toList())
+							.size();
+				})
 				.reduce((x,y) -> x + y)
 				.orElse(0);
 	}
@@ -152,14 +167,24 @@ public class MagentoOrderManager extends MagentoHttpComponent {
 	}
 	
 	public int countShippedItems(Order order) {
-		List<Shipment> shipments = getShipments(order);
+		List<Shipment> shipment = getShipments(order);
 		
-		if (shipments == null) {
+		if (shipment == null) {
 			return 0;
 		}
 		
-		return shipments.stream()
-				.map(_shipment -> _shipment.getTotal_qty())
+		return shipment.stream()
+				.map(_shipment -> {
+					List<ShipmentItem> items = _shipment.getItems();
+					
+					return items.stream()
+							.filter(_item -> {
+								Product product = client.products().getProduct(_item.getSku());
+								return product.getId() == _item.getProduct_id();
+							})
+							.collect(Collectors.toList())
+							.size();
+				})
 				.reduce((x,y) -> x + y)
 				.orElse(0);
 	}
