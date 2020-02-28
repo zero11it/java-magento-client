@@ -44,4 +44,8 @@ public class StringUtils {
 		byte[] bytes = text.getBytes(StandardCharsets.ISO_8859_1);
 		return new String(bytes, StandardCharsets.UTF_8);
 	}
+
+	public static String minify(String text) {
+		return text.replaceAll("\\s+", "");
+	}
 }
