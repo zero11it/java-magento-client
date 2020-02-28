@@ -78,7 +78,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 
 	public Category generateUrlKeyAndPath(Category category) {
 		Category currentCategory;
-		String url_key = category.getName().toLowerCase();
+		String url_key = category.getName().toLowerCase().replaceAll("\\s+", "_");
 		String url_path = url_key;
 		Integer parentId = category.getParent_id();
 		Integer rootId = getDefaultRootCategory().getId();
@@ -86,7 +86,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		while (parentId != rootId) {
 			currentCategory = getCategory(parentId);
 			parentId = currentCategory.getParent_id();
-			url_path = currentCategory.getName().toLowerCase().replace("\\s+", "_") + "/" + url_path;
+			url_path = currentCategory.getName().toLowerCase().replaceAll("\\s+", "_") + "/" + url_path;
 		}
 		
 		category.addCustomAttribute("url_key", url_key);
