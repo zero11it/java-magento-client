@@ -52,6 +52,9 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		if (category.getParent_id() == null) {
 			category.setParent_id(getDefaultRootCategory().getId());
 		}
+		if (category.getCustomAttribute("url_key") == null || category.getCustomAttribute("url_path") == null) {
+			generateUrlKeyAndPath(category);
+		}
 		String body = RESTUtils.payloadWrapper("category", category);
 		
 		String json;
@@ -59,9 +62,6 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		if (existing.isPresent()) {
 			if (category.getId() == null) {
 				category.setId(existing.get().getId());
-			}
-			if (category.getCustomAttribute("url_key") == null || category.getCustomAttribute("url_path") == null) {
-				generateUrlKeyAndPath(category);
 			}
 			return updateCategory(category);
 		}
@@ -111,7 +111,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		SearchCriteria similar = new SearchCriteria().addFilter("name", category.getName(), ConditionType.LIKE);
 		List<Category> similarCategories = searchCategories(similar);
 		Optional<Category> existingCategory = similarCategories.stream()
-				.filter(_category -> _category.getParent_id() == category.getParent_id())
+				.filter(_category -> _category.getParent_id().equals(category.getParent_id()))
 				.findAny();
 		
 		return existingCategory;

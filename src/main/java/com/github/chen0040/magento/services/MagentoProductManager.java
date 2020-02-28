@@ -535,9 +535,23 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, ConfigurableProductOption.class);
 	}
 	
+	public Optional<ConfigurableProductOption> getExistingConfigurableProductOption(String sku, ConfigurableProductOption option) {
+		Optional<ConfigurableProductOption> existing = getConfigurableProductOptions(sku).stream()
+				.filter(_option -> _option.getLabel().equals(option.getLabel()))
+				.findAny();
+		
+		return existing;
+	}
+	
 	public Integer addConfigurableProductOption(String sku, ConfigurableProductOption option) {
 		String uri = baseUri() + relativePath4ConfigurableProducts + "/" + sku + "/options";
 		String body = RESTUtils.payloadWrapper("option", option);
+		
+		Optional<ConfigurableProductOption> existing = getExistingConfigurableProductOption(sku, option);
+		if (existing.isPresent()) {
+			option.getValues().addAll(existing.get().getValues());
+			return updateConfigurableProductOption(sku, existing.get().getId(), option);
+		} 
 		
 		String json = postSecure(uri, StringUtils.toUTF8(body), logger);
 		
@@ -547,7 +561,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		
 		return JSON.parseObject(json, Integer.class);
 	}
-	
+
 	public Integer updateConfigurableProductOption(String sku, Integer optionId, ConfigurableProductOption option) {
 		String uri = baseUri() + relativePath4ConfigurableProducts + "/" + sku + "/options/" + optionId;
 		String body = RESTUtils.payloadWrapper("option", option);
