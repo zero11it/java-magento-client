@@ -45,7 +45,7 @@ public class StringUtils {
 		return new String(bytes, StandardCharsets.UTF_8);
 	}
 
-	public static String minify(String text) {
+	public static String stripWhitespace(String text) {
 		return text.replaceAll("\\s+", "");
 	}
 }

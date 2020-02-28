@@ -65,7 +65,6 @@ public abstract class MagentoHttpComponent {
 		Map<String, String> headers = buildHeaders(HttpMethod.POST, uri);
 		
 		logger.info("POST-ing @ {}:\n{}", uri, body);
-		body = StringUtils.minify(body);
 		String resp = httpComponent.post(uri, body, headers);
 		logger.info("Got: {}", resp);
 		
@@ -76,7 +75,6 @@ public abstract class MagentoHttpComponent {
 		Map<String, String> headers = buildHeaders(HttpMethod.PUT, uri);
 		
 		logger.info("PUT-ting @ {}:\n{}", uri, body);
-		body = StringUtils.minify(body);
 		String resp = httpComponent.put(uri, body, headers);
 		logger.info("Got: {}", resp);
 		
