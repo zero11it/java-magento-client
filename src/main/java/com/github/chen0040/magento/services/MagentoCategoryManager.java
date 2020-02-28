@@ -27,20 +27,41 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 	private static final Logger logger = LoggerFactory.getLogger(MagentoCategoryManager.class);
 	private MagentoClient client;
 	private static final String relativePath4Categories = "rest/V1/categories";
+	private Integer DEFAULT_ROOT_CATEGORY_ID;
+	private Category DEFAULT_ROOT_CATEGORY;
 
 	public MagentoCategoryManager(MagentoClient client) {
 		super(client.getHttpComponent());
 		this.client = client;
 	}
 
+	private Category getDefaultRootCategory() {
+		if (DEFAULT_ROOT_CATEGORY_ID == null) {
+			Category root = getCategory(1);
+			String[] rootChildrenIds = root.getChildren().split(",");
+			DEFAULT_ROOT_CATEGORY_ID = Integer.valueOf(rootChildrenIds[0]);
+			DEFAULT_ROOT_CATEGORY = getCategory(DEFAULT_ROOT_CATEGORY_ID);
+		}
+		
+		return DEFAULT_ROOT_CATEGORY;
+	}
+
 	public Category addCategory(Category category) {
 		String uri = baseUri() + "/" + relativePath4Categories;
+		
+		if (category.getParent_id() == null) {
+			category.setParent_id(getDefaultRootCategory().getId());
+		}
 		String body = RESTUtils.payloadWrapper("category", category);
 		
 		String json;
-		if (hasCategory(category)) {
+		Optional<Category> existing = getExisting(category);
+		if (existing.isPresent()) {
 			if (category.getId() == null) {
-				category.setId(getCategory(category.getName()).getId());
+				category.setId(existing.get().getId());
+			}
+			if (category.getCustomAttribute("url_key") == null || category.getCustomAttribute("url_path") == null) {
+				generateUrlKeyAndPath(category);
 			}
 			return updateCategory(category);
 		}
@@ -53,6 +74,24 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		}
 		
 		return JSON.parseObject(json, Category.class);
+	}
+
+	public Category generateUrlKeyAndPath(Category category) {
+		Category currentCategory;
+		String url_key = category.getName().toLowerCase();
+		String url_path = url_key;
+		Integer parentId = category.getParent_id();
+		Integer rootId = getDefaultRootCategory().getId();
+		
+		while (parentId != rootId) {
+			currentCategory = getCategory(parentId);
+			parentId = currentCategory.getParent_id();
+			url_path = currentCategory.getName().toLowerCase().replace("\\s+", "_") + "/" + url_path;
+		}
+		
+		category.addCustomAttribute("url_key", url_key);
+		category.addCustomAttribute("url_path", url_path);
+		return category;
 	}
 
 	public Category updateCategory(Category category) {
@@ -68,9 +107,18 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, Category.class);
 	}
 
-	public boolean hasCategory(Category category) {
-		return getCategory(category.getId()) != null
-				|| getCategory(category.getName()) != null;
+	public Optional<Category> getExisting(Category category) {
+		SearchCriteria similar = new SearchCriteria().addFilter("name", category.getName(), ConditionType.LIKE);
+		List<Category> similarCategories = searchCategories(similar);
+		Optional<Category> existingCategory = similarCategories.stream()
+				.filter(_category -> _category.getParent_id() == category.getParent_id())
+				.findAny();
+		
+		return existingCategory;
+	}
+	
+	public boolean exists(Category category) {
+		return getExisting(category).isPresent();
 	}
 
 	public boolean categoryHasProduct(Integer categoryId, String productSku) {
@@ -113,6 +161,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, Category.class);
 	}
 	
+	@Deprecated
 	public Category getCategory(String categoryName) {
 		Optional<Category> category = searchCategories(new SearchCriteria().addFilter("name", categoryName, ConditionType.LIKE)).stream().findFirst();
 		
