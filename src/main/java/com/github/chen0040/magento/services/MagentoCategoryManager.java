@@ -35,7 +35,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 		this.client = client;
 	}
 
-	private Category getDefaultRootCategory() {
+	public Category getDefaultRootCategory() {
 		if (DEFAULT_ROOT_CATEGORY_ID == null) {
 			Category root = getCategory(1);
 			String[] rootChildrenIds = root.getChildren().split(",");
