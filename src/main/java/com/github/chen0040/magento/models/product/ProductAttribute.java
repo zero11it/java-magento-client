@@ -54,4 +54,10 @@ public class ProductAttribute {
 		String label;
 		Integer store_id;
 	}
+	
+	public boolean hasOptions() {
+		return (options != null && options.size() > 0)
+				|| (frontend_input != null && frontend_input.equals("select"))
+				|| (is_visible_in_grid != null && is_visible_in_grid == true);
+	}
 }
