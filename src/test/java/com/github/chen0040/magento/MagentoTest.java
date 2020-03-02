@@ -183,18 +183,18 @@ public class MagentoTest {
 		MagentoClient client = new MagentoClient("https://bsmagento2.web07.zero11.net/");
 		
 		client.setOAuth(
-				"7dqcbluq2i4oq4ompesiyjd9a4eog6ms",
-				"uc38k78qnghjupv0vietqf52ueb25wo0",
-				"2yi0gc2xlm9wo6tpy8amx79hy032aj8h",
-				"adff0m430etk83cvbup7iijr7viu7wa0"
+				"idml26ffz6e8rm2w6ell2k53ahcl1ot4",
+				"7fsx8t8bb5av0tslkezzpgu1yw9emkkk",
+				"23fd2q2co8i2wnd8l9z6v7fyqvmt47c1",
+				"dto1qt879u40l0csn8hyan8rlauc0vpf"
 		);
 		assertNotNull(client.oAuth());
 		
 		client.setOAuth(
-				"7dqcbluq2i4oq4ompesiyjd9a4eog6ms",
-				"uc38k78qnghjupv0vietqf52ueb25wo1",
-				"2yi0gc2xlm9wo6tpy8amx79hy032aj8h",
-				"adff0m430etk83cvbup7iijr7viu7wa0"
+				"idml26ffz6e8rm2w6ell2k53ahcl1ot4",
+				"7fsx8t8bb5av0tslkezzpgu1yw9emkkk",
+				"23fd2q2co8i2wnd8l9z6v7fyqvmt47c1",
+				"dto1qt879u40l0csn8hyan8rlauc0vpd" // different
 		);
 		assertNull(client.oAuth());
 	}

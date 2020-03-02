@@ -6,6 +6,7 @@ import com.github.chen0040.magento.interfaces.HttpComponent;
 import com.github.chen0040.magento.models.cart.Account;
 import com.github.chen0040.magento.models.store.StoreView;
 import com.github.chen0040.magento.services.BasicHttpComponent;
+import com.github.chen0040.magento.services.MagentoCartManager;
 import com.github.chen0040.magento.services.MagentoCategoryManager;
 import com.github.chen0040.magento.services.MagentoCreditMemoManager;
 import com.github.chen0040.magento.services.MagentoGuestCartManager;
@@ -26,6 +27,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.validator.routines.UrlValidator;
+import org.apache.http.annotation.Experimental;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,6 +75,8 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
 	private MagentoInventoryStockManager inventory;
 	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
+	private MagentoCartManager carts;
+	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
 	private MagentoGuestCartManager guestCart;
 	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
 	private MagentoMyCartManager myCart;
@@ -94,6 +98,7 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 		this.products = new MagentoProductManager(this);
 		this.categories = new MagentoCategoryManager(this);
 		this.inventory = new MagentoInventoryStockManager(this);
+		this.carts = new MagentoCartManager(this);
 		this.guestCart = new MagentoGuestCartManager(this);
 		this.myCart = new MagentoMyCartManager(this);
 		this.store = new MagentoStoreManager(this);
@@ -261,6 +266,7 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 	}
 	
 	// FIXME : Magento 2 OAuth token request is currently bugged, test if/when it won't be
+	@Experimental
 	public OAuthConfig setOAuth(String consumerKey, String consumerSecret) {
 		String tokenRequest = "/oauth/token/request";
 		
@@ -296,6 +302,10 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 
 	public MagentoInventoryStockManager inventory() {
 		return inventory;
+	}
+	
+	public MagentoCartManager carts() {
+		return carts;
 	}
 
 	public MagentoGuestCartManager guestCart() {

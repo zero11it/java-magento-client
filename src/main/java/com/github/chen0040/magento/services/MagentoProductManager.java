@@ -1,6 +1,8 @@
 package com.github.chen0040.magento.services;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializeConfig;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.chen0040.magento.MagentoClient;
 import com.github.chen0040.magento.models.product.ConfigurableProductOption;
 import com.github.chen0040.magento.models.product.PriceUpdateResult;
@@ -18,10 +20,14 @@ import com.github.chen0040.magento.utils.RESTUtils;
 import com.github.chen0040.magento.utils.StringUtils;
 import com.github.mgiorda.oauth.OAuthConfig;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,12 +43,27 @@ public class MagentoProductManager extends MagentoHttpComponent {
 	private static final String relativePath4Products = "/rest/V1/products";
 	private static final String relativePath4ConfigurableProducts = "/rest/V1/configurable-products";
 	private MagentoProductMediaManager media;
+	
+	private Map<String, AttributeOptionCacheEntry> attributeOptionCache;
+	
+	@Getter
+	@Setter
+	private class AttributeOptionCacheEntry {
+		boolean valid;
+		Map<String, ProductAttributeOption> options;
+		
+		public AttributeOptionCacheEntry() {
+			this.valid = false;
+			this.options = new HashMap<>();
+		}
+	}
 
 	public MagentoProductManager(MagentoClient client) {
 		super(client.getHttpComponent());
 		
 		this.client = client;
 		this.media = new MagentoProductMediaManager(client);
+		this.attributeOptionCache = null;
 	}
 	
 	public MagentoProductMediaManager media() {
@@ -167,15 +188,78 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		
 		return null;
 	}
+
+	private void createCacheIfNonexistent() {
+		if (attributeOptionCache == null) {
+			attributeOptionCache = new HashMap<>();
+			
+			for (ProductAttribute attribute : getAttributes()) {
+				attributeOptionCache.put(attribute.getAttribute_code(), new AttributeOptionCacheEntry());
+			}
+		}
+	}
+
+	private ProductAttributeOption getAttributeOptionFromCache(String attributeCode, String label) {
+		createCacheIfNonexistent();
+		
+		if (!attributeOptionCache.get(attributeCode).isValid()) {
+			for (ProductAttributeOption option : getAttributeOptions(attributeCode)) {
+				attributeOptionCache.get(attributeCode).getOptions().put(option.getLabel(), option);
+			}
+			attributeOptionCache.get(attributeCode).setValid(true);
+		}
+
+		return attributeOptionCache.get(attributeCode).getOptions().get(label);
+	}
+
+	private void invalidateCacheEntry(String attributeCode, String label) {
+		createCacheIfNonexistent();
+		
+		attributeOptionCache.get(attributeCode).setValid(false);
+		attributeOptionCache.get(attributeCode).getOptions().clear();
+	}
 	
 	public String getAttributeOptionValue(String attributeCode, String label) {
-		ProductAttributeOption option = getAttributeOption(attributeCode, new ProductAttributeOption().setLabel(label));
+		ProductAttributeOption option = getAttributeOptionFromCache(attributeCode, label);
 		
 		if (option == null) {
 			return null;
 		}
 		
 		return option.getValue();
+	}
+	
+	public enum AttributeOptionPOSTMode {
+		ALLOW_DUPLICATE_LABELS,
+		NO_DUPLICATE_LABELS
+	}
+	
+	public String addOptionToAttribute(String attributeCode, AttributeOptionPOSTMode mode, ProductAttributeOption option) {
+		String uri = baseUri() + relativePath4Products + "/attributes/" + attributeCode + "/options";
+		String body = RESTUtils.payloadWrapper("option", option);
+		
+		if (mode == AttributeOptionPOSTMode.NO_DUPLICATE_LABELS) {
+			ProductAttributeOption ourOption = getAttributeOption(attributeCode, option);
+			if (ourOption != null) {
+					String msg = ourOption.getLabel() + " is already present.";
+					logger.error(msg);
+					return msg;
+			}
+		}
+		
+		String json = postSecure(uri, StringUtils.toUTF8(body), logger);
+		
+		if (!validateJSON(json)) {
+			return null;
+		}
+		
+		invalidateCacheEntry(attributeCode, option.getLabel());
+		
+		return JSON.parseObject(json, String.class);
+	}
+
+	public String addOptionToAttribute(String attributeCode, AttributeOptionPOSTMode mode, String label) {
+		return addOptionToAttribute(attributeCode, mode, new ProductAttributeOption().setLabel(label));
 	}
 
 	public List<ProductAttributeType> getAttributeTypes() {
@@ -409,37 +493,6 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return JSON.parseObject(json, ProductAttribute.class);
 	}
 	
-	public enum AttributeOptionPOSTMode {
-		ALLOW_DUPLICATE_LABELS,
-		NO_DUPLICATE_LABELS
-	}
-	
-	public String addOptionToAttribute(String attributeCode, AttributeOptionPOSTMode mode, ProductAttributeOption option) {
-		String uri = baseUri() + relativePath4Products + "/attributes/" + attributeCode + "/options";
-		String body = RESTUtils.payloadWrapper("option", option);
-		
-		if (mode == AttributeOptionPOSTMode.NO_DUPLICATE_LABELS) {
-			ProductAttributeOption ourOption = getAttributeOption(attributeCode, option);
-			if (ourOption != null) {
-					String msg = ourOption.getLabel() + " is already present.";
-					logger.error(msg);
-					return msg;
-			}
-		}
-		
-		String json = postSecure(uri, StringUtils.toUTF8(body), logger);
-		
-		if (!validateJSON(json)) {
-			return null;
-		}
-		
-		return JSON.parseObject(json, String.class);
-	}
-
-	public String addOptionToAttribute(String attributeCode, AttributeOptionPOSTMode mode, String label) {
-		return addOptionToAttribute(attributeCode, mode, new ProductAttributeOption().setLabel(label));
-	}
-	
 	public Product saveProduct(Product product) {
 		String sku = product.getSku();
 		String uri = baseUri() + relativePath4Products;
@@ -488,7 +541,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 	
 	public Boolean assignConfigurableProductChild(String parentSku, String childSku) {
 		String uri = baseUri() + relativePath4ConfigurableProducts + "/" + parentSku + "/child";
-		String body = String.format("{ \"childSku\" : \"%s\" }", childSku);
+		String body = JSON.toJSONString(Collections.singletonMap("childSku", childSku), SerializerFeature.PrettyFormat);
 		
 		String json = postSecure(uri, StringUtils.toUTF8(body), logger);
 		
