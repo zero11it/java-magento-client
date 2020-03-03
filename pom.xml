@@ -506,12 +506,6 @@
 			<version>1.6</version>
 		</dependency>
 
-		<dependency>
-			<groupId>it.zero11</groupId>
-			<artifactId>oauth1-signature-builder</artifactId>
-			<version>1.0</version>
-		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
 		<dependency>
 			<groupId>commons-io</groupId>
