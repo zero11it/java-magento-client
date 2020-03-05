@@ -273,6 +273,17 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		return JSON.parseArray(json, ProductAttributeType.class);
 	}
 	
+	public List<ProductAttributeType> getOptionTypes() {
+		String uri = baseUri() + relativePath4Products + "/options/types";
+		String json = getSecure(uri, logger);
+
+		if (!validateJSON(json)) {
+			return null;
+		}
+
+		return JSON.parseArray(json, ProductAttributeType.class);
+	}
+	
 	public ProductAttributeGroup getAttributeGroup(Integer attributeGroupId) {
 		List<ProductAttributeGroup> groups = getAttributeGroups();
 		

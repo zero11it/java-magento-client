@@ -58,7 +58,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 		ProductImage image = new ProductImage(
 				imageFilePath,
 				ImageSourceType.FILE,
-				ProductImageType.all(),
+				ProductImageType.values(),
 				label
 		);
 		
@@ -71,7 +71,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 				.setLabel(label)
 				.setPosition(1)
 				.setDisabled(false)
-				.setTypes(ProductImageType.all())
+				.setTypes(ProductImageType.values())
 				.setContent(new ProductImageContent(base64String, imageType, label + "." + imageType));
 		
 		return uploadImage(sku, image);
@@ -81,7 +81,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 		ProductImage image = new ProductImage(
 				url,
 				ImageSourceType.URL,
-				ProductImageType.all(),
+				ProductImageType.values(),
 				label
 		);
 		
@@ -105,7 +105,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 		ProductImage image = new ProductImage(
 				imageFilePath,
 				ImageSourceType.FILE,
-				ProductImageType.all(),
+				ProductImageType.values(),
 				label
 		);
 		
@@ -118,7 +118,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 				.setLabel(label)
 				.setPosition(1)
 				.setDisabled(false)
-				.setTypes(ProductImageType.all())
+				.setTypes(ProductImageType.values())
 				.setContent(new ProductImageContent(base64String, imageType, label + "." + imageType));
 		
 		return updateImage(sku, entryId, image);
@@ -128,7 +128,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 		ProductImage image = new ProductImage(
 				url,
 				ImageSourceType.URL,
-				ProductImageType.all(),
+				ProductImageType.values(),
 				label
 		);
 		
