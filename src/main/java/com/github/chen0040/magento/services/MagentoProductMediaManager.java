@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 public class MagentoProductMediaManager extends MagentoHttpComponent {
 	private static final Logger logger = LoggerFactory.getLogger(MagentoProductMediaManager.class);
 	private MagentoClient client;
+	private static final String relativePath4Media = "/rest/all/V1/products/";
 
 	public MagentoProductMediaManager(MagentoClient client) {
 		super(client.getHttpComponent());
@@ -42,7 +43,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 	}
 	
 	public Integer uploadImage(String sku, ProductImage image) {
-		String uri = baseUri() + "/rest/V1/products/" + sku + "/media";
+		String uri = baseUri() + relativePath4Media + sku + "/media";
 		String body = RESTUtils.payloadWrapper("entry", image);
 		
 		String json = postSecure(uri, StringUtils.toUTF8(body), logger);
@@ -89,7 +90,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 	}
 	
 	public Integer updateImage(String sku, String entryId, ProductImage image) {
-		String uri = baseUri() + "/rest/V1/products/" + sku + "/media/" + entryId;
+		String uri = baseUri() + relativePath4Media + sku + "/media/" + entryId;
 		String body = RESTUtils.payloadWrapper("entry", image);
 		
 		String json = putSecure(uri, StringUtils.toUTF8(body), logger);
@@ -142,7 +143,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 	}
 
 	public List<ProductImage> getProductImages(String sku) {
-		String uri = baseUri() + "/rest/V1/products/" + escape(sku) + "/media";
+		String uri = baseUri() + relativePath4Media + escape(sku) + "/media";
 		
 		String json = getSecure(uri, logger);
 
@@ -154,7 +155,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 	}
 
 	public ProductImage getProductImage(String sku, Integer entryId) {
-		String uri = baseUri() + "/rest/V1/products/" + escape(sku) + "/media/" + entryId;
+		String uri = baseUri() + relativePath4Media + escape(sku) + "/media/" + entryId;
 		
 		String json = getSecure(uri, logger);
 
@@ -166,7 +167,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 	}
 
 	public Boolean deleteProductImage(String sku, Integer entryId) {
-		String uri = baseUri() + "/rest/V1/products/" + escape(sku) + "/media/" + entryId;
+		String uri = baseUri() + relativePath4Media + escape(sku) + "/media/" + entryId;
 		
 		String json = deleteSecure(uri, logger);
 

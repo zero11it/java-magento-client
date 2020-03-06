@@ -291,7 +291,7 @@ public class ProductImage {
 						.collect(Collectors.toList());
 				ProductImage image = new ProductImage()
 						.setLabel("image-" + label)
-						.setDisabled(true)
+						.setDisabled(false)
 						.setTypes(imageTypes)
 						.setMedia_type(media_type)
 						.setContent(new ProductImageContent(
