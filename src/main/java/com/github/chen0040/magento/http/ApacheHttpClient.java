@@ -83,22 +83,16 @@ public class ApacheHttpClient implements HttpClient {
 		}
 	}
 
-	public String get(final String url, final Map<String, String> headers) {
-		String json = "";
-		try {
-			CloseableHttpClient httpClient = buildClient();
+	public String get(final String url, final Map<String, String> headers) throws IOException {
+		try (CloseableHttpClient httpClient = buildClient()) {
 			HttpGet request = new HttpGet(url);
 			for (Map.Entry<String, String> entry : headers.entrySet()) {
 				request.addHeader(entry.getKey(), entry.getValue());
 			}
 			CloseableHttpResponse response = httpClient.execute(request);
-			if (response.getEntity() != null) {
-				json = EntityUtils.toString(response.getEntity(), DATA_ENCODING);
+			try (CloseableHttpResponse result = httpClient.execute(request)) {
+				return result.getEntity() != null ? EntityUtils.toString(result.getEntity(), DATA_ENCODING) : "";
 			}
-		} catch (Exception ex2) {
-			json = ex2.getMessage();
 		}
-
-		return json;
 	}
 }
