@@ -13,13 +13,13 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by xschen on 12/6/2017.
  */
-public class MagentoInventoryStockManager extends MagentoHttpComponent {
-	private static final Logger logger = LoggerFactory.getLogger(MagentoInventoryStockManager.class);
+public class InventoryStockManager extends AbstractManager {
+	private static final Logger logger = LoggerFactory.getLogger(InventoryStockManager.class);
 	private static final String relativePath = "rest/V1/stockItems";
 	private MagentoClient client;
 
-	public MagentoInventoryStockManager(MagentoClient client) {
-		super(client.getHttpComponent());
+	public InventoryStockManager(MagentoClient client) {
+		super(client.getHttpClient());
 		this.client = client;
 	}
 

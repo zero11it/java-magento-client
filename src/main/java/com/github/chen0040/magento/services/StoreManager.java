@@ -13,13 +13,13 @@ import com.github.chen0040.magento.models.store.StoreView;
 import com.github.chen0040.magento.models.store.Website;
 import com.github.mgiorda.oauth.OAuthConfig;
 
-public class MagentoStoreManager extends MagentoHttpComponent {
-	private static final Logger logger = LoggerFactory.getLogger(MagentoProductManager.class);
+public class StoreManager extends AbstractManager {
+	private static final Logger logger = LoggerFactory.getLogger(ProductManager.class);
 	private MagentoClient client;
 	private static final String relativePath4Store = "rest/V1/store";
 	
-	public MagentoStoreManager(MagentoClient client) {
-		super(client.getHttpComponent());
+	public StoreManager(MagentoClient client) {
+		super(client.getHttpClient());
 		this.client = client;
 	}
 	

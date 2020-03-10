@@ -18,13 +18,13 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by xschen on 10/7/2017.
  */
-public class MagentoGuestCartManager extends MagentoHttpComponent {
-	private static final Logger logger = LoggerFactory.getLogger(MagentoGuestCartManager.class);
+public class GuestCartManager extends AbstractManager {
+	private static final Logger logger = LoggerFactory.getLogger(GuestCartManager.class);
 	protected String relativePath = "rest/V1/guest-carts";
 	protected final MagentoClient client;
 
-	public MagentoGuestCartManager(MagentoClient client) {
-		super(client.getHttpComponent());
+	public GuestCartManager(MagentoClient client) {
+		super(client.getHttpClient());
 		this.client = client;
 	}
 

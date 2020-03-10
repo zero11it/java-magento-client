@@ -20,13 +20,13 @@ import com.github.chen0040.magento.models.shipment.Shipment;
 import com.github.chen0040.magento.utils.RESTUtils;
 import com.github.mgiorda.oauth.OAuthConfig;
 
-public class MagentoInvoiceManager extends MagentoHttpComponent {
-	private static final Logger logger = LoggerFactory.getLogger(MagentoProductManager.class);
+public class InvoiceManager extends AbstractManager {
+	private static final Logger logger = LoggerFactory.getLogger(ProductManager.class);
 	private MagentoClient client;
 	private static final String relativePath4Invoices = "rest/V1/invoice";
 	
-	public MagentoInvoiceManager(MagentoClient client) {
-		super(client.getHttpComponent());
+	public InvoiceManager(MagentoClient client) {
+		super(client.getHttpClient());
 		this.client = client;
 	}
 	

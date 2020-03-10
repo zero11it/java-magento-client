@@ -22,14 +22,14 @@ import com.github.chen0040.magento.utils.RESTUtils;
 import com.github.chen0040.magento.utils.StringUtils;
 import com.github.mgiorda.oauth.OAuthConfig;
 
-public class MagentoShipmentManager extends MagentoHttpComponent {
+public class ShipmentManager extends AbstractManager {
 
-	private static final Logger logger = LoggerFactory.getLogger(MagentoProductManager.class);
+	private static final Logger logger = LoggerFactory.getLogger(ProductManager.class);
 	private MagentoClient client;
 	private static final String relativePath4Shipments = "rest/V1/shipment";
 
-	public MagentoShipmentManager(MagentoClient client) {
-		super(client.getHttpComponent());
+	public ShipmentManager(MagentoClient client) {
+		super(client.getHttpClient());
 		this.client = client;
 	}
 
