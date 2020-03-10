@@ -89,7 +89,6 @@ public class ApacheHttpClient implements HttpClient {
 			for (Map.Entry<String, String> entry : headers.entrySet()) {
 				request.addHeader(entry.getKey(), entry.getValue());
 			}
-			CloseableHttpResponse response = httpClient.execute(request);
 			try (CloseableHttpResponse result = httpClient.execute(request)) {
 				return result.getEntity() != null ? EntityUtils.toString(result.getEntity(), DATA_ENCODING) : "";
 			}
