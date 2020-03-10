@@ -1,7 +1,6 @@
 package com.github.chen0040.magento.services;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.chen0040.magento.MagentoClient;
 import com.github.chen0040.magento.models.product.ConfigurableProductOption;
@@ -37,12 +36,12 @@ import java.util.stream.Collectors;
 /**
  * Created by xschen on 12/6/2017.
  */
-public class MagentoProductManager extends MagentoHttpComponent {
-	private static final Logger logger = LoggerFactory.getLogger(MagentoProductManager.class);
+public class ProductManager extends AbstractManager {
+	private static final Logger logger = LoggerFactory.getLogger(ProductManager.class);
 	private MagentoClient client;
 	private static final String relativePath4Products = "/rest/V1/products";
 	private static final String relativePath4ConfigurableProducts = "/rest/V1/configurable-products";
-	private MagentoProductMediaManager media;
+	private ProductMediaManager media;
 	
 	private Map<String, AttributeOptionCacheEntry> attributeOptionCache;
 	
@@ -58,15 +57,15 @@ public class MagentoProductManager extends MagentoHttpComponent {
 		}
 	}
 
-	public MagentoProductManager(MagentoClient client) {
-		super(client.getHttpComponent());
+	public ProductManager(MagentoClient client) {
+		super(client.getHttpClient());
 		
 		this.client = client;
-		this.media = new MagentoProductMediaManager(client);
+		this.media = new ProductMediaManager(client);
 		this.attributeOptionCache = null;
 	}
 	
-	public MagentoProductMediaManager media() {
+	public ProductMediaManager media() {
 		return media;
 	}
 

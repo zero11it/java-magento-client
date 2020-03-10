@@ -25,13 +25,13 @@ import com.github.chen0040.magento.models.shipment.ShipmentItem;
 import com.github.chen0040.magento.utils.RESTUtils;
 import com.github.mgiorda.oauth.OAuthConfig;
 
-public class MagentoOrderManager extends MagentoHttpComponent {
-	private static final Logger logger = LoggerFactory.getLogger(MagentoProductManager.class);
+public class OrderManager extends AbstractManager {
+	private static final Logger logger = LoggerFactory.getLogger(ProductManager.class);
 	private MagentoClient client;
 	private static final String relativePath4Orders = "rest/V1/order";
 	
-	public MagentoOrderManager(MagentoClient client) {
-		super(client.getHttpComponent());
+	public OrderManager(MagentoClient client) {
+		super(client.getHttpClient());
 		this.client = client;
 	}
 

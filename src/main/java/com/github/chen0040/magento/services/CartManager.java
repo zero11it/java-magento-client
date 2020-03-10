@@ -13,14 +13,14 @@ import com.github.chen0040.magento.models.search.SearchCriteria;
 import com.github.chen0040.magento.utils.RESTUtils;
 import com.github.mgiorda.oauth.OAuthConfig;
 
-public class MagentoCartManager extends MagentoHttpComponent {
-	private static final Logger logger = LoggerFactory.getLogger(MagentoMyCartManager.class);
+public class CartManager extends AbstractManager {
+	private static final Logger logger = LoggerFactory.getLogger(MyCartManager.class);
 	protected final MagentoClient client;
 	private static final String relativePath4Carts = "/rest/V1/carts";
 	private static final String relativePath4MyCart = "/rest/V1/carts/mine";
 
-	public MagentoCartManager(MagentoClient client) {
-		super(client.getHttpComponent());
+	public CartManager(MagentoClient client) {
+		super(client.getHttpClient());
 		this.client = client;
 	}
 

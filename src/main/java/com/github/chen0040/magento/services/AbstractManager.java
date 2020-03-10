@@ -3,7 +3,8 @@ package com.github.chen0040.magento.services;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.TypeReference;
-import com.github.chen0040.magento.interfaces.HttpComponent;
+import com.github.chen0040.magento.MagentoException;
+import com.github.chen0040.magento.http.HttpClient;
 import com.github.chen0040.magento.utils.StringUtils;
 import com.github.mgiorda.oauth.HttpMethod;
 import com.github.mgiorda.oauth.OAuthConfig;
@@ -12,16 +13,14 @@ import com.github.mgiorda.oauth.OAuthSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by xschen on 12/6/2017.
- */
-public abstract class MagentoHttpComponent {
-	private static final Logger logger = LoggerFactory.getLogger(MagentoHttpComponent.class);
+public abstract class AbstractManager {
+	private static final Logger logger = LoggerFactory.getLogger(AbstractManager.class);
 
 	public abstract String token();
 	public abstract String baseUri();
@@ -29,20 +28,16 @@ public abstract class MagentoHttpComponent {
 	public abstract boolean oauthEnabled();
 	public abstract OAuthConfig oAuth();
 
-	protected HttpComponent httpComponent;
+	protected HttpClient httpClient;
 
-	public MagentoHttpComponent(HttpComponent httpComponent) {
-		this.httpComponent = httpComponent;
+	public AbstractManager(HttpClient httpClient) {
+		this.httpClient = httpClient;
 	}
 
-	public HttpComponent getHttpComponent() {
-		return httpComponent;
+	public HttpClient getHttpClient() {
+		return httpClient;
 	}
 
-	public void setHttpComponent(HttpComponent httpComponent) {
-		this.httpComponent = httpComponent;
-	}
-	
 	private Map<String, String> buildHeaders(HttpMethod method, String uri) {
 		Map<String, String> headers = new HashMap<>();
 		
@@ -61,47 +56,67 @@ public abstract class MagentoHttpComponent {
 		return headers;
 	}
 
-	public String postSecure(String uri, String body, Logger logger) {
+	protected String postSecure(String uri, String body, Logger logger) {
 		Map<String, String> headers = buildHeaders(HttpMethod.POST, uri);
 		
-		logger.info("POST-ing @ {}:\n{}", uri, body);
-		String resp = httpComponent.post(uri, body, headers);
-		logger.info("Got: {}", resp);
-		
-		return resp;
-	}
-	
-	public String putSecure(String uri, String body, Logger logger) {
-		Map<String, String> headers = buildHeaders(HttpMethod.PUT, uri);
-		
-		logger.info("PUT-ting @ {}:\n{}", uri, body);
-		String resp = httpComponent.put(uri, body, headers);
-		logger.info("Got: {}", resp);
+		logger.debug("POST-ing @ {}:\n{}", uri, body);
+		String resp;
+		try {
+			resp = httpClient.post(uri, body, headers);
+		} catch (IOException e) {
+			throw new MagentoException(e);
+		}
+		logger.debug("Got: {}", resp);
 		
 		return resp;
 	}
 
-	public String deleteSecure(String uri, Logger logger) {
+	protected String putSecure(String uri, String body, Logger logger) {
+		Map<String, String> headers = buildHeaders(HttpMethod.PUT, uri);
+		
+		logger.debug("PUT-ting @ {}:\n{}", uri, body);
+		String resp;
+		try {
+			resp = httpClient.put(uri, body, headers);
+		} catch (IOException e) {
+			throw new MagentoException(e);
+		}
+		logger.debug("Got: {}", resp);
+		
+		return resp;
+	}
+
+	protected String deleteSecure(String uri, Logger logger) {
 		Map<String, String> headers = buildHeaders(HttpMethod.DELETE, uri);
 		
 		logger.info("DELETE-ing @ " + uri);
-		String resp = httpComponent.delete(uri, headers);
+		String resp;
+		try {
+			resp = httpClient.delete(uri, headers);
+		} catch (IOException e) {
+			throw new MagentoException(e);
+		}
 		logger.info("Got: {}", resp);
 		
 		return resp;
 	}
 
-	public String getSecure(String uri, Logger logger) {
+	protected String getSecure(String uri, Logger logger) {
 		Map<String, String> headers = buildHeaders(HttpMethod.GET, uri);
 
-		logger.info("GET-ting @ " + uri);
-		String resp = httpComponent.get(uri, headers);
-		logger.info("Got: {}", resp);
+		logger.debug("GET-ting @ " + uri);
+		String resp;
+		try {
+			resp = httpClient.get(uri, headers);
+		} catch (IOException e) {
+			throw new MagentoException(e);
+		}
+		logger.debug("Got: {}", resp);
 		
 		return resp;
 	}
 
-	public String escape(String text) {
+	protected static String escape(String text) {
 		String result = text;
 		
 		try {
@@ -114,7 +129,7 @@ public abstract class MagentoHttpComponent {
 		return result;
 	}
 
-	protected boolean validateJSON(String json) {
+	protected static boolean validateJSON(String json) {
 		try {
 			JSON.parse(json);
 		}

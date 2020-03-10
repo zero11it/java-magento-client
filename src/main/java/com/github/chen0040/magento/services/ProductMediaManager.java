@@ -22,13 +22,13 @@ import org.slf4j.LoggerFactory;
  * Created by xschen on 15/6/2017.
  */
 // TODO
-public class MagentoProductMediaManager extends MagentoHttpComponent {
-	private static final Logger logger = LoggerFactory.getLogger(MagentoProductMediaManager.class);
+public class ProductMediaManager extends AbstractManager {
+	private static final Logger logger = LoggerFactory.getLogger(ProductMediaManager.class);
 	private MagentoClient client;
 	private static final String relativePath4Media = "/rest/all/V1/products/";
 
-	public MagentoProductMediaManager(MagentoClient client) {
-		super(client.getHttpComponent());
+	public ProductMediaManager(MagentoClient client) {
+		super(client.getHttpClient());
 		this.client = client;
 	}
 

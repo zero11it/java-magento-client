@@ -20,7 +20,7 @@ import com.github.chen0040.magento.models.store.StoreConfig;
 import com.github.chen0040.magento.models.store.StoreGroup;
 import com.github.chen0040.magento.models.store.StoreView;
 import com.github.chen0040.magento.models.store.Website;
-import com.github.chen0040.magento.services.MagentoProductManager.AttributeOptionPOSTMode;
+import com.github.chen0040.magento.services.ProductManager.AttributeOptionPOSTMode;
 
 public class MagentoTest {
 

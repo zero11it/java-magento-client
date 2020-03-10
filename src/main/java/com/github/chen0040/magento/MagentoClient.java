@@ -2,22 +2,22 @@ package com.github.chen0040.magento;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.github.chen0040.magento.interfaces.HttpComponent;
+import com.github.chen0040.magento.http.HttpClient;
 import com.github.chen0040.magento.models.cart.Account;
 import com.github.chen0040.magento.models.store.StoreView;
-import com.github.chen0040.magento.services.BasicHttpComponent;
-import com.github.chen0040.magento.services.MagentoCartManager;
-import com.github.chen0040.magento.services.MagentoCategoryManager;
-import com.github.chen0040.magento.services.MagentoCreditMemoManager;
-import com.github.chen0040.magento.services.MagentoGuestCartManager;
-import com.github.chen0040.magento.services.MagentoHttpComponent;
-import com.github.chen0040.magento.services.MagentoInventoryStockManager;
-import com.github.chen0040.magento.services.MagentoInvoiceManager;
-import com.github.chen0040.magento.services.MagentoMyCartManager;
-import com.github.chen0040.magento.services.MagentoOrderManager;
-import com.github.chen0040.magento.services.MagentoProductManager;
-import com.github.chen0040.magento.services.MagentoShipmentManager;
-import com.github.chen0040.magento.services.MagentoStoreManager;
+import com.github.chen0040.magento.services.CartManager;
+import com.github.chen0040.magento.services.CategoryManager;
+import com.github.chen0040.magento.services.CreditMemoManager;
+import com.github.chen0040.magento.services.GuestCartManager;
+import com.github.chen0040.magento.services.AbstractManager;
+import com.github.chen0040.magento.services.InventoryStockManager;
+import com.github.chen0040.magento.services.InvoiceManager;
+import com.github.chen0040.magento.services.MyCartManager;
+import com.github.chen0040.magento.services.OrderManager;
+import com.github.chen0040.magento.services.ProductManager;
+import com.github.chen0040.magento.services.ShipmentManager;
+import com.github.chen0040.magento.services.StoreManager;
+import com.github.chen0040.magento.http.ApacheHttpClient;
 import com.github.chen0040.magento.utils.StringUtils;
 import com.github.mgiorda.oauth.OAuthConfig;
 import com.github.mgiorda.oauth.OAuthConfigBuilder;
@@ -31,6 +31,7 @@ import org.apache.http.annotation.Experimental;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +41,7 @@ import java.util.Map;
  */
 @Getter
 @Setter
-public class MagentoClient extends MagentoHttpComponent implements Serializable {
+public class MagentoClient extends AbstractManager implements Serializable {
 	private static final long serialVersionUID = 3001998767951271632L;
 	private static final String relativePath4LoginAsClient = "rest/V1/integration/customer/token";
 	private static final String relativePath4LoginAsAdmin = "rest/V1/integration/admin/token";
@@ -69,47 +70,47 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 	private boolean authenticated = false;
 
 	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
-	private MagentoProductManager products;
+	private ProductManager products;
 	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
-	private MagentoCategoryManager categories;
+	private CategoryManager categories;
 	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
-	private MagentoInventoryStockManager inventory;
+	private InventoryStockManager inventory;
 	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
-	private MagentoCartManager carts;
+	private CartManager carts;
 	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
-	private MagentoGuestCartManager guestCart;
+	private GuestCartManager guestCart;
 	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
-	private MagentoMyCartManager myCart;
+	private MyCartManager myCart;
 	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
-	private MagentoStoreManager store;
+	private StoreManager store;
 	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
-	private MagentoOrderManager order;
+	private OrderManager order;
 	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
-	private MagentoInvoiceManager invoice;
+	private InvoiceManager invoice;
 	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
-	private MagentoCreditMemoManager creditmemo;
+	private CreditMemoManager creditmemo;
 	@Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
-	private MagentoShipmentManager shipment;
+	private ShipmentManager shipment;
 
-	public MagentoClient(String baseUri, HttpComponent httpComponent) {
-		super(httpComponent);
+	public MagentoClient(String baseUri, HttpClient httpClient) {
+		super(httpClient);
 		
 		setBaseUri(baseUri);
-		this.products = new MagentoProductManager(this);
-		this.categories = new MagentoCategoryManager(this);
-		this.inventory = new MagentoInventoryStockManager(this);
-		this.carts = new MagentoCartManager(this);
-		this.guestCart = new MagentoGuestCartManager(this);
-		this.myCart = new MagentoMyCartManager(this);
-		this.store = new MagentoStoreManager(this);
-		this.order = new MagentoOrderManager(this);
-		this.invoice = new MagentoInvoiceManager(this);
-		this.creditmemo = new MagentoCreditMemoManager(this);
-		this.shipment = new MagentoShipmentManager(this);
+		this.products = new ProductManager(this);
+		this.categories = new CategoryManager(this);
+		this.inventory = new InventoryStockManager(this);
+		this.carts = new CartManager(this);
+		this.guestCart = new GuestCartManager(this);
+		this.myCart = new MyCartManager(this);
+		this.store = new StoreManager(this);
+		this.order = new OrderManager(this);
+		this.invoice = new InvoiceManager(this);
+		this.creditmemo = new CreditMemoManager(this);
+		this.shipment = new ShipmentManager(this);
 	}
 
 	public MagentoClient(String baseUri) {
-		this(baseUri, new BasicHttpComponent());
+		this(baseUri, new ApacheHttpClient());
 	}
 	
 	public void setBaseUri(String baseUri) {
@@ -229,7 +230,13 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 		
 		data.put("username", username);
 		data.put("password", password);
-		token = StringUtils.stripQuotation(httpComponent.jsonPost(uri, data));
+		String loginTokenResult = null;
+		try {
+			loginTokenResult = httpClient.jsonPost(uri, data);
+		} catch (IOException e) {
+			throw new MagentoException("Login failed", e);
+		}
+		token = StringUtils.stripQuotation(loginTokenResult);
 		
 		logger.info("login returns: {}", token);
 		
@@ -292,47 +299,47 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 		oauth = null;
 	}
 
-	public MagentoCategoryManager categories() {
+	public CategoryManager categories() {
 		return categories;
 	}
 
-	public MagentoProductManager products() {
+	public ProductManager products() {
 		return products;
 	}
 
-	public MagentoInventoryStockManager inventory() {
+	public InventoryStockManager inventory() {
 		return inventory;
 	}
 	
-	public MagentoCartManager carts() {
+	public CartManager carts() {
 		return carts;
 	}
 
-	public MagentoGuestCartManager guestCart() {
+	public GuestCartManager guestCart() {
 		return guestCart;
 	}
 
-	public MagentoMyCartManager myCart() {
+	public MyCartManager myCart() {
 		return myCart;
 	}
 	
-	public MagentoStoreManager store() {
+	public StoreManager store() {
 		return store;
 	}
 	
-	public MagentoOrderManager order() {
+	public OrderManager order() {
 		return order;
 	}
 	
-	public MagentoInvoiceManager invoice() {
+	public InvoiceManager invoice() {
 		return invoice;
 	}
 	
-	public MagentoCreditMemoManager creditmemo() {
+	public CreditMemoManager creditmemo() {
 		return creditmemo;
 	}
 	
-	public MagentoShipmentManager shipment() {
+	public ShipmentManager shipment() {
 		return shipment;
 	}
 

@@ -19,16 +19,16 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by xschen on 11/7/2017.
  */
-public class MagentoMyCartManager extends MagentoHttpComponent {
-	private static final Logger logger = LoggerFactory.getLogger(MagentoMyCartManager.class);
+public class MyCartManager extends AbstractManager {
+	private static final Logger logger = LoggerFactory.getLogger(MyCartManager.class);
 	protected final MagentoClient client;
 	private static final String relativePath = "rest/V1/carts";
 	private static final String cartId = "mine";
 	private long customerId = -1L;
 	private long storeId = -1L;
 
-	public MagentoMyCartManager(MagentoClient client) {
-		super(client.getHttpComponent());
+	public MyCartManager(MagentoClient client) {
+		super(client.getHttpClient());
 		this.client = client;
 	}
 

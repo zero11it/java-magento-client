@@ -23,15 +23,15 @@ import com.github.mgiorda.oauth.OAuthConfig;
 /**
  * Created by xschen on 12/6/2017.
  */
-public class MagentoCategoryManager extends MagentoHttpComponent {
-	private static final Logger logger = LoggerFactory.getLogger(MagentoCategoryManager.class);
+public class CategoryManager extends AbstractManager {
+	private static final Logger logger = LoggerFactory.getLogger(CategoryManager.class);
 	private MagentoClient client;
 	private static final String relativePath4Categories = "rest/V1/categories";
 	private Integer DEFAULT_ROOT_CATEGORY_ID;
 	private Category DEFAULT_ROOT_CATEGORY;
 
-	public MagentoCategoryManager(MagentoClient client) {
-		super(client.getHttpComponent());
+	public CategoryManager(MagentoClient client) {
+		super(client.getHttpClient());
 		this.client = client;
 	}
 
