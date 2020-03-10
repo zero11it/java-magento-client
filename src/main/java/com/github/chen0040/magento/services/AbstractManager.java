@@ -59,14 +59,14 @@ public abstract class AbstractManager {
 	protected String postSecure(String uri, String body, Logger logger) {
 		Map<String, String> headers = buildHeaders(HttpMethod.POST, uri);
 		
-		logger.info("POST-ing @ {}:\n{}", uri, body);
+		logger.debug("POST-ing @ {}:\n{}", uri, body);
 		String resp;
 		try {
 			resp = httpClient.post(uri, body, headers);
 		} catch (IOException e) {
 			throw new MagentoException(e);
 		}
-		logger.info("Got: {}", resp);
+		logger.debug("Got: {}", resp);
 		
 		return resp;
 	}
@@ -74,14 +74,14 @@ public abstract class AbstractManager {
 	protected String putSecure(String uri, String body, Logger logger) {
 		Map<String, String> headers = buildHeaders(HttpMethod.PUT, uri);
 		
-		logger.info("PUT-ting @ {}:\n{}", uri, body);
+		logger.debug("PUT-ting @ {}:\n{}", uri, body);
 		String resp;
 		try {
 			resp = httpClient.put(uri, body, headers);
 		} catch (IOException e) {
 			throw new MagentoException(e);
 		}
-		logger.info("Got: {}", resp);
+		logger.debug("Got: {}", resp);
 		
 		return resp;
 	}
@@ -104,14 +104,14 @@ public abstract class AbstractManager {
 	protected String getSecure(String uri, Logger logger) {
 		Map<String, String> headers = buildHeaders(HttpMethod.GET, uri);
 
-		logger.info("GET-ting @ " + uri);
+		logger.debug("GET-ting @ " + uri);
 		String resp;
 		try {
 			resp = httpClient.get(uri, headers);
 		} catch (IOException e) {
 			throw new MagentoException(e);
 		}
-		logger.info("Got: {}", resp);
+		logger.debug("Got: {}", resp);
 		
 		return resp;
 	}
